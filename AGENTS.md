@@ -26,3 +26,13 @@ Run `python3 tools/check_scaffold.py` for any change. Add and run real language/
 ## Completion
 
 Update evidence for implemented stories and their remaining gaps. Do not mark selected-source migration complete until all listed source dependencies and rights/content checks are resolved. Do not archive legacy repositories until verified successors and deprecation links exist.
+
+## Desired capability and implementation discipline
+
+Read [the technical intent](specs/desired-intent.md) before proposing architecture
+or changing workflow behavior. Keep communication authority, task authority and feedback eligibility independent. Extend the existing integration only for exposed supported events. Validate sanitization and exact destinations before emission; never infer delivered or mirrored from transport acceptance.
+
+Tie each implementation change to a documented intent, existing contract and
+negative test. Preserve all existing permission and evidence boundaries.
+Optimization may change candidate behavior within approved interfaces; it must
+not change authority, conceal uncertainty or reinterpret approval scope.

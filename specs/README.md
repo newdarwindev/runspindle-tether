@@ -24,3 +24,10 @@ Preserve explicit authority and unknown outcomes. Distinguish request admission,
 None of these product gates has been run for this scaffold.
 
 See the [mirroring acceptance contract](../docs/MIRRORING_ACCEPTANCE.md).
+
+## Engineering direction
+
+[Desired intent](desired-intent.md) connects this component to scoped access,
+managed sessions, explicit human exceptions and evaluated maintained workflows.
+It adds design and verification obligations without changing runtime schemas,
+existing acceptance results or operational permissions.
