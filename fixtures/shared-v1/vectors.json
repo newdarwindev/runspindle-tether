@@ -1,0 +1,71 @@
+[
+  {
+    "expected_error": "schema-version",
+    "id": "admission.observed-unknown-version",
+    "kind": "admission.observed",
+    "mutation": {
+      "path": [
+        "schema"
+      ],
+      "value": "runspindle.fixture.v99"
+    }
+  },
+  {
+    "expected_error": "identity-mismatch",
+    "id": "admission.observed-wrong-host",
+    "kind": "admission.observed",
+    "mutation": {
+      "path": [
+        "identity",
+        "host_id"
+      ],
+      "value": "synthetic-other-host"
+    }
+  },
+  {
+    "expected_error": "schema-version",
+    "id": "event.observed-unknown-version",
+    "kind": "event.observed",
+    "mutation": {
+      "path": [
+        "schema"
+      ],
+      "value": "runspindle.fixture.v99"
+    }
+  },
+  {
+    "expected_error": "identity-mismatch",
+    "id": "event.observed-wrong-host",
+    "kind": "event.observed",
+    "mutation": {
+      "path": [
+        "identity",
+        "host_id"
+      ],
+      "value": "synthetic-other-host"
+    }
+  },
+  {
+    "expected_error": "schema-version",
+    "id": "feedback.observed-unknown-version",
+    "kind": "feedback.observed",
+    "mutation": {
+      "path": [
+        "schema"
+      ],
+      "value": "runspindle.fixture.v99"
+    }
+  },
+  {
+    "expected_error": "identity-mismatch",
+    "id": "feedback.observed-wrong-host",
+    "kind": "feedback.observed",
+    "mutation": {
+      "path": [
+        "identity",
+        "host_id"
+      ],
+      "value": "synthetic-other-host"
+    }
+  }
+]

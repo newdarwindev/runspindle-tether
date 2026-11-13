@@ -1,10 +1,13 @@
 {
   "dev_deployment": "not_run",
+  "fixture_conformance": "passed",
+  "fixture_evidence": "docs/SHARED_FIXTURES.md",
   "implementation": "not_implemented",
   "legacy_archival": "not_started",
   "live_acceptance": "not_run",
   "production_deployment": "not_run",
   "runner_capacity": "unverified",
+  "runtime_adapter_tests": "not_implemented",
   "selected_source_migration": "partial",
   "stage": "scaffold"
 }
