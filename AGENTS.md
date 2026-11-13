@@ -27,6 +27,10 @@ Run `python3 tools/check_scaffold.py` for any change. Add and run real language/
 
 Update evidence for implemented stories and their remaining gaps. Do not mark selected-source migration complete until all listed source dependencies and rights/content checks are resolved. Do not archive legacy repositories until verified successors and deprecation links exist.
 
+![validation](https://github.com/newdarwindev/runspindle-tether/actions/workflows/validation.yml/badge.svg) [validation](https://github.com/newdarwindev/runspindle-tether/actions/workflows/validation.yml)
+
+![fleet-qualification](https://github.com/newdarwindev/runspindle-tether/actions/workflows/fleet-qualification.yml/badge.svg) [fleet-qualification](https://github.com/newdarwindev/runspindle-tether/actions/workflows/fleet-qualification.yml)
+
 ## Desired capability and implementation discipline
 
 Read [the technical intent](specs/desired-intent.md) before proposing architecture

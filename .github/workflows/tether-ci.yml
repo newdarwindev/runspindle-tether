@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   scaffold-structure:
-    runs-on: [self-hosted, linux, x64, runspindle-isolated]
+    runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
