@@ -2,11 +2,10 @@
 """Offline pinned test-fixture conformance; never runtime acceptance."""
 import copy
 import hashlib
-import importlib.util
 import json
 from pathlib import Path
 import re
-import sys
+import types
 
 ROOT = Path(__file__).resolve().parents[1]
 FILES = {'artifact.txt', 'contract.json', 'fixturekit.py', 'golden.json', 'vectors.json'}
@@ -32,13 +31,18 @@ def check(root=ROOT):
     if set(manifest['files']) != FILES or {p.name for p in bundle.iterdir() if p.name != '__pycache__'} != FILES | {'manifest.json'}:
         raise ValueError('inventory-mismatch')
     # Verify every byte against the independently reviewed pin chain BEFORE import.
+    verified = {}
     for name, expected in manifest['files'].items():
         path = bundle / name
-        if path.is_symlink() or not path.is_file() or digest(path) != expected:
+        if path.is_symlink() or not path.is_file():
             raise ValueError('file-digest-mismatch')
-    spec = importlib.util.spec_from_file_location('pinned_fixturekit', bundle / 'fixturekit.py')
-    kit = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(kit)
+        verified[name] = path.read_bytes()
+        if hashlib.sha256(verified[name]).hexdigest() != expected:
+            raise ValueError('file-digest-mismatch')
+    # Run only the source snapshot whose digest was checked; never unpinned .pyc.
+    kit = types.ModuleType('pinned_fixturekit')
+    kit.__file__ = str(bundle / 'fixturekit.py')
+    exec(compile(verified['fixturekit.py'], kit.__file__, 'exec'), kit.__dict__)
     kit.verify_bundle(bundle)
     golden = kit.load_json(bundle / 'golden.json')
     vectors = kit.load_json(bundle / 'vectors.json')
