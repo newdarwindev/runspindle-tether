@@ -13,3 +13,7 @@ This repository is one boundary of [Runspindle](https://github.com/newdarwindev/
 - No credentials, real sessions, messages, datasets, browser profiles or live host inventory belong here.
 
 No old repository is retired by this scaffold. Migration and archival are separate verified gates.
+
+## Implemented validation
+
+Run `python3 tools/validate.py` for all implemented structural, language, fixture, artifact and mutation checks in this repository. The same entrypoint runs on trusted `main` and `ci/*` pushes and manual qualification using disposable Strix x64 guests. Logs include the checkout SHA, image/tool identities, command results and applicable artifact checksums. Unimplemented builds and product acceptance remain explicit in `STATUS.json`; blocked acceptance workflows retain their failing conclusions. ARM64 and native macOS qualification remain pending.

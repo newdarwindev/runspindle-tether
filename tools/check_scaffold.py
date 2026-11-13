@@ -16,10 +16,13 @@ for item in p['sources']:
     assert item['status'] in ['adapted_spec','pending_review','reference_only']
 for path in (root/'.github/workflows').glob('*.yml'):
     text = path.read_text()
-    assert 'runs-on: [self-hosted, linux, x64, runspindle-isolated]' in text, path
+    lanes = re.findall(r'^\s*runs-on:\s*(.+)$', text, re.MULTILINE)
+    assert lanes and all(lane == '[self-hosted, linux, x64, runspindle-isolated, strix]' for lane in lanes), path
     assert 'pull_request_target:' not in text and 'pull_request:' not in text, path
     assert 'persist-credentials: false' in text, path
     assert 'contents: read' in text, path
+    for action in re.findall(r'uses:\s*([^\s]+)', text):
+        assert re.fullmatch(r'[A-Za-z0-9_./-]+@[0-9a-f]{40}', action), (path, action)
     assert 'ubuntu-latest' not in text and 'macos-latest' not in text and 'windows-latest' not in text, path
 subprocess.run([sys.executable,str(root/'tools/check_artifacts.py')],check=True)
 print(json.dumps({'status':'passed','evidence_class':'scaffold_structure','repository':c['repository'],'product_acceptance':'not_run'},sort_keys=True))
