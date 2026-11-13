@@ -1,0 +1,22 @@
+# Planned contents: Existing Tether parser/transport compatibility checks; source port not performed.
+# Current scope: scaffold structure only, not the planned product checks.
+name: tether-ci
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  scaffold-structure:
+    runs-on: [self-hosted, linux, x64, runspindle-isolated]
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Validate scaffold only
+        run: python3 tools/check_scaffold.py

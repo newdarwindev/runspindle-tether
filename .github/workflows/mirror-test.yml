@@ -1,0 +1,22 @@
+# Planned contents: Fake Slack event, duplicate/retry/edit and masking tests; not implemented.
+# Current scope: explicit blocked gate, no product success claimed.
+name: mirror-test
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  acceptance-blocked:
+    runs-on: [self-hosted, linux, x64, runspindle-isolated]
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Require implementation and acceptance
+        run: python3 tools/acceptance_gate.py mirror-test

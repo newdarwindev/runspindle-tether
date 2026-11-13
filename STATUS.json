@@ -1,0 +1,10 @@
+{
+  "dev_deployment": "not_run",
+  "implementation": "not_implemented",
+  "legacy_archival": "not_started",
+  "live_acceptance": "not_run",
+  "production_deployment": "not_run",
+  "runner_capacity": "unverified",
+  "selected_source_migration": "partial",
+  "stage": "scaffold"
+}

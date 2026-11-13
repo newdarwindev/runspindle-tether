@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+local/
+private/
+profiles/
+secrets/
+target/
+node_modules/
+dist/

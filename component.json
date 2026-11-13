@@ -1,0 +1,9 @@
+{
+  "api_version": "runspindle.v1alpha0",
+  "component": "tether",
+  "description": "Existing Tether integration boundary for sanitized Slack event delivery",
+  "implementation_language": "contract",
+  "repository": "newdarwindev/runspindle-tether",
+  "schema_version": 1,
+  "stage": "scaffold"
+}
