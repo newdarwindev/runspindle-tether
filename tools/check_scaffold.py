@@ -17,7 +17,8 @@ for item in p['sources']:
 for path in (root/'.github/workflows').glob('*.yml'):
     text = path.read_text()
     lanes = re.findall(r'^\s*runs-on:\s*(.+)$', text, re.MULTILINE)
-    assert lanes and all(lane == '[self-hosted, linux, x64, runspindle-isolated, strix]' for lane in lanes), path
+    allowed_lanes = {'[self-hosted, linux, x64, runspindle-isolated, strix]', '[self-hosted, linux, ARM64, runspindle-isolated, macbook]', '[self-hosted, macOS, ARM64, runspindle-isolated, macbook]'}
+    assert lanes and all(lane in allowed_lanes for lane in lanes), path
     assert 'pull_request_target:' not in text and 'pull_request:' not in text, path
     assert 'persist-credentials: false' in text, path
     assert 'contents: read' in text, path

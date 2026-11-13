@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   strix-linux-x64:
-    name: strix-linux-x64
+    name: validation / strix-linux-x64
     runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
     timeout-minutes: 15
     steps:
