@@ -1,0 +1,37 @@
+{
+  "artifacts": [
+    {
+      "implementation_evidence": false,
+      "kind": "adapted_technical_document",
+      "path": "docs/MIRRORING_ACCEPTANCE.md",
+      "sha256": "8b66004dc41bd35a890cb464c01ec31c8105c14104ca2514ad1ef57991a47391",
+      "source_ids": [
+        "SRC-014"
+      ],
+      "source_relationship": "conceptual adaptation of the listed source material; not a faithful re-render"
+    },
+    {
+      "implementation_evidence": false,
+      "kind": "adapted_technical_document",
+      "path": "docs/THIRD_PARTY_NOTICES.md",
+      "sha256": "fa9e95c6688fcc2a7c93cc392112ebcbf2f3decf880c3ccd3ee422d0b1cae43b",
+      "source_ids": [
+        "SRC-014"
+      ],
+      "source_relationship": "conceptual adaptation of the listed source material; not a faithful re-render"
+    },
+    {
+      "historical_original": true,
+      "implementation_evidence": false,
+      "kind": "retained_mit_notice",
+      "path": "docs/LICENSE-SRC-014.txt",
+      "sha256": "6633fb2316603acd45898cbcd7497f18e045449547eddf137b1919358b57fe2e",
+      "source_ids": [
+        "SRC-014"
+      ],
+      "source_relationship": "byte-preserved source license notice"
+    }
+  ],
+  "migration_status": "partial",
+  "schema_version": 1
+}

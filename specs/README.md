@@ -22,3 +22,5 @@ Preserve explicit authority and unknown outcomes. Distinguish request admission,
 4. Failure, restart, uncertain-effect reconciliation and rollback evidence.
 
 None of these product gates has been run for this scaffold.
+
+See the [mirroring acceptance contract](../docs/MIRRORING_ACCEPTANCE.md).

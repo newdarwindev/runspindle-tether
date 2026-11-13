@@ -3,5 +3,15 @@
   "new_files": "New scaffolding and adapted specifications; no old Git history imported.",
   "provenance_policy": "Public IDs resolve to a privately retained source record containing repository, exact commit, path, source hash and review notes. Private repository names, URLs and operational details are omitted.",
   "schema_version": 1,
-  "sources": []
+  "sources": [
+    {
+      "destination": "docs/MIRRORING_ACCEPTANCE.md",
+      "license_review": "MIT notice retained in docs/LICENSE-SRC-014.txt, Copyright (c) 2026 Lars de Ridder; no blanket license applied to other material.",
+      "modifications": "Preserved event coverage and acceptance requirements while omitting private installation snapshots, source locations and local operational metadata.",
+      "rights_basis": "Owner-selected migration; original rights retained.",
+      "source_description": "Selected legacy coverage audit; detailed dated source record retained privately.",
+      "source_id": "SRC-014",
+      "status": "adapted_spec"
+    }
+  ]
 }

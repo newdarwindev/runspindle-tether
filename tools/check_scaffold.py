@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Dependency-free structural checks. Passing is not product acceptance."""
-import json, pathlib, re, sys
+import json, pathlib, re, subprocess, sys
 root = pathlib.Path(__file__).resolve().parents[1]
 required = ['README.md','AGENTS.md','component.json','specs/README.md','provenance.json','STATUS.json']
 for name in required:
@@ -21,4 +21,5 @@ for path in (root/'.github/workflows').glob('*.yml'):
     assert 'persist-credentials: false' in text, path
     assert 'contents: read' in text, path
     assert 'ubuntu-latest' not in text and 'macos-latest' not in text and 'windows-latest' not in text, path
+subprocess.run([sys.executable,str(root/'tools/check_artifacts.py')],check=True)
 print(json.dumps({'status':'passed','evidence_class':'scaffold_structure','repository':c['repository'],'product_acceptance':'not_run'},sort_keys=True))
