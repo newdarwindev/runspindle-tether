@@ -1,0 +1,83 @@
+[
+  {
+    "detail": {
+      "action": "synthetic-action"
+    },
+    "evidence_class": "synthetic_fixture",
+    "identity": {
+      "attempt": 1,
+      "delivery_id": "synthetic-delivery-id",
+      "event_id": "synthetic-event-id",
+      "host_id": "synthetic-host-id",
+      "intent_revision": 1,
+      "operation_id": "synthetic-operation-id",
+      "policy_revision": 1,
+      "sequence": 0,
+      "span_id": "synthetic-span-id",
+      "task_id": "synthetic-task-id",
+      "trace_id": "synthetic-trace-id",
+      "workspace_id": "synthetic-workspace-id"
+    },
+    "kind": "admission.observed",
+    "observed_at": "2026-11-13T00:00:00Z",
+    "schema": "runspindle.fixture.v1",
+    "state": "admitted",
+    "status": "passed"
+  },
+  {
+    "detail": {
+      "receipt_id": "synthetic-receipt-id"
+    },
+    "evidence_class": "synthetic_fixture",
+    "identity": {
+      "attempt": 1,
+      "destination": "synthetic-destination",
+      "event_id": "synthetic-event-id",
+      "host_id": "synthetic-host-id",
+      "intent_revision": 1,
+      "native_session_id": "synthetic-native-session-id",
+      "operation_id": "synthetic-operation-id",
+      "policy_revision": 1,
+      "sequence": 0,
+      "span_id": "synthetic-span-id",
+      "task_id": "synthetic-task-id",
+      "trace_id": "synthetic-trace-id",
+      "workspace_id": "synthetic-workspace-id"
+    },
+    "kind": "event.observed",
+    "observed_at": "2026-11-13T00:00:00Z",
+    "schema": "runspindle.fixture.v1",
+    "state": "delivered",
+    "status": "passed"
+  },
+  {
+    "detail": {
+      "collection_policy": "synthetic-collection-policy",
+      "transmission_policy": "synthetic-transmission-policy"
+    },
+    "evidence_class": "synthetic_fixture",
+    "identity": {
+      "actor_id": "synthetic-actor-id",
+      "attempt": 1,
+      "event_id": "synthetic-event-id",
+      "family_id": "synthetic-family-id",
+      "host_id": "synthetic-host-id",
+      "intent_revision": 1,
+      "operation_id": "synthetic-operation-id",
+      "output_digest": "17e897b35d8c41a86a82e02bbf0a09cd89fa7eaad33610db51f830dbee4f03e6",
+      "output_revision": 1,
+      "policy_revision": 1,
+      "rule_id": "synthetic-rule-id",
+      "sequence": 0,
+      "span_id": "synthetic-span-id",
+      "task_id": "synthetic-task-id",
+      "trace_id": "synthetic-trace-id",
+      "workspace_id": "synthetic-workspace-id"
+    },
+    "kind": "feedback.observed",
+    "observed_at": "2026-11-13T00:00:00Z",
+    "schema": "runspindle.fixture.v1",
+    "state": "eligible",
+    "status": "passed"
+  }
+]

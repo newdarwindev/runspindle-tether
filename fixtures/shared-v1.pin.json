@@ -1,0 +1,8 @@
+{
+  "schema": "runspindle.fixture.v1",
+  "component": "tether",
+  "repository": "newdarwindev/runspindle",
+  "source_commit": "e8cd5779968fede213443db13a591c992cd0e183",
+  "origin_manifest_sha256": "1dd35d045064056dd66e6da3619ff100549e1c3e81c928f076cfd4109a524d81",
+  "subset_manifest_sha256": "a5bdd39933b8f29292713231f657e92252d3023fdd88d722b13d5d858c2be1fe"
+}

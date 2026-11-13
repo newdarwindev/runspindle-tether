@@ -13,5 +13,13 @@
       "source_id": "SRC-014",
       "status": "adapted_spec"
     }
-  ]
+  ],
+  "synthetic_fixture_source": {
+    "classification": "original_synthetic_test_fixture_only",
+    "commit": "e8cd5779968fede213443db13a591c992cd0e183",
+    "license_status": "Original source status retained; no blanket license or legacy-source import.",
+    "path": "fixtures/v1",
+    "pin": "fixtures/shared-v1.pin.json",
+    "repository": "newdarwindev/runspindle"
+  }
 }

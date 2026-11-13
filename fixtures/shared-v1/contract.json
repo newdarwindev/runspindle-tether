@@ -1,0 +1,177 @@
+{
+  "common_identity": [
+    "task_id",
+    "intent_revision",
+    "policy_revision",
+    "host_id",
+    "workspace_id",
+    "operation_id",
+    "attempt",
+    "sequence",
+    "trace_id",
+    "span_id",
+    "event_id"
+  ],
+  "identity_fields": {
+    "account_ref": "id",
+    "actor_id": "id",
+    "artifact_digest": "digest",
+    "attempt": "positive",
+    "browser_id": "id",
+    "candidate_digest": "digest",
+    "config_version": "id",
+    "delivery_id": "id",
+    "destination": "id",
+    "event_id": "id",
+    "family_id": "id",
+    "host_id": "id",
+    "intent_revision": "positive",
+    "lease_epoch": "positive",
+    "native_session_id": "id",
+    "operation_id": "id",
+    "output_digest": "digest",
+    "output_revision": "positive",
+    "policy_revision": "positive",
+    "producer_version": "id",
+    "receipt_id": "id",
+    "rule_id": "id",
+    "sequence": "counter",
+    "span_id": "id",
+    "task_id": "id",
+    "trace_id": "id",
+    "workspace_id": "id"
+  },
+  "kinds": {
+    "admission.observed": {
+      "detail": {
+        "action": "id"
+      },
+      "identity": [
+        "delivery_id"
+      ],
+      "states": [
+        "admitted",
+        "queued",
+        "rejected",
+        "unknown"
+      ]
+    },
+    "artifact.observed": {
+      "detail": {
+        "receipt_id": "id"
+      },
+      "identity": [
+        "native_session_id",
+        "artifact_digest",
+        "destination"
+      ],
+      "states": [
+        "produced",
+        "validated",
+        "accepted",
+        "delivered",
+        "unknown"
+      ]
+    },
+    "browser.observed": {
+      "detail": {
+        "frame_origin": "origin",
+        "top_origin": "origin"
+      },
+      "identity": [
+        "native_session_id",
+        "browser_id",
+        "account_ref",
+        "lease_epoch"
+      ],
+      "states": [
+        "passive",
+        "agent",
+        "human",
+        "fenced",
+        "unknown"
+      ]
+    },
+    "candidate.observed": {
+      "detail": {
+        "receipt_id": "id"
+      },
+      "identity": [
+        "candidate_digest"
+      ],
+      "states": [
+        "evaluated",
+        "approved",
+        "serving",
+        "rolled-back",
+        "unknown"
+      ]
+    },
+    "event.observed": {
+      "detail": {
+        "receipt_id": "id"
+      },
+      "identity": [
+        "native_session_id",
+        "destination"
+      ],
+      "states": [
+        "queued",
+        "delivered",
+        "unknown"
+      ]
+    },
+    "feedback.observed": {
+      "detail": {
+        "collection_policy": "id",
+        "transmission_policy": "id"
+      },
+      "identity": [
+        "actor_id",
+        "family_id",
+        "output_revision",
+        "output_digest",
+        "rule_id"
+      ],
+      "states": [
+        "quarantined",
+        "eligible",
+        "unknown"
+      ]
+    },
+    "native.observed": {
+      "detail": {
+        "capability": "id"
+      },
+      "identity": [
+        "native_session_id"
+      ],
+      "states": [
+        "running",
+        "cancel-requested",
+        "cancel-acknowledged",
+        "terminal",
+        "unknown"
+      ]
+    },
+    "telemetry.observed": {
+      "detail": {
+        "receipt_id": "id"
+      },
+      "identity": [
+        "native_session_id",
+        "producer_version",
+        "config_version"
+      ],
+      "states": [
+        "emitted",
+        "queued",
+        "rejected",
+        "persisted",
+        "unknown"
+      ]
+    }
+  },
+  "provisional": true,
+  "schema": "runspindle.fixture.v1"
+}
