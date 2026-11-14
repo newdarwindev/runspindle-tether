@@ -9,5 +9,12 @@
   "runner_capacity": "unverified",
   "runtime_adapter_tests": "not_implemented",
   "selected_source_migration": "partial",
-  "stage": "scaffold"
+  "stage": "scaffold",
+  "ingress_admission": {
+    "status": "synthetic_library_tests_passed",
+    "specification": "specs/admission-v1.md",
+    "evidence": "docs/admission-evidence.json",
+    "core_authority_integration": "blocked",
+    "live_transport": "not_implemented"
+  }
 }

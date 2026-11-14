@@ -1,0 +1,42 @@
+{
+  "evidence_class": "bounded_synthetic_ingress_library",
+  "base_revision": "ef4c99a8eea8918350666948a32868e3763e1dbe",
+  "contract_revision": "9201310df7982e7d52f4b9facd8d4caec8ab35dc",
+  "dependencies": "Python standard library only",
+  "toolchain": {
+    "python": "3.12.14",
+    "sqlite": "3.53.1"
+  },
+  "command": "python3 tools/validate.py && python3 -O -m unittest discover -s tests -v",
+  "passed": {
+    "aggregate_validation": true,
+    "normal_tests": 19,
+    "optimized_tests": 19,
+    "fresh_process_replay": true,
+    "concurrent_process_conflict": true,
+    "cancellation_rollback": true,
+    "scope_mutant_forbidden_revision_count": 1
+  },
+  "failed": [],
+  "blocked": [
+    "core #16 authenticated admission integration",
+    "production trusted transport and identity adapter"
+  ],
+  "not_run": [
+    "live Slack",
+    "native execution",
+    "outbound delivery",
+    "deployment",
+    "remote CI on this commit"
+  ],
+  "unknown": [
+    "production transport compatibility"
+  ],
+  "cleanup": "TemporaryDirectory and finally blocks close stores and reap child processes; no retained test state or external writes. Cancellation test rolls back and retries successfully.",
+  "sha256": {
+    "tether/__init__.py": "8c7f563517f58350d1bd45b95b8ea03f5cadbdd98df399c9f9b17b176075d11e",
+    "tether/admission.py": "ef9388557cc445d1d4dc3605dba291cc2d75b1e96fbaafe5a0959bc7de671034",
+    "tests/test_admission.py": "ec3b422473c39eeaaab16dcbbc5a2e5c66435cab39de76201f1c5a44fa990c0b",
+    "specs/admission-v1.md": "a6c03fe31348280bb3b6334c3c4c4dcfec4762fd0230e1028aedc87168ac975f"
+  }
+}

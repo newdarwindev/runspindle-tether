@@ -31,3 +31,10 @@ See the [mirroring acceptance contract](../docs/MIRRORING_ACCEPTANCE.md).
 managed sessions, explicit human exceptions and evaluated maintained workflows.
 It adds design and verification obligations without changing runtime schemas,
 existing acceptance results or operational permissions.
+
+## Bounded ingress library
+
+[Authenticated ingress and durable revisions](admission-v1.md) documents the
+original Python library seam and synthetic SQLite tests. The complete runtime
+adapter and live transport remain unimplemented; this does not supersede the
+product acceptance gates above.
