@@ -11,6 +11,9 @@ import os
 import re
 import subprocess
 import sys
+from collections.abc import Iterator
+from contextlib import contextmanager
+from enum import Enum
 from pathlib import Path
 from typing import Any, cast
 
@@ -29,6 +32,58 @@ PARTITIONS = (
 )
 SHA = re.compile(r"^[0-9a-f]{64}$")
 SOURCE_SHA = re.compile(r"^[0-9a-f]{40}$")
+
+
+class Stage(str, Enum):
+    MANIFEST = "manifest"
+    INSTANCE_METADATA = "instance_metadata"
+    IMAGE_METADATA = "image_metadata"
+    IMAGE_BINDING = "image_binding"
+    RUST_CLOSURE = "rust_closure"
+    BUILDER_ARCHIVE = "builder_archive"
+    QUALITY_CLOSURE = "quality_closure"
+    SOURCE_IDENTITY = "source_identity"
+    RUN_IDENTITY = "run_identity"
+    CHECK_EXECUTION = "check_execution"
+    AGGREGATE_INPUT = "aggregate_input"
+    AGGREGATE_VALIDATION = "aggregate_validation"
+    RECEIPT_OUTPUT = "receipt_output"
+
+
+def failure_category(error: BaseException) -> str:
+    # Closed vocabulary only: no exception text, paths, metadata or dynamic names.
+    if isinstance(error, json.JSONDecodeError):
+        return "invalid_json"
+    if isinstance(error, UnicodeError):
+        return "invalid_encoding"
+    if isinstance(error, FileNotFoundError):
+        return "missing_file"
+    if isinstance(error, PermissionError):
+        return "file_access_denied"
+    if isinstance(error, subprocess.CalledProcessError):
+        return "command_failed"
+    if isinstance(error, KeyError):
+        return "missing_field"
+    if isinstance(error, OSError):
+        return "io_error"
+    return "invalid_value"
+
+
+class PartitionFailure(ValueError):
+    def __init__(self, stage: Stage, error: BaseException) -> None:
+        super().__init__("partition validation failed")
+        self.stage = stage
+        self.category = failure_category(error)
+
+
+@contextmanager
+def diagnostic_stage(stage: Stage) -> Iterator[None]:
+    try:
+        yield
+    except PartitionFailure:
+        raise
+    except (OSError, ValueError, KeyError, subprocess.CalledProcessError) as error:
+        raise PartitionFailure(stage, error) from None
 
 
 def digest(path: Path | str) -> str:
@@ -98,21 +153,27 @@ def validate_instance_binding(instance: dict[str, Any], image: dict[str, str]) -
 
 
 def guest_identity(image: dict[str, str]) -> dict[str, Any]:
-    instance = json.loads(Path("/etc/runspindle-instance.json").read_text())
-    guest = json.loads(Path("/etc/runspindle-image.json").read_text())
-    validate_instance_binding(instance, image)
-    if guest.get("rust_closure_sha256") != image["rust_closure_sha256"]:
-        raise ValueError("wrong Rust closure")
-    if (
-        guest.get("runtime_builder", {}).get("archive_sha256")
-        != image["builder_archive_sha256"]
-    ):
-        raise ValueError("wrong runtime builder archive")
-    if (
-        digest("/opt/runspindle-image-tools/fleet/quality-closure.json")
-        != image["quality_closure_sha256"]
-    ):
-        raise ValueError("wrong quality closure")
+    with diagnostic_stage(Stage.INSTANCE_METADATA):
+        instance = json.loads(Path("/etc/runspindle-instance.json").read_text())
+    with diagnostic_stage(Stage.IMAGE_METADATA):
+        guest = json.loads(Path("/etc/runspindle-image.json").read_text())
+    with diagnostic_stage(Stage.IMAGE_BINDING):
+        validate_instance_binding(instance, image)
+    with diagnostic_stage(Stage.RUST_CLOSURE):
+        if guest.get("rust_closure_sha256") != image["rust_closure_sha256"]:
+            raise ValueError("wrong Rust closure")
+    with diagnostic_stage(Stage.BUILDER_ARCHIVE):
+        if (
+            guest.get("runtime_builder", {}).get("archive_sha256")
+            != image["builder_archive_sha256"]
+        ):
+            raise ValueError("wrong runtime builder archive")
+    with diagnostic_stage(Stage.QUALITY_CLOSURE):
+        if (
+            digest("/opt/runspindle-image-tools/fleet/quality-closure.json")
+            != image["quality_closure_sha256"]
+        ):
+            raise ValueError("wrong quality closure")
     return cast(dict[str, Any], instance)
 
 
@@ -278,66 +339,146 @@ def main() -> int:
     parser.add_argument("action", choices=(*PARTITIONS, "aggregate"))
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    manifest, inventory, manifest_sha, hygiene_sha = manifests()
+    with diagnostic_stage(Stage.MANIFEST):
+        manifest, inventory, manifest_sha, hygiene_sha = manifests()
     instance = guest_identity(manifest["image"])
     image_sha = cast(str, instance["image_sha256"])
-    head_sha = source_sha()
-    run_id = os.environ.get("GITHUB_RUN_ID", "")
-    if os.environ.get("GITHUB_SHA") != head_sha or not run_id.isdecimal():
-        raise ValueError("missing or mismatched GitHub run source identity")
+    with diagnostic_stage(Stage.SOURCE_IDENTITY):
+        head_sha = source_sha()
+    with diagnostic_stage(Stage.RUN_IDENTITY):
+        run_id = os.environ.get("GITHUB_RUN_ID", "")
+        if os.environ.get("GITHUB_SHA") != head_sha or not run_id.isdecimal():
+            raise ValueError("missing or mismatched GitHub run source identity")
     if args.action == "aggregate":
-        receipts = {}
-        results = {}
-        for name in PARTITIONS:
-            encoded = os.environ.get("RECEIPT_" + name.upper(), "")
-            results[name] = os.environ.get("RESULT_" + name.upper(), "")
-            if not encoded or len(encoded) > 100000:
-                raise ValueError("missing or oversized partition receipt")
-            receipts[name] = json.loads(base64.b64decode(encoded, validate=True))
-        print(
-            json.dumps(
-                aggregate(
-                    receipts,
-                    results,
-                    manifest,
-                    inventory,
-                    manifest_sha,
-                    hygiene_sha,
-                    image_sha,
-                    head_sha,
-                    run_id,
-                ),
-                sort_keys=True,
+        with diagnostic_stage(Stage.AGGREGATE_INPUT):
+            receipts = {}
+            results = {}
+            for name in PARTITIONS:
+                encoded = os.environ.get("RECEIPT_" + name.upper(), "")
+                results[name] = os.environ.get("RESULT_" + name.upper(), "")
+                if not encoded or len(encoded) > 100000:
+                    raise ValueError("missing or oversized partition receipt")
+                receipts[name] = json.loads(base64.b64decode(encoded, validate=True))
+        with diagnostic_stage(Stage.AGGREGATE_VALIDATION):
+            print(
+                json.dumps(
+                    aggregate(
+                        receipts,
+                        results,
+                        manifest,
+                        inventory,
+                        manifest_sha,
+                        hygiene_sha,
+                        image_sha,
+                        head_sha,
+                        run_id,
+                    ),
+                    sort_keys=True,
+                )
             )
-        )
         return 0
-    value = receipt(
-        args.action,
-        manifest,
-        inventory,
-        manifest_sha,
-        hygiene_sha,
-        instance,
-        head_sha,
-        run_id,
-    )
-    encoded = base64.b64encode(
-        json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
-    ).decode()
-    if args.output:
-        with args.output.open("a") as stream:
-            stream.write("receipt=" + encoded + "\n")
-    else:
-        print(json.dumps(value, sort_keys=True))
+    with diagnostic_stage(Stage.CHECK_EXECUTION):
+        value = receipt(
+            args.action,
+            manifest,
+            inventory,
+            manifest_sha,
+            hygiene_sha,
+            instance,
+            head_sha,
+            run_id,
+        )
+    with diagnostic_stage(Stage.RECEIPT_OUTPUT):
+        encoded = base64.b64encode(
+            json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+        ).decode()
+        if args.output:
+            with args.output.open("a") as stream:
+                stream.write("receipt=" + encoded + "\n")
+        else:
+            print(json.dumps(value, sort_keys=True))
     if value["status"] != "passed":
         for line in hygiene.failure_summary({"checks": value["checks"]}):
             print(line, flush=True)
     return 0 if value["status"] == "passed" else 1
 
 
-if __name__ == "__main__":
+def failure_record(error: BaseException) -> dict[str, str]:
+    # Validate again at the final output boundary. Exception attributes are
+    # mutable and must not be treated as already-sanitized diagnostic evidence.
+    result = {
+        "status": "failed",
+        "reason": "validation_error",
+        "stage": "unclassified",
+        "category": "unclassified",
+    }
+    if type(error) is not PartitionFailure:
+        return result
+    attributes = object.__getattribute__(error, "__dict__")
+    if type(attributes) is not dict:
+        return result
+    stage, category = attributes.get("stage"), attributes.get("category")
+    stages = {
+        Stage.MANIFEST: "manifest",
+        Stage.INSTANCE_METADATA: "instance_metadata",
+        Stage.IMAGE_METADATA: "image_metadata",
+        Stage.IMAGE_BINDING: "image_binding",
+        Stage.RUST_CLOSURE: "rust_closure",
+        Stage.BUILDER_ARCHIVE: "builder_archive",
+        Stage.QUALITY_CLOSURE: "quality_closure",
+        Stage.SOURCE_IDENTITY: "source_identity",
+        Stage.RUN_IDENTITY: "run_identity",
+        Stage.CHECK_EXECUTION: "check_execution",
+        Stage.AGGREGATE_INPUT: "aggregate_input",
+        Stage.AGGREGATE_VALIDATION: "aggregate_validation",
+        Stage.RECEIPT_OUTPUT: "receipt_output",
+    }
+    categories = {
+        "invalid_json",
+        "invalid_encoding",
+        "missing_file",
+        "file_access_denied",
+        "command_failed",
+        "missing_field",
+        "io_error",
+        "invalid_value",
+    }
+    if (
+        type(stage) is not Stage
+        or type(category) is not str
+        or category not in categories
+    ):
+        return result
+    # Do not read stage.value: even an enum member's attribute can be mutated.
+    stage_name = next(
+        (name for member, name in stages.items() if stage is member), None
+    )
+    if stage_name is None:
+        return result
+    result.update(stage=stage_name, category=category)
+    return result
+
+
+def cli() -> int:
     try:
-        sys.exit(main())
-    except (OSError, ValueError, KeyError, subprocess.CalledProcessError) as error:
-        print(json.dumps({"status": "failed", "reason": type(error).__name__}))
-        sys.exit(2)
+        return main()
+    except PartitionFailure as error:
+        print(json.dumps(failure_record(error)))
+        return 2
+    except (OSError, ValueError, KeyError, subprocess.CalledProcessError):
+        # Unexpected caught failures remain failures, with no unbounded detail.
+        print(
+            json.dumps(
+                {
+                    "status": "failed",
+                    "reason": "validation_error",
+                    "stage": "unclassified",
+                    "category": "unclassified",
+                }
+            )
+        )
+        return 2
+
+
+if __name__ == "__main__":
+    sys.exit(cli())
