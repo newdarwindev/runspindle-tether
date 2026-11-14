@@ -1,28 +1,32 @@
 #!/usr/bin/env python3
 """Run manifest partitions and reject incomplete, stale, or mismatched CI receipts."""
 
+from __future__ import annotations
+
 import argparse
 import base64
 import hashlib
 import json
 import os
-from pathlib import Path
 import re
 import subprocess
 import sys
-
-import hygiene
+from pathlib import Path
+from typing import Any, cast
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from tools import hygiene  # noqa: E402
+
 PARTITIONS = ("quality", "component", "rust", "mutation")
 SHA = re.compile(r"^[0-9a-f]{64}$")
 
 
-def digest(path):
+def digest(path: Path | str) -> str:
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def manifests(root=ROOT):
+def manifests(root: Path = ROOT) -> tuple[dict[str, Any], dict[str, Any], str, str]:
     root = Path(root)
     raw = (root / "validation-partitions.json").read_bytes()
     manifest = json.loads(raw)
@@ -68,7 +72,7 @@ def manifests(root=ROOT):
     )
 
 
-def guest_identity(image):
+def guest_identity(image: dict[str, str]) -> str:
     instance = json.loads(Path("/etc/runspindle-instance.json").read_text())
     guest = json.loads(Path("/etc/runspindle-image.json").read_text())
     if instance.get("image_sha256") != image["sha256"]:
@@ -85,18 +89,25 @@ def guest_identity(image):
         != image["quality_closure_sha256"]
     ):
         raise ValueError("wrong quality closure")
-    return instance["image_sha256"]
+    return cast(str, instance["image_sha256"])
 
 
-def source_sha(root=ROOT):
+def source_sha(root: Path = ROOT) -> str:
     return subprocess.check_output(
         ["git", "-C", str(root), "rev-parse", "HEAD"], text=True
     ).strip()
 
 
 def receipt(
-    name, manifest, inventory, manifest_sha, hygiene_sha, image_sha, head_sha, run_id
-):
+    name: str,
+    manifest: dict[str, Any],
+    inventory: dict[str, Any],
+    manifest_sha: str,
+    hygiene_sha: str,
+    image_sha: str,
+    head_sha: str,
+    run_id: str,
+) -> dict[str, Any]:
     by_id = {item["id"]: item for item in inventory["checks"]}
     before = hygiene.source_fingerprint(ROOT)
     preflight = hygiene.preflight(ROOT, inventory) if name == "quality" else None
@@ -135,16 +146,16 @@ def receipt(
 
 
 def aggregate(
-    receipts,
-    job_results,
-    manifest,
-    inventory,
-    manifest_sha,
-    hygiene_sha,
-    image_sha,
-    head_sha,
-    run_id,
-):
+    receipts: dict[str, dict[str, Any]],
+    job_results: dict[str, str],
+    manifest: dict[str, Any],
+    inventory: dict[str, Any],
+    manifest_sha: str,
+    hygiene_sha: str,
+    image_sha: str,
+    head_sha: str,
+    run_id: str,
+) -> dict[str, Any]:
     if set(receipts) != set(PARTITIONS) or set(job_results) != set(PARTITIONS):
         raise ValueError("missing partition result")
     if any(job_results[name] != "success" for name in PARTITIONS):
@@ -222,7 +233,7 @@ def aggregate(
     }
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("action", choices=(*PARTITIONS, "aggregate"))
     parser.add_argument("--output", type=Path)

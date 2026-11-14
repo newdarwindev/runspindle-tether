@@ -1,19 +1,22 @@
 """Negative tests for exact-source aggregate CI receipts."""
 
+from __future__ import annotations
+
 import copy
 import hashlib
 import json
-from pathlib import Path
 import sys
 import tempfile
 import unittest
+from pathlib import Path
+from typing import Any
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
-import partition_validation as gate
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from tools import partition_validation as gate  # noqa: E402
 
 
 class AggregateTests(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.manifest, self.inventory, self.manifest_sha, self.hygiene_sha = (
             gate.manifests()
         )
@@ -74,7 +77,11 @@ class AggregateTests(unittest.TestCase):
             }
         self.results = {x: "success" for x in gate.PARTITIONS}
 
-    def check(self, receipts=None, results=None):
+    def check(
+        self,
+        receipts: dict[str, dict[str, Any]] | None = None,
+        results: dict[str, str] | None = None,
+    ) -> dict[str, Any]:
         return gate.aggregate(
             receipts if receipts is not None else self.receipts,
             results if results is not None else self.results,
@@ -87,10 +94,10 @@ class AggregateTests(unittest.TestCase):
             self.run_id,
         )
 
-    def test_complete_receipts(self):
+    def test_complete_receipts(self) -> None:
         self.assertEqual(self.check()["status"], "passed")
 
-    def test_missing_cancelled_and_stale(self):
+    def test_missing_cancelled_and_stale(self) -> None:
         for field, value in [
             ("source_sha", "c" * 40),
             ("image_sha256", "d" * 64),
@@ -109,7 +116,7 @@ class AggregateTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.check(receipts)
 
-    def test_duplicate_missing_and_forged_checks(self):
+    def test_duplicate_missing_and_forged_checks(self) -> None:
         name = next(x for x in gate.PARTITIONS if self.receipts[x]["checks"])
         for change in ("missing", "duplicate", "forged"):
             receipts = copy.deepcopy(self.receipts)
@@ -128,13 +135,13 @@ class AggregateTests(unittest.TestCase):
             with self.subTest(change=change), self.assertRaises(ValueError):
                 self.check(receipts)
 
-    def test_preflight_required(self):
+    def test_preflight_required(self) -> None:
         receipts = copy.deepcopy(self.receipts)
         receipts["quality"]["preflight"]["status"] = "failed"
         with self.assertRaises(ValueError):
             self.check(receipts)
 
-    def test_manifest_missing_partition_and_duplicate_coverage(self):
+    def test_manifest_missing_partition_and_duplicate_coverage(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "hygiene.json").write_bytes(
