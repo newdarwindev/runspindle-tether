@@ -12,6 +12,8 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any, cast
 
+from tether.sanitization import Sanitizer
+
 
 class Rejected(ValueError):
     """Input did not satisfy the ingress contract."""
@@ -127,7 +129,9 @@ class Admission:
         path: str,
         authenticate: Callable[[bytes, object], Identity | None] | None = None,
         authorize: Callable[[Identity, str], Grant | None] | None = None,
+        sanitizer: Sanitizer | None = None,
     ) -> None:
+        self.sanitizer = sanitizer if sanitizer is not None else Sanitizer()
         self.authenticate = authenticate
         self.authorize = authorize
         self.db = sqlite3.connect(path, isolation_level=None)
@@ -145,6 +149,9 @@ class Admission:
             CREATE TABLE IF NOT EXISTS sources (
                 scope TEXT PRIMARY KEY, task TEXT NOT NULL UNIQUE);
             CREATE TABLE IF NOT EXISTS mirrors (scope TEXT PRIMARY KEY);
+            CREATE TABLE IF NOT EXISTS sanitized_projections (
+                task TEXT NOT NULL, revision TEXT NOT NULL, body TEXT NOT NULL,
+                PRIMARY KEY(task, revision));
         """)
 
     def close(self) -> None:
@@ -164,6 +171,7 @@ class Admission:
         values = [workspace_id, channel_id, thread_id, message_id]
         for value in values:
             identifier(value)
+        self.sanitizer.require_clean(values)
         self.db.execute(
             "INSERT OR IGNORE INTO mirrors VALUES (?)", (canonical(values).decode(),)
         )
@@ -181,6 +189,9 @@ class Admission:
         if type(identity) is not Identity:
             raise Rejected("transport authentication failed")
         event = decode(raw)
+        self.sanitizer.require_clean(
+            {key: value for key, value in event.items() if key != "text"}
+        )
         claimed = Identity(
             *(
                 event[key]
@@ -236,6 +247,7 @@ class Admission:
                 "grant_ref": grant.grant_ref,
             },
         }
+        self.sanitizer.require_clean(envelope)
         scope = self.scope(event)
         encoded = canonical(envelope).decode()
         self.db.execute("BEGIN IMMEDIATE")
@@ -305,3 +317,54 @@ class Admission:
             json.loads(row[0])
             for row in self.db.execute("SELECT envelope FROM revisions ORDER BY rowid")
         ]
+
+    def persist_projection(self, task_id: str, revision: int, value: object) -> str:
+        """Store only a sanitized projection for an already retained admission.
+
+        This does not admit work or grant sending authority. Immutable identity
+        stays unchanged; conflicting projections cannot replace retained history.
+        """
+        identifier(task_id)
+        counter(revision)
+        self.sanitizer.require_clean(task_id)
+        body = canonical(self.sanitizer.project(value)).decode()
+        self.db.execute("BEGIN IMMEDIATE")
+        try:
+            if (
+                self.db.execute(
+                    "SELECT 1 FROM revisions WHERE task=? AND revision=?",
+                    (task_id, str(revision)),
+                ).fetchone()
+                is None
+            ):
+                raise Rejected("missing projection admission")
+            existing = self.db.execute(
+                "SELECT body FROM sanitized_projections WHERE task=? AND revision=?",
+                (task_id, str(revision)),
+            ).fetchone()
+            if existing is not None:
+                if existing[0] != body:
+                    raise Rejected("projection revision conflict")
+                self.db.execute("ROLLBACK")
+                return "duplicate"
+            self.db.execute(
+                "INSERT INTO sanitized_projections VALUES (?,?,?)",
+                (task_id, str(revision), body),
+            )
+            self.db.execute("COMMIT")
+            return "persisted"
+        except BaseException:
+            if self.db.in_transaction:
+                self.db.execute("ROLLBACK")
+            raise
+
+    def render_projection(self, task_id: str, revision: int) -> str:
+        identifier(task_id)
+        counter(revision)
+        row = self.db.execute(
+            "SELECT body FROM sanitized_projections WHERE task=? AND revision=?",
+            (task_id, str(revision)),
+        ).fetchone()
+        if row is None:
+            raise Rejected("missing projection")
+        return self.sanitizer.render(json.loads(row[0]))

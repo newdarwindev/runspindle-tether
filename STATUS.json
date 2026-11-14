@@ -36,5 +36,12 @@
     "specification": "specs/synthetic-native-events-v1.md",
     "tests": "tests/test_native_source.py",
     "real_native_capabilities": "not_run"
+  },
+  "event_sanitization": {
+    "status": "bounded_schema_configured_secrets_component_tests_passed",
+    "evidence": "docs/sanitization-evidence.json",
+    "unknown_secret_discovery": "not_implemented",
+    "live_provider": "not_run",
+    "production_qualification": "not_run"
   }
 }

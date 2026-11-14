@@ -45,5 +45,11 @@
     "classification": "original_process_local_synthetic_test_fixture",
     "legacy_source_import": "none",
     "specification": "specs/synthetic-native-events-v1.md"
+  },
+  "sanitization_source": {
+    "classification": "original_bounded_schema_sanitizer_and_synthetic_tests",
+    "legacy_source_import": "none",
+    "base_revision": "791ba48eda97248b304322b0177c0a9e4d85b890",
+    "capability_mapping": "tether/native_testing.py existing synthetic matrix"
   }
 }

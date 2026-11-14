@@ -39,5 +39,7 @@
     "tether/admission.py": "b7388cc0d5d69aca8b4948a51b7e2c4bc5fca32b5e9d185cefe8fcea5c154125",
     "tests/test_admission.py": "08357cb39ce984775885e174ec920ba1cff4686a73a115eaf23ba6a69a1bd9c3",
     "specs/admission-v1.md": "a6c03fe31348280bb3b6334c3c4c4dcfec4762fd0230e1028aedc87168ac975f"
-  }
+  },
+  "historical_source_revision": "3f26c35e2fa90bdfe3f44bbfb93f1a101dafc1d6",
+  "current_source_evidence": "docs/sanitization-evidence.json"
 }
