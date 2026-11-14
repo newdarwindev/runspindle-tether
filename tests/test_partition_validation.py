@@ -173,7 +173,12 @@ class AggregateTests(unittest.TestCase):
         lines = hygiene.failure_summary(
             {"checks": [{"id": "rust-test", "status": "failed", "exit_code": 2}]}
         )
-        self.assertEqual(lines, ["hygiene failure: check=rust-test exit=2"])
+        self.assertEqual(
+            lines,
+            [
+                "hygiene failure: check=rust-test exit=2 reported=unclassified (unverified)"
+            ],
+        )
 
     def test_manifest_missing_partition_and_duplicate_coverage(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

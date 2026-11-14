@@ -92,7 +92,10 @@ class HygieneTests(unittest.TestCase):
             }
         )
         self.assertEqual(
-            lines, ["hygiene failure: check=static-quality exit=2 missing_tool=ruff"]
+            lines,
+            [
+                "hygiene failure: check=static-quality exit=2 missing_tool=ruff reported=unclassified (unverified)"
+            ],
         )
 
     def test_explicit_na_requires_reason(self) -> None:

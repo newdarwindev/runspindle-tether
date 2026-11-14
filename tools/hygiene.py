@@ -151,6 +151,125 @@ def validate_entry(entry: Any) -> None:
         raise ValueError("required_files must be a list of paths")
 
 
+# These values are vocabulary, not child-controlled messages or verified causes.
+REPORTED_CATEGORIES = frozenset(
+    {
+        "unclassified",
+        "missing_file",
+        "permission_denied",
+        "missing_module",
+        "assertion_failure",
+        "subprocess_failure",
+        "compiler_failure",
+        "checker_report",
+    }
+)
+DIAGNOSTIC_CODES = {
+    "target_preparation": frozenset({"missing_seed", "failed"}),
+    "builder_selection": frozenset({"unavailable", "identity_mismatch"}),
+    "compilation": frozenset({"failed"}),
+    "mutation": frozenset({"not_detected", "anchor_drift"}),
+    "dependency_preparation": frozenset({"unavailable"}),
+}
+REPORTED_PROVENANCE = "child_output_unverified"
+
+
+def reported_failure(output: str) -> dict[str, str]:
+    """Extract only finite vocabulary; never retain raw child text or paths.
+
+    Even a well-formed envelope can be forged by child output. It is a reported
+    diagnostic, never proof of cause, and cannot affect verification status.
+    """
+    unknown = {"category": "unclassified", "provenance": REPORTED_PROVENANCE}
+    reports: list[dict[str, str]] = []
+
+    def unique_pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+        value: dict[str, Any] = {}
+        for key, item in pairs:
+            if key in value:
+                raise ValueError("duplicate diagnostic key")
+            value[key] = item
+        return value
+
+    lines = output[-65536:].splitlines()[-64:]
+    for line in lines:
+        if len(line) > 512:
+            continue
+        try:
+            value = json.loads(line, object_pairs_hook=unique_pairs)
+        except (ValueError, RecursionError):
+            continue
+        if not isinstance(value, dict) or set(value) != {
+            "type",
+            "version",
+            "stage",
+            "code",
+        }:
+            continue
+        stage, code = value["stage"], value["code"]
+        if (
+            value["type"] == "verification_diagnostic"
+            and type(value["version"]) is int
+            and value["version"] == 1
+            and isinstance(stage, str)
+            and stage in DIAGNOSTIC_CODES
+            and isinstance(code, str)
+            and code in DIAGNOSTIC_CODES[stage]
+        ):
+            reports.append(
+                {
+                    "category": "checker_report",
+                    "provenance": REPORTED_PROVENANCE,
+                    "stage": stage,
+                    "code": code,
+                }
+            )
+    if reports:
+        return reports[0] if len(reports) == 1 else unknown
+    exceptions = {
+        "FileNotFoundError": "missing_file",
+        "PermissionError": "permission_denied",
+        "ModuleNotFoundError": "missing_module",
+        "AssertionError": "assertion_failure",
+        "subprocess.CalledProcessError": "subprocess_failure",
+    }
+    for line in reversed(lines):
+        if len(line) > 4096:
+            continue
+        name = line.split(":", 1)[0]
+        if name in exceptions:
+            return {"category": exceptions[name], "provenance": REPORTED_PROVENANCE}
+        if line.startswith("error: could not compile "):
+            return {"category": "compiler_failure", "provenance": REPORTED_PROVENANCE}
+    return unknown
+
+
+def diagnostic_summary(entry: dict[str, Any]) -> str:
+    """Revalidate stored fields before rendering them in CI or Markdown."""
+    value = entry.get("reported_diagnostic")
+    if not isinstance(value, dict) or value.get("provenance") != REPORTED_PROVENANCE:
+        return "reported=unclassified (unverified)"
+    category = value.get("category")
+    if not isinstance(category, str) or category not in REPORTED_CATEGORIES:
+        return "reported=unclassified (unverified)"
+    expected = {"category", "provenance"}
+    if category == "checker_report":
+        expected |= {"stage", "code"}
+    if set(value) != expected:
+        return "reported=unclassified (unverified)"
+    if category == "checker_report":
+        stage, code = value.get("stage"), value.get("code")
+        if (
+            not isinstance(stage, str)
+            or stage not in DIAGNOSTIC_CODES
+            or not isinstance(code, str)
+            or code not in DIAGNOSTIC_CODES[stage]
+        ):
+            return "reported=unclassified (unverified)"
+        return f"reported={stage}/{code} (unverified)"
+    return f"reported={category} (unverified)"
+
+
 def run_entry(root: Path, entry: dict[str, Any]) -> dict[str, Any]:
     receipt: dict[str, Any] = {"id": entry["id"]}
     if "not_applicable" in entry:
@@ -234,6 +353,8 @@ def run_entry(root: Path, entry: dict[str, Any]) -> dict[str, Any]:
                 pass
             reader.join(timeout=2)
         output = bytes(tail).decode("utf-8", errors="replace")
+        if receipt["status"] == "failed":
+            receipt["reported_diagnostic"] = reported_failure(output)
         if entry["id"] == "static-quality" and code is not None and code != 0:
             receipt.update(quality_tool_failure(output))
         if "unittest" in entry["command"]:
@@ -536,13 +657,13 @@ def write_reports(output: Path, result: dict[str, Any]) -> None:
         "",
         f"Source: `{result.get('source_sha', 'unknown')}`",
         "",
-        "| Check | Result | Tests run | Skipped | Seconds | Reason |",
-        "|---|---|---|---|---|---|",
+        "| Check | Result | Tests run | Skipped | Seconds | Reason | Reported diagnostic (unverified) |",
+        "|---|---|---|---|---|---|---|",
     ]
     for entry in result.get("checks", []):
         reason = str(entry.get("reason", "")).replace("|", "\\|").replace("\n", " ")
         lines.append(
-            f"| {entry['id']} | {entry['status']} | {entry.get('tests_run', 'n/a')} | {entry.get('tests_skipped', 'unknown')} | {entry.get('wall_seconds', 'n/a')} | {reason} |"
+            f"| {entry['id']} | {entry['status']} | {entry.get('tests_run', 'n/a')} | {entry.get('tests_skipped', 'unknown')} | {entry.get('wall_seconds', 'n/a')} | {reason} | {diagnostic_summary(entry) if entry['status'] == 'failed' else 'n/a'} |"
         )
     lines.extend(
         [
@@ -593,6 +714,7 @@ def failure_summary(result: dict[str, Any]) -> list[str]:
         version = entry.get("required_version")
         if isinstance(version, str) and re.fullmatch(r"\d+(?:\.\d+){1,3}", version):
             fields.append(f"required_version={version}")
+        fields.append(diagnostic_summary(entry))
         lines.append("hygiene failure: " + " ".join(fields))
     return lines[:32]
 
