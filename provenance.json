@@ -28,5 +28,10 @@
     "contract_repository": "newdarwindev/runspindle",
     "contract_revision": "9201310df7982e7d52f4b9facd8d4caec8ab35dc",
     "contract_path": "specs/runtime-envelopes-v1.md"
+  },
+  "synthetic_transport_source": {
+    "classification": "original_process_local_synthetic_test_adapter",
+    "legacy_source_import": "none",
+    "specification": "specs/synthetic-transport-v1.md"
   }
 }

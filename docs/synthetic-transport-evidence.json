@@ -1,0 +1,42 @@
+{
+  "evidence_class": "synthetic_process_local_transport_contract",
+  "base_revision": "d7f0009c114aa7ff009fa3db436ca364b77e65c5",
+  "upstream_contract": "existing Tether specs/slack-events.md and issue #1; not a new shared wire contract",
+  "dependencies": "Python standard library only",
+  "python": "3.12.14",
+  "fixture_clock": 100,
+  "fixture_ids": "message-1, message-2, ...",
+  "command": "python3 tools/validate.py && python3 -O -m unittest discover -s tests -v",
+  "passed": {
+    "aggregate_validation": true,
+    "normal_tests": 33,
+    "optimized_tests": 33,
+    "new_transport_tests": 14,
+    "new_file_pinned_lint_type_format": true,
+    "wrong_thread_mutation_detected": true,
+    "unexpected_network_calls": 0,
+    "wrong_thread_identifier_collision_regression": true
+  },
+  "failed": [],
+  "blocked": [
+    "core-authority/execution integration",
+    "durable outbox/retry ownership integration"
+  ],
+  "not_run": [
+    "fresh-process transport durability (not implemented)",
+    "concurrent-writer transport guarantees (not implemented)",
+    "live Slack/provider compatibility",
+    "native capabilities",
+    "whole-envelope production sanitization",
+    "deployment",
+    "remote CI"
+  ],
+  "unknown": [
+    "actual provider compatibility"
+  ],
+  "sha256": {
+    "tether/testing.py": "2b84de229c6aff62ec48b52c6decb8dd369e20bade2b0b3d16003ed14ff046c9",
+    "tests/test_fake_transport.py": "d440c3217dba6072ebca9abb4770ee132f391d8b288b176a4f80e8dfc427d730",
+    "specs/synthetic-transport-v1.md": "77134761e2f78e04f884a9b7d8fd66546cbe7cf6d9a003a4a99bfa775a0ad6f1"
+  }
+}

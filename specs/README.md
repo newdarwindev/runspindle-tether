@@ -38,3 +38,9 @@ existing acceptance results or operational permissions.
 original Python library seam and synthetic SQLite tests. The complete runtime
 adapter and live transport remain unimplemented; this does not supersede the
 product acceptance gates above.
+
+## Synthetic outbound transport test seam
+
+[The process-local transport fixture](synthetic-transport-v1.md) provides exact
+routing and fault-injectable send/update/delete/readback tests. It does not own
+core outbox persistence, retries or real provider integration.
