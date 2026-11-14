@@ -44,3 +44,9 @@ product acceptance gates above.
 [The process-local transport fixture](synthetic-transport-v1.md) provides exact
 routing and fault-injectable send/update/delete/readback tests. It does not own
 core outbox persistence, retries or real provider integration.
+
+## Durable provider-attempt component
+
+[Provider attempt journal](provider-journal-v1.md) adds SQLite send fencing and
+exact synthetic readback beneath the core-owned outbox. Native integration,
+automatic retry and live-provider acceptance remain blocked/not implemented.

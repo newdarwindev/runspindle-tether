@@ -33,5 +33,12 @@
     "classification": "original_process_local_synthetic_test_adapter",
     "legacy_source_import": "none",
     "specification": "specs/synthetic-transport-v1.md"
+  },
+  "provider_journal_source": {
+    "classification": "original_sqlite_provider_attempt_component_and_synthetic_tests",
+    "legacy_source_import": "none",
+    "core_contract_revision": "83296c3962de7546efdd1bb4e3d7e5b25452509f",
+    "core_contract_path": "src/outbox.rs",
+    "root_contract_revision": "3c1968bab54b774ccf0239c4450e599049a14455"
   }
 }
