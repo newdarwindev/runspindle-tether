@@ -66,3 +66,6 @@ It is not universal secret discovery or full production qualification.
 
 - [Retained feedback evidence](retained-feedback-evidence.md): exact authenticated
   target bindings, immutable local history and separate consent boundaries.
+
+- [SQLite schema admission](store-schema-admission.md): exact-family legacy adoption,
+  incompatible-schema rejection and transactional initialization.

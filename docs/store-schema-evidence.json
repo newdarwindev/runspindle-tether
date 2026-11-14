@@ -1,0 +1,35 @@
+{
+  "evidence_class": "actual_sqlite_stores_synthetic_disposable_files",
+  "base_revision": "8f13cfbeebbebbd5a041d4a63b8c71751f6d4dda",
+  "sqlite_version": "3.53.1",
+  "passed": {
+    "normal_tests": 106,
+    "optimized_tests": 106,
+    "new_schema_tests": 11,
+    "repository_validate": true,
+    "strict_mypy_changed_sources": true,
+    "ruff_changed_sources": true,
+    "original_ddl_bytes_and_nonconstructor_ast_unchanged": true,
+    "behavioral_schema_rejection_mutation_detected": true
+  },
+  "source_sha256": {
+    "tether/schema.py": "b4b11aa78b070674973fd1231b0f70ddc2a8589158837763f296c93ad5602821",
+    "tether/admission.py": "c0d84801d77ffdc71ecde13ab3250302a0feae806007e57e67a7edbbd81cf4a7",
+    "tether/journal.py": "be571195c45efbb9ac66d12a38e2dfb1a708b04bb12cc3c349e3cfda70f3c3fc",
+    "tether/feedback.py": "4a7068bea7ba22a31e2d4b3246d932ebcab1e8845d692337867166a86cdafab6",
+    "tests/test_schema.py": "0bb70fa62a5a1d6c62ca612b220cd7872a7b0b44f5af5198f50b38f58fc2ab36",
+    "specs/store-schema-admission.md": "89a824afbad325e944b426edcdc18d1587646a0e4170b121a226a59ee2dbb3bb"
+  },
+  "not_run": [
+    "independent_review",
+    "remote_CI",
+    "production_filesystem_qualification",
+    "live_provider"
+  ],
+  "limitations": [
+    "No universal hostile-filesystem, hot-journal, shared-memory or power-loss byte preservation guarantee.",
+    "Structure/SQLite integrity, not full application record association validation.",
+    "Exact current legacy schema only; no silent repair of other historical layouts.",
+    "Other components remain pinned to their existing source; no downstream qualification transfers."
+  ]
+}
