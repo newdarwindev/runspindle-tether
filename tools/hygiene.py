@@ -20,6 +20,37 @@ from typing import Any
 SCHEMA_VERSION = 1
 SAFE_ID = re.compile(r"^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,79}$")
 SHA = re.compile(r"^[0-9a-f]{40}$")
+KNOWN_QUALITY_TOOLS = frozenset(
+    {
+        "ruff",
+        "mypy",
+        "yamllint",
+        "shellcheck-py",
+        "shellcheck",
+        "eslint",
+        "typescript",
+        "prettier",
+        "@types/node",
+        "PyYAML",
+        "mypy_extensions",
+        "pathspec",
+        "typing_extensions",
+    }
+)
+KNOWN_FAILURE_REASONS = frozenset(
+    {
+        "required_file_missing",
+        "unsafe_required_path",
+        "required_tool_missing",
+        "timeout",
+        "process_start_failed",
+        "declared_artifact_missing",
+        "unsafe_artifact_path",
+        "lockfile_changed_during_verification",
+        "source_changed_during_verification",
+        "invalid_or_missing_manifest",
+    }
+)
 
 
 def digest(path: Path) -> str:
@@ -151,7 +182,13 @@ def run_entry(root: Path, entry: dict[str, Any]) -> dict[str, Any]:
     else:
         available = shutil.which(executable) is not None
     if not available:
-        return {**receipt, "status": "failed", "reason": "required_tool_missing"}
+        tool = Path(executable).name
+        return {
+            **receipt,
+            "status": "failed",
+            "reason": "required_tool_missing",
+            "missing_tool": tool if SAFE_ID.fullmatch(tool) else "unknown",
+        }
     started = time.monotonic()
     before = resource.getrusage(resource.RUSAGE_CHILDREN)
     try:
@@ -177,6 +214,7 @@ def run_entry(root: Path, entry: dict[str, Any]) -> dict[str, Any]:
 
         reader = threading.Thread(target=drain, daemon=True)
         reader.start()
+        code: int | None = None
         try:
             code = process.wait(timeout=entry.get("timeout_seconds", 300))
             receipt.update(status="passed" if code == 0 else "failed", exit_code=code)
@@ -196,6 +234,8 @@ def run_entry(root: Path, entry: dict[str, Any]) -> dict[str, Any]:
                 pass
             reader.join(timeout=2)
         output = bytes(tail).decode("utf-8", errors="replace")
+        if entry["id"] == "static-quality" and code is not None and code != 0:
+            receipt.update(quality_tool_failure(output))
         if "unittest" in entry["command"]:
             counts = re.findall(r"(?m)^Ran (\d+) tests? in [0-9.]+s$", output)
             summaries = re.findall(r"(?m)^(?:OK|FAILED)(?: \(([^\n]*)\))?$", output)
@@ -232,6 +272,29 @@ def run_entry(root: Path, entry: dict[str, Any]) -> dict[str, Any]:
         maxrss_unit="bytes" if platform.system() == "Darwin" else "KiB",
     )
     return receipt
+
+
+def quality_tool_failure(output: str) -> dict[str, str]:
+    """Decode only fixed tool names and numeric versions from the checker envelope."""
+    for line in reversed(output.splitlines()[-10:]):
+        try:
+            item = json.loads(line)
+        except ValueError:
+            continue
+        if not isinstance(item, dict) or item.get("status") != "blocked":
+            continue
+        reason = item.get("reason")
+        if not isinstance(reason, str):
+            return {}
+        missing = re.fullmatch(r"No package metadata was found for ([\w.-]+)", reason)
+        if missing and missing[1] in KNOWN_QUALITY_TOOLS:
+            return {"missing_tool": missing[1]}
+        mismatch = re.fullmatch(
+            r"([\w.-]+) version mismatch: require (\d+(?:\.\d+){1,3})", reason
+        )
+        if mismatch and mismatch[1] in KNOWN_QUALITY_TOOLS:
+            return {"mismatched_tool": mismatch[1], "required_version": mismatch[2]}
+    return {}
 
 
 def preflight(root: Path, manifest: dict[str, Any]) -> dict[str, Any]:
@@ -505,6 +568,35 @@ def write_reports(output: Path, result: dict[str, Any]) -> None:
     (output / "report.md").write_text("\n".join(lines) + "\n")
 
 
+def failure_summary(result: dict[str, Any]) -> list[str]:
+    """Expose only receipt fields we constructed, never child output or argv."""
+    lines: list[str] = []
+    for entry in result.get("checks", []):
+        if entry.get("status") != "failed":
+            continue
+        check_id = entry.get("id", "unknown")
+        if not isinstance(check_id, str) or not SAFE_ID.fullmatch(check_id):
+            check_id = "unknown"
+        fields = [f"check={check_id}"]
+        code = entry.get("exit_code")
+        if type(code) is int and -255 <= code <= 255:
+            fields.append(f"exit={code}")
+        reason = entry.get("reason")
+        if isinstance(reason, str) and reason in KNOWN_FAILURE_REASONS:
+            fields.append(f"reason={reason}")
+        missing = entry.get("missing_tool")
+        if isinstance(missing, str) and SAFE_ID.fullmatch(missing):
+            fields.append(f"missing_tool={missing}")
+        mismatched = entry.get("mismatched_tool")
+        if isinstance(mismatched, str) and mismatched in KNOWN_QUALITY_TOOLS:
+            fields.append(f"mismatched_tool={mismatched}")
+        version = entry.get("required_version")
+        if isinstance(version, str) and re.fullmatch(r"\d+(?:\.\d+){1,3}", version):
+            fields.append(f"required_version={version}")
+        lines.append("hygiene failure: " + " ".join(fields))
+    return lines[:32]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", default="hygiene.json")
@@ -532,6 +624,8 @@ def main() -> int:
         }
     write_reports(output, result)
     print("hygiene: " + result["status"] + " (sanitized reports written)")
+    for line in failure_summary(result):
+        print(line)
     return int(result["status"] == "failed")
 
 

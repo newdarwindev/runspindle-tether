@@ -60,8 +60,39 @@ class HygieneTests(unittest.TestCase):
             hygiene.run_entry(self.root, entry)["reason"], "required_file_missing"
         )
         entry = {"id": "missing", "command": ["runspindle-nonexistent-tool"]}
+        receipt = hygiene.run_entry(self.root, entry)
+        self.assertEqual(receipt["reason"], "required_tool_missing")
+        self.assertEqual(receipt["missing_tool"], "runspindle-nonexistent-tool")
+
+    def test_bounded_failure_summary_excludes_child_content(self) -> None:
+        output = (
+            '{"status": "blocked", "reason": "No package metadata was found for ruff"}'
+        )
+        self.assertEqual(hygiene.quality_tool_failure(output), {"missing_tool": "ruff"})
         self.assertEqual(
-            hygiene.run_entry(self.root, entry)["reason"], "required_tool_missing"
+            hygiene.quality_tool_failure(
+                '{"status": "blocked", "reason": "mypy version mismatch: require 1.18.2"}'
+            ),
+            {"mismatched_tool": "mypy", "required_version": "1.18.2"},
+        )
+        forged = '{"status": "blocked", "reason": "PRIVATE_CANARY version mismatch: require 1.2.3"}'
+        self.assertEqual(hygiene.quality_tool_failure(forged), {})
+        lines = hygiene.failure_summary(
+            {
+                "checks": [
+                    {
+                        "id": "static-quality",
+                        "status": "failed",
+                        "exit_code": 2,
+                        "reason": "PRIVATE_CANARY",
+                        "command": "PRIVATE_CANARY",
+                        "missing_tool": "ruff",
+                    }
+                ]
+            }
+        )
+        self.assertEqual(
+            lines, ["hygiene failure: check=static-quality exit=2 missing_tool=ruff"]
         )
 
     def test_explicit_na_requires_reason(self) -> None:
