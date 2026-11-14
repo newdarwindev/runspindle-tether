@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from typing import Any, Protocol, cast
 
 from tether.admission import Admission, Rejected, canonical, counter, identifier, pairs
+from tether.sanitization import Sanitizer
 from tether.testing import Destination, Payload, Record, Reply, confirm_readback
 
 
@@ -103,7 +104,9 @@ class ProviderJournal:
         admission: Admission | None = None,
         authorize: Callable[[bytes, str], bool] | None = None,
         resolve: Callable[[str, str], Destination | None] | None = None,
+        sanitizer: Sanitizer | None = None,
     ) -> None:
+        self.sanitizer = sanitizer if sanitizer is not None else Sanitizer()
         self.admission = admission
         self.authorize = authorize
         self.resolve = resolve
@@ -128,8 +131,10 @@ class ProviderJournal:
 
     def _context(self, raw: bytes, payload: Payload) -> tuple[str, Destination, str]:
         envelope = delivery(raw)
+        self.sanitizer.require_clean(envelope)
         if type(payload) is not Payload:
             raise Rejected("payload type")
+        self.sanitizer.require_payload(payload)
         digest = payload.digest()
         p, b = envelope["payload"], envelope["binding"]
         if (
@@ -151,6 +156,9 @@ class ProviderJournal:
         if type(destination) is not Destination:
             raise Rejected("destination unavailable")
         destination.validate()
+        self.sanitizer.require_clean(
+            [destination.workspace_id, destination.channel_id, destination.thread_id]
+        )
         if destination.workspace_id != b["workspace_id"]:
             raise Rejected("workspace mismatch")
         admitted = any(e["binding"] == b for e in self.admission.envelopes())
@@ -212,6 +220,7 @@ class ProviderJournal:
         if reply.state == "accepted" and reply.message_id is not None:
             try:
                 identifier(reply.message_id)
+                self.sanitizer.require_clean(reply.message_id)
                 state, ack = "accepted", reply.message_id
             except ValueError:
                 pass
@@ -259,6 +268,13 @@ class ProviderJournal:
             return Observation("unknown")
         if self._context(raw, payload) != (operation, destination, digest):
             raise Rejected("trusted context changed during readback")
+        if type(rows) is tuple:
+            try:
+                for candidate in rows:
+                    if type(candidate) is Record:
+                        self.sanitizer.require_clean(candidate.message_id)
+            except ValueError:
+                return Observation("unknown")
         observation = confirm_readback(rows, destination, operation, payload)
         # Only exact-content/binding rows can contradict previously observed IDs.
         valid = []
