@@ -43,5 +43,14 @@
     "unknown_secret_discovery": "not_implemented",
     "live_provider": "not_run",
     "production_qualification": "not_run"
+  },
+  "retained_feedback": {
+    "status": "sqlite_component_synthetic_authenticated_evidence",
+    "specification": "specs/retained-feedback-evidence.md",
+    "evidence": "docs/feedback-evidence.json",
+    "refinery_collection_bridge": "not_implemented",
+    "production_core_and_provider_authority": "not_implemented",
+    "collection_permission": "separate_default_deny",
+    "training_permission": "separate_default_deny"
   }
 }

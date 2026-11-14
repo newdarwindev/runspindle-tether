@@ -63,3 +63,6 @@ configured-secret redaction, guarded SQLite persistence and escaped rendering.
 It preserves existing capability truthfulness and rejects dirty immutable
 admission/delivery identities or accepted bytes instead of rewriting authority.
 It is not universal secret discovery or full production qualification.
+
+- [Retained feedback evidence](retained-feedback-evidence.md): exact authenticated
+  target bindings, immutable local history and separate consent boundaries.
