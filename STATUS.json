@@ -61,5 +61,13 @@
     "durable_upload_steps": "not_implemented",
     "live_transport": "not_implemented",
     "provider_acceptance": "not_run"
+  },
+  "src014_artifact_lift": {
+    "status": "artifact_scope_complete",
+    "coverage": "docs/mirroring-coverage.json",
+    "review": "docs/MIRRORING_COVERAGE.md",
+    "evidence": "docs/mirroring-audit-evidence.json",
+    "runtime_completion": false,
+    "live_receipts": "not_run"
   }
 }

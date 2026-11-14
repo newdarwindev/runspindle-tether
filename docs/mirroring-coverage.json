@@ -1,0 +1,722 @@
+{
+  "schema_version": 1,
+  "source_id": "SRC-014",
+  "artifact_scope": "complete",
+  "historical_source": "private_reference_not_runtime_evidence",
+  "source_sections": [
+    {
+      "section_id": "S1",
+      "description": "Historical verification snapshot and bounded inspection"
+    },
+    {
+      "section_id": "S2",
+      "description": "Historical source capability distinctions and test limitations"
+    },
+    {
+      "section_id": "S3",
+      "description": "Five rebuild obligations and non-duplication"
+    },
+    {
+      "section_id": "S4",
+      "description": "Live acceptance procedure and uncertainty"
+    }
+  ],
+  "dispositions": [
+    {
+      "source_item": "S1.introduction",
+      "disposition": "adapted",
+      "review": "Read-only installation observations do not establish live delivery; historical observation times are excluded.",
+      "destinations": [
+        "docs/MIRRORING_ACCEPTANCE.md#evidence-boundaries",
+        "docs/MIRRORING_COVERAGE.md#review-and-exclusions"
+      ],
+      "evidence": []
+    },
+    {
+      "source_item": "S1.row1",
+      "disposition": "excluded_private_snapshot",
+      "review": "Dated device-specific installation, availability, revision and inspection results stay private; no historical result transfers.",
+      "destinations": [
+        "docs/MIRRORING_COVERAGE.md#review-and-exclusions"
+      ],
+      "evidence": []
+    },
+    {
+      "source_item": "S1.row2",
+      "disposition": "excluded_private_snapshot",
+      "review": "Dated device-specific installation, availability, revision and inspection results stay private; no historical result transfers.",
+      "destinations": [
+        "docs/MIRRORING_COVERAGE.md#review-and-exclusions"
+      ],
+      "evidence": []
+    },
+    {
+      "source_item": "S1.row3",
+      "disposition": "excluded_private_snapshot",
+      "review": "Dated device-specific installation, availability, revision and inspection results stay private; no historical result transfers.",
+      "destinations": [
+        "docs/MIRRORING_COVERAGE.md#review-and-exclusions"
+      ],
+      "evidence": []
+    },
+    {
+      "source_item": "S1.row4",
+      "disposition": "excluded_private_snapshot",
+      "review": "Dated device-specific installation, availability, revision and inspection results stay private; no historical result transfers.",
+      "destinations": [
+        "docs/MIRRORING_COVERAGE.md#review-and-exclusions"
+      ],
+      "evidence": []
+    },
+    {
+      "source_item": "S1.method",
+      "disposition": "adapted_with_exclusion",
+      "review": "Retain bounded non-secret verification and respect denied checks; exclude host names, paths, process counts and service configuration.",
+      "destinations": [
+        "docs/MIRRORING_COVERAGE.md#live-evidence-slots"
+      ],
+      "evidence": []
+    },
+    {
+      "source_item": "S2.row1",
+      "disposition": "adapted_with_exclusion",
+      "review": "Retain the guarded_cli capability distinction as historical-only, without original source paths or current compatibility claims.",
+      "destinations": [
+        "docs/mirroring-coverage.json#adapter_matrix",
+        "docs/MIRRORING_COVERAGE.md#adapter-and-event-coverage"
+      ],
+      "evidence": [
+        "tests/test_native_source.py#test_all_public_kinds_preserve_identity_and_actual_effects",
+        "tests/test_native_source.py#test_capability_modes_never_invent_event_coverage"
+      ]
+    },
+    {
+      "source_item": "S2.row2",
+      "disposition": "adapted_with_exclusion",
+      "review": "Retain the final_output_router capability distinction as historical-only, without original source paths or current compatibility claims.",
+      "destinations": [
+        "docs/mirroring-coverage.json#adapter_matrix",
+        "docs/MIRRORING_COVERAGE.md#adapter-and-event-coverage"
+      ],
+      "evidence": [
+        "tests/test_native_source.py#test_all_public_kinds_preserve_identity_and_actual_effects",
+        "tests/test_native_source.py#test_capability_modes_never_invent_event_coverage"
+      ]
+    },
+    {
+      "source_item": "S2.row3",
+      "disposition": "adapted_with_exclusion",
+      "review": "Retain the exposed_sdk capability distinction as historical-only, without original source paths or current compatibility claims.",
+      "destinations": [
+        "docs/mirroring-coverage.json#adapter_matrix",
+        "docs/MIRRORING_COVERAGE.md#adapter-and-event-coverage"
+      ],
+      "evidence": [
+        "tests/test_native_source.py#test_all_public_kinds_preserve_identity_and_actual_effects",
+        "tests/test_native_source.py#test_capability_modes_never_invent_event_coverage"
+      ]
+    },
+    {
+      "source_item": "S2.row4",
+      "disposition": "adapted_with_exclusion",
+      "review": "Retain the status_snapshot capability distinction as historical-only, without original source paths or current compatibility claims.",
+      "destinations": [
+        "docs/mirroring-coverage.json#adapter_matrix",
+        "docs/MIRRORING_COVERAGE.md#adapter-and-event-coverage"
+      ],
+      "evidence": [
+        "tests/test_native_source.py#test_all_public_kinds_preserve_identity_and_actual_effects",
+        "tests/test_native_source.py#test_capability_modes_never_invent_event_coverage"
+      ]
+    },
+    {
+      "source_item": "S2.testing",
+      "disposition": "adapted_with_exclusion",
+      "review": "Synthetic source tests remain contract evidence only. Missing historical tools and old installation facts are not current test failures or passes.",
+      "destinations": [
+        "docs/MIRRORING_COVERAGE.md#evidence-layers-and-failure-modes"
+      ],
+      "evidence": [
+        "tests/test_native_source.py",
+        "tests/test_fake_transport.py"
+      ]
+    },
+    {
+      "source_item": "S3.introduction",
+      "disposition": "adapted",
+      "review": "Extend the existing Tether seam, preserve native identity, and do not introduce another relay.",
+      "destinations": [
+        "docs/MIRRORING_ACCEPTANCE.md#event-mirroring-requirements",
+        "specs/provider-journal-v1.md#integration-boundary"
+      ],
+      "evidence": []
+    },
+    {
+      "source_item": "S3.requirement1",
+      "disposition": "adapted",
+      "review": "Require exact task/host/native-session/destination bindings and distinguish unavailable states; process count is not enrolled coverage.",
+      "destinations": [
+        "specs/synthetic-native-events-v1.md#emission-semantics"
+      ],
+      "evidence": [
+        "tests/test_native_source.py#test_each_unavailable_state_has_zero_transport_calls",
+        "tests/test_native_source.py#test_wrong_task_host_session_and_each_destination_field"
+      ]
+    },
+    {
+      "source_item": "S3.requirement2",
+      "disposition": "adapted",
+      "review": "Normalize only exposed supported events. Event ID, sequence and provenance do not imply a complete production envelope; operation/attempt correlation remains a separate integration obligation. Hidden reasoning is never a deliverable.",
+      "destinations": [
+        "specs/synthetic-native-events-v1.md#capability-matrix",
+        "docs/mirroring-coverage.json#adapter_matrix"
+      ],
+      "evidence": [
+        "tests/test_native_source.py#test_all_public_kinds_preserve_identity_and_actual_effects",
+        "tests/test_native_source.py#test_capability_modes_never_invent_event_coverage"
+      ]
+    },
+    {
+      "source_item": "S3.requirement3",
+      "disposition": "adapted",
+      "review": "Retain the OpenBao-reference and whole-envelope sanitization requirements before persistence/rendering. The current bounded configured-secret sanitizer is not universal discovery or an OpenBao credential resolver.",
+      "destinations": [
+        "specs/sanitization-v1.md#defined-boundary",
+        "docs/MIRRORING_COVERAGE.md#evidence-layers-and-failure-modes"
+      ],
+      "evidence": [
+        "tests/test_sanitization.py#test_nested_errors_urls_attachment_metadata_clean_before_sql_and_render",
+        "tests/test_sanitization.py#test_journal_rejects_dirty_bound_content_without_changing_accepted_bytes"
+      ]
+    },
+    {
+      "source_item": "S3.requirement4",
+      "disposition": "adapted",
+      "review": "Retain bounded ordering, exact thread routing, duplicate/restart/unknown reconciliation, independent counters and mirror-loop suppression. Local components do not create production retry authority.",
+      "destinations": [
+        "specs/provider-journal-v1.md#durable-state-and-races",
+        "docs/MIRRORING_COVERAGE.md#evidence-layers-and-failure-modes"
+      ],
+      "evidence": [
+        "tests/test_native_source.py#test_gap_duplicate_replay_and_reconnect_do_not_repeat_effects",
+        "tests/test_provider_journal.py#test_fresh_process_crash_after_effect_reconciles_once",
+        "tests/test_provider_journal.py#test_competing_process_sends_are_fenced",
+        "tests/test_fake_transport.py#test_lost_ack_reconciles_without_retry_or_second_effect",
+        "tests/test_provider_journal.py#test_accepted_is_not_confirmed_and_exact_readback_never_resends",
+        "tests/test_provider_journal.py#test_conflicting_receipt_is_fenced_after_restart",
+        "tests/test_fake_transport.py#test_confirmed_fake_mirror_cannot_reenter_existing_admission"
+      ]
+    },
+    {
+      "source_item": "S3.requirement5",
+      "disposition": "adapted",
+      "review": "Passive visibility never grants remote control or permission forwarding.",
+      "destinations": [
+        "specs/desired-intent.md#interfaces-and-acceptance-obligations",
+        "docs/MIRRORING_COVERAGE.md#adapter-and-event-coverage"
+      ],
+      "evidence": [
+        "tests/test_native_source.py#test_capability_modes_never_invent_event_coverage"
+      ]
+    },
+    {
+      "source_item": "S4.procedure",
+      "disposition": "adapted",
+      "review": "Provide new, empty, independently checked evidence slots for every authorized host/adapter test and all normal/recovery/failure modes.",
+      "destinations": [
+        "docs/mirroring-coverage.json#live_evidence_template",
+        "docs/MIRRORING_COVERAGE.md#live-evidence-slots"
+      ],
+      "evidence": [
+        "tests/test_native_source.py#test_gap_duplicate_replay_and_reconnect_do_not_repeat_effects",
+        "tests/test_provider_journal.py#test_fresh_process_crash_after_effect_reconciles_once",
+        "tests/test_provider_journal.py#test_competing_process_sends_are_fenced",
+        "tests/test_fake_transport.py#test_lost_ack_reconciles_without_retry_or_second_effect",
+        "tests/test_provider_journal.py#test_accepted_is_not_confirmed_and_exact_readback_never_resends",
+        "tests/test_provider_journal.py#test_conflicting_receipt_is_fenced_after_restart"
+      ]
+    },
+    {
+      "source_item": "S4.conclusion",
+      "disposition": "adapted_with_exclusion",
+      "review": "Live all-session/all-event coverage remains unverified and no activation or permissions follow. Private device-specific conclusions remain private.",
+      "destinations": [
+        "docs/MIRRORING_ACCEPTANCE.md#required-live-acceptance-evidence",
+        "STATUS.json#live_acceptance"
+      ],
+      "evidence": []
+    }
+  ],
+  "event_columns": [
+    "lifecycle",
+    "public_summary",
+    "tool_start",
+    "tool_update",
+    "tool_complete",
+    "result",
+    "error",
+    "final",
+    "usage",
+    "snapshot",
+    "hidden_reasoning"
+  ],
+  "adapter_matrix": [
+    {
+      "adapter_id": "synthetic.events",
+      "classification": "synthetic_fixture",
+      "mode": "events",
+      "historical_profile": null,
+      "events": {
+        "lifecycle": "synthetic_supported",
+        "public_summary": "synthetic_supported",
+        "tool_start": "synthetic_supported",
+        "tool_update": "synthetic_supported",
+        "tool_complete": "synthetic_supported",
+        "result": "synthetic_supported",
+        "error": "synthetic_supported",
+        "final": "synthetic_supported",
+        "usage": "synthetic_supported",
+        "snapshot": "unsupported",
+        "hidden_reasoning": "forbidden"
+      },
+      "availability": [
+        "bound",
+        "unbound",
+        "stale",
+        "disconnected"
+      ],
+      "control": false,
+      "live_coverage": "not_run",
+      "specification": "specs/synthetic-native-events-v1.md",
+      "implementation": "tether/native_testing.py",
+      "evidence": [
+        "tests/test_native_source.py#test_all_public_kinds_preserve_identity_and_actual_effects",
+        "tests/test_native_source.py#test_capability_modes_never_invent_event_coverage",
+        "tests/test_native_source.py#test_each_unavailable_state_has_zero_transport_calls",
+        "tests/test_native_source.py#test_wrong_task_host_session_and_each_destination_field"
+      ]
+    },
+    {
+      "adapter_id": "synthetic.final_only",
+      "classification": "synthetic_fixture",
+      "mode": "final_only",
+      "historical_profile": null,
+      "events": {
+        "lifecycle": "unsupported",
+        "public_summary": "unsupported",
+        "tool_start": "unsupported",
+        "tool_update": "unsupported",
+        "tool_complete": "unsupported",
+        "result": "unsupported",
+        "error": "unsupported",
+        "final": "synthetic_supported",
+        "usage": "unsupported",
+        "snapshot": "unsupported",
+        "hidden_reasoning": "forbidden"
+      },
+      "availability": [
+        "bound",
+        "unbound",
+        "stale",
+        "disconnected"
+      ],
+      "control": false,
+      "live_coverage": "not_run",
+      "specification": "specs/synthetic-native-events-v1.md",
+      "implementation": "tether/native_testing.py",
+      "evidence": [
+        "tests/test_native_source.py#test_all_public_kinds_preserve_identity_and_actual_effects",
+        "tests/test_native_source.py#test_capability_modes_never_invent_event_coverage",
+        "tests/test_native_source.py#test_each_unavailable_state_has_zero_transport_calls",
+        "tests/test_native_source.py#test_wrong_task_host_session_and_each_destination_field"
+      ]
+    },
+    {
+      "adapter_id": "synthetic.snapshot_only",
+      "classification": "synthetic_fixture",
+      "mode": "snapshot_only",
+      "historical_profile": null,
+      "events": {
+        "lifecycle": "unsupported",
+        "public_summary": "unsupported",
+        "tool_start": "unsupported",
+        "tool_update": "unsupported",
+        "tool_complete": "unsupported",
+        "result": "unsupported",
+        "error": "unsupported",
+        "final": "unsupported",
+        "usage": "unsupported",
+        "snapshot": "synthetic_supported",
+        "hidden_reasoning": "forbidden"
+      },
+      "availability": [
+        "bound",
+        "unbound",
+        "stale",
+        "disconnected"
+      ],
+      "control": false,
+      "live_coverage": "not_run",
+      "specification": "specs/synthetic-native-events-v1.md",
+      "implementation": "tether/native_testing.py",
+      "evidence": [
+        "tests/test_native_source.py#test_all_public_kinds_preserve_identity_and_actual_effects",
+        "tests/test_native_source.py#test_capability_modes_never_invent_event_coverage",
+        "tests/test_native_source.py#test_each_unavailable_state_has_zero_transport_calls",
+        "tests/test_native_source.py#test_wrong_task_host_session_and_each_destination_field"
+      ]
+    },
+    {
+      "adapter_id": "synthetic.unsupported",
+      "classification": "synthetic_fixture",
+      "mode": "unsupported",
+      "historical_profile": null,
+      "events": {
+        "lifecycle": "unsupported",
+        "public_summary": "unsupported",
+        "tool_start": "unsupported",
+        "tool_update": "unsupported",
+        "tool_complete": "unsupported",
+        "result": "unsupported",
+        "error": "unsupported",
+        "final": "unsupported",
+        "usage": "unsupported",
+        "snapshot": "unsupported",
+        "hidden_reasoning": "forbidden"
+      },
+      "availability": [
+        "bound",
+        "unbound",
+        "stale",
+        "disconnected"
+      ],
+      "control": false,
+      "live_coverage": "not_run",
+      "specification": "specs/synthetic-native-events-v1.md",
+      "implementation": "tether/native_testing.py",
+      "evidence": [
+        "tests/test_native_source.py#test_all_public_kinds_preserve_identity_and_actual_effects",
+        "tests/test_native_source.py#test_capability_modes_never_invent_event_coverage",
+        "tests/test_native_source.py#test_each_unavailable_state_has_zero_transport_calls",
+        "tests/test_native_source.py#test_wrong_task_host_session_and_each_destination_field"
+      ]
+    },
+    {
+      "adapter_id": "historical.guarded_cli",
+      "classification": "historical_reference_current_adapter_unavailable",
+      "mode": null,
+      "historical_profile": "Historical thread identity, completed assistant output retained until turn completion, and failure. The guarded parser did not forward tool calls or intermediate progress.",
+      "events": {
+        "lifecycle": "unverified_unavailable",
+        "public_summary": "unverified_unavailable",
+        "tool_start": "unverified_unavailable",
+        "tool_update": "unverified_unavailable",
+        "tool_complete": "unverified_unavailable",
+        "result": "unverified_unavailable",
+        "error": "unverified_unavailable",
+        "final": "unverified_unavailable",
+        "usage": "unverified_unavailable",
+        "snapshot": "unverified_unavailable",
+        "hidden_reasoning": "forbidden"
+      },
+      "availability": [
+        "unverified"
+      ],
+      "control": false,
+      "live_coverage": "not_run",
+      "specification": "docs/MIRRORING_ACCEPTANCE.md",
+      "implementation": null,
+      "evidence": []
+    },
+    {
+      "adapter_id": "historical.final_output_router",
+      "classification": "historical_reference_current_adapter_unavailable",
+      "mode": null,
+      "historical_profile": "Historical final-message delivery through exact-thread routing and a durable send journal. The output pump was final-only, not all-event forwarding.",
+      "events": {
+        "lifecycle": "unverified_unavailable",
+        "public_summary": "unverified_unavailable",
+        "tool_start": "unverified_unavailable",
+        "tool_update": "unverified_unavailable",
+        "tool_complete": "unverified_unavailable",
+        "result": "unverified_unavailable",
+        "error": "unverified_unavailable",
+        "final": "unverified_unavailable",
+        "usage": "unverified_unavailable",
+        "snapshot": "unverified_unavailable",
+        "hidden_reasoning": "forbidden"
+      },
+      "availability": [
+        "unverified"
+      ],
+      "control": false,
+      "live_coverage": "not_run",
+      "specification": "docs/MIRRORING_ACCEPTANCE.md",
+      "implementation": null,
+      "evidence": []
+    },
+    {
+      "adapter_id": "historical.exposed_sdk",
+      "classification": "historical_reference_current_adapter_unavailable",
+      "mode": null,
+      "historical_profile": "A separate historical adapter formatted exposed public reasoning summaries, command events, file changes, MCP tool names, search and other step items. No evidence connected those shapes to the guarded CLI forwarding path; hidden reasoning remained excluded.",
+      "events": {
+        "lifecycle": "unverified_unavailable",
+        "public_summary": "unverified_unavailable",
+        "tool_start": "unverified_unavailable",
+        "tool_update": "unverified_unavailable",
+        "tool_complete": "unverified_unavailable",
+        "result": "unverified_unavailable",
+        "error": "unverified_unavailable",
+        "final": "unverified_unavailable",
+        "usage": "unverified_unavailable",
+        "snapshot": "unverified_unavailable",
+        "hidden_reasoning": "forbidden"
+      },
+      "availability": [
+        "unverified"
+      ],
+      "control": false,
+      "live_coverage": "not_run",
+      "specification": "docs/MIRRORING_ACCEPTANCE.md",
+      "implementation": null,
+      "evidence": []
+    },
+    {
+      "adapter_id": "historical.status_snapshot",
+      "classification": "historical_reference_current_adapter_unavailable",
+      "mode": null,
+      "historical_profile": "Historical allowlisted status snapshots with separately gated controls. The observer did not request transcripts or timelines; snapshots did not establish event mirroring.",
+      "events": {
+        "lifecycle": "unverified_unavailable",
+        "public_summary": "unverified_unavailable",
+        "tool_start": "unverified_unavailable",
+        "tool_update": "unverified_unavailable",
+        "tool_complete": "unverified_unavailable",
+        "result": "unverified_unavailable",
+        "error": "unverified_unavailable",
+        "final": "unverified_unavailable",
+        "usage": "unverified_unavailable",
+        "snapshot": "unverified_unavailable",
+        "hidden_reasoning": "forbidden"
+      },
+      "availability": [
+        "unverified"
+      ],
+      "control": false,
+      "live_coverage": "not_run",
+      "specification": "docs/MIRRORING_ACCEPTANCE.md",
+      "implementation": null,
+      "evidence": []
+    }
+  ],
+  "component_matrix": [
+    {
+      "component_id": "fake_transport",
+      "classification": "process_local_synthetic",
+      "event_source": false,
+      "specification": "specs/synthetic-transport-v1.md",
+      "implementation": "tether/testing.py",
+      "evidence": [
+        "tests/test_fake_transport.py"
+      ],
+      "acknowledgement": "accepted_synthetic_only",
+      "readback": "exact_synthetic_destination_comparison",
+      "durability": "not_implemented",
+      "live_receipts": "not_run"
+    },
+    {
+      "component_id": "provider_journal",
+      "classification": "sqlite_component_synthetic_provider",
+      "event_source": false,
+      "specification": "specs/provider-journal-v1.md",
+      "implementation": "tether/journal.py",
+      "evidence": [
+        "tests/test_provider_journal.py"
+      ],
+      "acknowledgement": "accepted_synthetic_only",
+      "readback": "exact_synthetic_destination_comparison",
+      "durability": "local_attempt_fence_tested",
+      "live_receipts": "not_run"
+    },
+    {
+      "component_id": "sanitizer",
+      "classification": "bounded_configured_secret_component",
+      "event_source": false,
+      "specification": "specs/sanitization-v1.md",
+      "implementation": "tether/sanitization.py",
+      "evidence": [
+        "tests/test_sanitization.py"
+      ],
+      "acknowledgement": "not_applicable",
+      "readback": "not_applicable",
+      "durability": "sanitized_projection_sqlite_tested",
+      "live_receipts": "not_run"
+    },
+    {
+      "component_id": "slack_wire",
+      "classification": "bounded_protocol_component_synthetic_http_only",
+      "event_source": false,
+      "specification": "specs/slack-wire-v1.md",
+      "implementation": "tether/slack_wire.py",
+      "evidence": [
+        "docs/slack-wire-evidence.json",
+        "tests/test_slack_wire.py#test_independent_readback_is_not_a_delivery_receipt",
+        "tests/test_slack_wire.py#test_real_provider_types_are_not_journal_receipts",
+        "tests/test_slack_wire.py#test_same_size_wrong_bytes_remain_unknown",
+        "tests/test_slack_wire.py#test_wrong_message_thread_remains_unknown",
+        "tests/test_slack_wire.py#test_exact_request_authorization_and_cancellation"
+      ],
+      "acknowledgement": "unqualified_wire_observation_only",
+      "readback": "unqualified_wire_observation_only",
+      "durability": "not_implemented",
+      "live_receipts": "not_run"
+    },
+    {
+      "component_id": "live_slack_provider",
+      "classification": "unavailable",
+      "event_source": false,
+      "specification": "specs/slack-events.md",
+      "implementation": null,
+      "evidence": [],
+      "acknowledgement": "not_run",
+      "readback": "not_run",
+      "durability": "not_run",
+      "live_receipts": "not_run"
+    }
+  ],
+  "failure_matrix": [
+    {
+      "failure_id": "route_and_session",
+      "evidence": [
+        "tests/test_native_source.py#test_each_unavailable_state_has_zero_transport_calls",
+        "tests/test_native_source.py#test_wrong_task_host_session_and_each_destination_field"
+      ],
+      "verification": "Every changed task, host, session, workspace, channel or thread is denied before sink effects."
+    },
+    {
+      "failure_id": "capabilities",
+      "evidence": [
+        "tests/test_native_source.py#test_all_public_kinds_preserve_identity_and_actual_effects",
+        "tests/test_native_source.py#test_capability_modes_never_invent_event_coverage",
+        "tests/test_sanitization.py#test_truthful_capability_matrix_and_unavailable_sources_cannot_emit"
+      ],
+      "verification": "Unsupported events and snapshots are never promoted to event coverage."
+    },
+    {
+      "failure_id": "ordering_and_reconnect",
+      "evidence": [
+        "tests/test_native_source.py#test_gap_duplicate_replay_and_reconnect_do_not_repeat_effects"
+      ],
+      "verification": "Contiguous process-local sequence and replay suppression; reconnect does not reset IDs. Source restart durability is not implemented."
+    },
+    {
+      "failure_id": "duplicate_and_restart",
+      "evidence": [
+        "tests/test_provider_journal.py#test_fresh_process_crash_after_effect_reconciles_once",
+        "tests/test_provider_journal.py#test_competing_process_sends_are_fenced",
+        "tests/test_provider_journal.py#test_virgin_operation_competing_processes_commit_one_attempt"
+      ],
+      "verification": "Independent durable fake provider call/effect rows verify one send after hard exit/restart and competing writers."
+    },
+    {
+      "failure_id": "unknown_and_conflict",
+      "evidence": [
+        "tests/test_fake_transport.py#test_lost_ack_reconciles_without_retry_or_second_effect",
+        "tests/test_provider_journal.py#test_accepted_is_not_confirmed_and_exact_readback_never_resends",
+        "tests/test_provider_journal.py#test_conflicting_receipt_is_fenced_after_restart",
+        "tests/test_fake_transport.py#test_absent_ambiguous_malformed_and_wrong_thread_readbacks"
+      ],
+      "verification": "Unknown is not failed-safe-to-retry. A retained conflict remains fenced after restart."
+    },
+    {
+      "failure_id": "partial_artifact",
+      "evidence": [
+        "tests/test_fake_transport.py#test_partial_attachment_and_malformed_ack_remain_uncertain",
+        "tests/test_provider_journal.py#test_partial_attachment_readback_does_not_confirm"
+      ],
+      "verification": "Exact content and all metadata are compared; partial bytes never confirm."
+    },
+    {
+      "failure_id": "rate_limit",
+      "evidence": [
+        "tests/test_fake_transport.py#test_rate_limit_and_before_effect_fault_do_not_send_or_retry",
+        "tests/test_provider_journal.py#test_rate_limit_is_durable_but_never_automatically_retried"
+      ],
+      "verification": "Retain retry metadata without scheduling or creating retry authority."
+    },
+    {
+      "failure_id": "edit_delete_loop",
+      "evidence": [
+        "tests/test_fake_transport.py#test_update_and_delete_readback_preserve_message_identity",
+        "tests/test_fake_transport.py#test_confirmed_fake_mirror_cannot_reenter_existing_admission"
+      ],
+      "verification": "Fixture updates/deletes preserve identity and mirrored output does not create a command; no atomic production bridge is claimed."
+    },
+    {
+      "failure_id": "authority_and_interruption",
+      "evidence": [
+        "tests/test_provider_journal.py#test_cancel_after_reservation_never_resends",
+        "tests/test_provider_journal.py#test_authority_revoked_at_lookup_lock_boundary_cannot_confirm",
+        "tests/test_provider_journal.py#test_sql_failure_before_reservation_creates_no_effect"
+      ],
+      "verification": "Cancellation preserves the conservative fence; stale/revoked authority and failed transactions do not produce confirmation."
+    },
+    {
+      "failure_id": "sanitization",
+      "evidence": [
+        "tests/test_sanitization.py#test_nested_errors_urls_attachment_metadata_clean_before_sql_and_render",
+        "tests/test_sanitization.py#test_journal_rejects_dirty_bound_content_without_changing_accepted_bytes",
+        "tests/test_sanitization.py#test_sensitive_provider_receipt_identity_never_reaches_journal_or_result",
+        "tests/test_sanitization.py#test_fresh_process_reopens_only_sanitized_persisted_output"
+      ],
+      "verification": "Independently inspect database/output with synthetic canaries; no general unknown-secret or binary discovery claim."
+    },
+    {
+      "failure_id": "mutations",
+      "evidence": [
+        "tests/test_native_source.py#test_removed_availability_guard_causes_independently_observed_forbidden_effect",
+        "tests/test_fake_transport.py#test_wrong_thread_mutation_exposes_false_confirmation",
+        "tests/test_provider_journal.py#test_deliberate_resend_mutation_is_observed_in_provider_store",
+        "tests/test_sanitization.py#test_deliberate_bypass_mutation_leaks_into_independently_read_database",
+        "tests/test_slack_wire.py#test_independent_byte_and_thread_mutations_are_detected"
+      ],
+      "verification": "Disposable source mutations must expose forbidden effects, false confirmation, duplicate sends and persisted canaries rather than merely fail to import. Wire mutations independently expose same-size wrong bytes and wrong-thread false observations, without qualifying a delivery receipt."
+    }
+  ],
+  "live_evidence_template": {
+    "status": "not_run",
+    "values": {
+      "authorization_and_bounded_scope": null,
+      "source_revision_and_installed_runtime": null,
+      "host_and_native_session_identity": null,
+      "exact_workspace_channel_thread_binding": null,
+      "supported_and_unavailable_events": null,
+      "sanitized_emitted_event_manifest": null,
+      "operation_attempt_sequence_provenance": null,
+      "journal_state": null,
+      "independent_destination_receipts": null,
+      "origin_event_count": null,
+      "queued_count": null,
+      "rejected_count": null,
+      "sent_count": null,
+      "destination_confirmed_count": null,
+      "normal_delivery": null,
+      "reconnect_and_replay": null,
+      "duplicate_suppression": null,
+      "uncertain_send_reconciliation": null,
+      "tool_lifecycle_progress_failure_final": null,
+      "sanitization_and_secret_reference_review": null,
+      "passive_visibility_separate_from_control": null,
+      "inspection_denials_and_unavailable_tools": null
+    }
+  },
+  "runtime_issues_remaining_open": [
+    1,
+    3,
+    8,
+    9,
+    10
+  ],
+  "product_gate": "F01_not_run"
+}

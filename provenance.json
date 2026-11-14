@@ -7,11 +7,18 @@
     {
       "destination": "docs/MIRRORING_ACCEPTANCE.md",
       "license_review": "MIT notice retained in docs/LICENSE-SRC-014.txt, Copyright (c) 2026 Lars de Ridder; no blanket license applied to other material.",
-      "modifications": "Preserved event coverage and acceptance requirements while omitting private installation snapshots, source locations and local operational metadata.",
+      "modifications": "Complete sanitized section-by-section adaptation and per-adapter event/evidence mapping; original installation snapshots, source locations and local operational metadata remain private.",
       "rights_basis": "Owner-selected migration; original rights retained.",
       "source_description": "Selected legacy coverage audit; detailed dated source record retained privately.",
       "source_id": "SRC-014",
-      "status": "adapted_spec"
+      "status": "adapted_spec",
+      "artifact_scope": "complete",
+      "source_dispositions": "docs/mirroring-coverage.json",
+      "coverage_review": "docs/MIRRORING_COVERAGE.md",
+      "historical_reference": "private_original_snapshot_excluded",
+      "executable_implementation": "none_imported",
+      "verified_behavior": "existing_local_synthetic_suites_only",
+      "live_verification": "not_run"
     }
   ],
   "synthetic_fixture_source": {

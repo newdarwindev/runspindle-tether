@@ -27,7 +27,7 @@ Extend Tether’s adapters, exact-thread router and durable delivery journal rat
 
 1. Every explicitly enrolled session has a verified host, native session ID and exact workspace, channel and thread binding. Distinguish unbound, unsupported, stale and disconnected sessions. Running process counts are not session coverage.
 2. Normalize supported session lifecycle, public progress summaries, tool lifecycle, results, errors, final responses and usage into structured event envelopes. Include event ID, operation and attempt IDs, sequence and provenance. Mark unavailable native events explicitly. Never reconstruct private hidden reasoning.
-3. Sanitize credentials and sensitive content before persistence or rendering using secret references and whole-envelope sanitization. Final-response token matching alone is insufficient for expanded tool payloads.
+3. Sanitize credentials and sensitive content before persistence or rendering using the selected OpenBao-reference and whole-envelope sanitization contract. Final-response token matching alone is insufficient for expanded tool payloads.
 4. Preserve ordered, bounded updates in the existing destination thread. Use the durable journal for deduplication, restart reconciliation and uncertain outcomes. Mirrored output must never be interpreted as a new command. Keep origin-event, queued, rejected, sent and destination-confirmed counts separate.
 5. Verify passive mirroring independently from remote control and permission forwarding. Visibility alone grants no control capability.
 
@@ -38,6 +38,13 @@ For each supported host and adapter, an explicitly authorized bounded test must 
 Exercise tool lifecycle, progress, failure and final output. Distinguish unsupported events from event loss. Record normal delivery separately from reconnect and replay, duplicate suppression, and uncertain-send reconciliation. An absent or ambiguous receipt must remain uncertain; never blindly resend. Use invented fixture content, never real credentials or private history.
 
 Passing source or contract tests does not authorize service activation, new permissions or production rollout. Those require their own authorization and deployment evidence.
+
+## Coverage and retained validation
+
+The [complete artifact coverage register](MIRRORING_COVERAGE.md) maps every selected
+source section to sanitized dispositions, actual synthetic capabilities, existing
+failure-mode tests and empty live-evidence slots. Artifact accounting is complete;
+real adapters, provider receipts and production acceptance remain unverified.
 
 ## Provenance
 
