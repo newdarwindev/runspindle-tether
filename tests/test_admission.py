@@ -166,11 +166,12 @@ app=Admission(sys.argv[1], authenticate, lambda *_: grant(value))
 try:
     try: result=app.ingest(raw, proof(raw))
     except Rejected: result="rejected"
-    assert result == sys.argv[3], result
+    if result != sys.argv[3]:
+        raise RuntimeError("unexpected ingress result: " + result)
 finally: app.close()
 '''
         env = dict(os.environ, PYTHONPATH=os.pathsep.join([str(ROOT), str(ROOT / "tests")]))
-        subprocess.run([sys.executable, "-c", script, self.path, json.dumps(value), expected],
+        subprocess.run([sys.executable, *(["-O"] if sys.flags.optimize else []), "-c", script, self.path, json.dumps(value), expected],
                        env=env, check=True, timeout=20)
 
     def test_fresh_process_duplicate_edit_delete_and_replay(self):
@@ -241,7 +242,7 @@ finally: app.close()
         try:
             for eid in ("race-a", "race-b"):
                 children.append(subprocess.Popen(
-                    [sys.executable, "-c", script, self.path, json.dumps(event(event_id=eid))],
+                    [sys.executable, *(["-O"] if sys.flags.optimize else []), "-c", script, self.path, json.dumps(event(event_id=eid))],
                     env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True))
             results = []
             for child in children:
