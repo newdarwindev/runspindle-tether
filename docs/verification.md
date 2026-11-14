@@ -23,8 +23,9 @@ No runner, permission, authentication, activation or storage policy is changed h
 
 Run `python3 tools/hygiene.py --preflight-only` for input checks only. A partial
 receipt is not a completed validation. Lock inputs must be tracked and unchanged
-relative to the index; intentional lock updates must be staged/reviewed. Any mutation
-during verification fails. Composition gitlinks must agree with its lock, without
+relative to the index; intentional lock updates must be staged/reviewed. Observed changes to source bytes, HEAD or index between the before/after
+verification snapshots fail. This optimistic boundary does not detect a mutation
+restored between observations. Composition gitlinks must agree with its lock, without
 upgrading them as a side effect.
 
 ## Reports and profiling

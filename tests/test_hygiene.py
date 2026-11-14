@@ -208,7 +208,50 @@ class HygieneTests(unittest.TestCase):
         result = hygiene.evidence(self.root, value)
         self.assertEqual(result["status"], "failed")
         self.assertEqual(
-            result["checks"][-1]["reason"], "lockfile_changed_during_verification"
+            next(
+                c["reason"] for c in result["checks"] if c["id"] == "lockfile-stability"
+            ),
+            "lockfile_changed_during_verification",
+        )
+
+    def test_source_and_head_races_invalidate_clean_receipt(self) -> None:
+        for code in (
+            "from pathlib import Path; Path('source.py').write_text('changed')",
+            "import subprocess; subprocess.run(['git','commit','--allow-empty','-qm','advance'],check=True)",
+            "import subprocess; from pathlib import Path; Path('source.py').write_text('staged'); subprocess.run(['git','add','source.py'],check=True)",
+        ):
+            with self.subTest(code=code):
+                self.git("reset", "--hard", "-q")
+                self.git("clean", "-fdq")
+                value = self.manifest()
+                value["checks"] = [{"id": "mutate", "command": ["python3", "-c", code]}]
+                result = hygiene.evidence(self.root, value)
+                self.assertEqual(result["status"], "failed")
+                self.assertTrue(result["source_worktree_dirty"])
+                self.assertIn(
+                    "source_changed_during_verification",
+                    [c.get("reason") for c in result["checks"]],
+                )
+
+    def test_already_dirty_bytes_and_symlink_races_are_detected(self) -> None:
+        (self.root / "source.py").write_text("initial dirty bytes")
+        (self.root / "link").symlink_to("source.py")
+        value = self.manifest()
+        value["checks"] = [
+            {
+                "id": "mutate",
+                "command": [
+                    "python3",
+                    "-c",
+                    "from pathlib import Path; Path('source.py').write_text('new dirty bytes'); Path('link').unlink(); Path('link').symlink_to('missing')",
+                ],
+            }
+        ]
+        result = hygiene.evidence(self.root, value)
+        self.assertEqual(result["status"], "failed")
+        self.assertIn(
+            "source_changed_during_verification",
+            [c.get("reason") for c in result["checks"]],
         )
 
     def test_unittest_summary_records_skips_without_names(self) -> None:

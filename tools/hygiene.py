@@ -301,9 +301,44 @@ def preflight(root: Path, manifest: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def source_fingerprint(root: Path) -> str:
+    """Observe source bytes, index and identity without traversing gitlinks.
+
+    Ignored generated output is excluded. This is an optimistic before/after
+    observation, not a lock: mutation restored between observations is outside
+    this check. Symlinks identify their link bytes, never read external targets.
+    """
+    state = hashlib.sha256()
+    for args in (
+        ("rev-parse", "HEAD"),
+        ("ls-files", "--stage", "-z"),
+        ("status", "--porcelain", "--untracked-files=all"),
+    ):
+        state.update(git(root, *args).encode())
+        state.update(b"\0")
+    names = git(root, "ls-files", "--cached", "--others", "--exclude-standard", "-z")
+    for name in sorted(set(names.split("\0")) - {""}):
+        path = root / name
+        state.update(name.encode())
+        state.update(b"\0")
+        if path.is_symlink():
+            value = "symlink:" + os.readlink(path)
+        elif path.is_file():
+            value = "file:" + digest(path)
+        else:
+            value = "directory_or_absent"
+        state.update(value.encode())
+        state.update(b"\0")
+    return state.hexdigest()
+
+
 def evidence(
     root: Path, manifest: dict[str, Any], *, preflight_only: bool = False
 ) -> dict[str, Any]:
+    try:
+        before_source = source_fingerprint(root)
+    except (OSError, subprocess.SubprocessError):
+        before_source = None
     try:
         sha = git(root, "rev-parse", "HEAD")
         dirty = bool(git(root, "status", "--porcelain", "--untracked-files=no"))
@@ -398,6 +433,24 @@ def evidence(
                     "reason": "lockfile_changed_during_verification",
                 }
             )
+    try:
+        source_stable = (
+            before_source is not None and source_fingerprint(root) == before_source
+        )
+    except (OSError, subprocess.SubprocessError):
+        source_stable = False
+    if not source_stable:
+        result["source_worktree_dirty"] = True
+        result["source_identity"] = (
+            "source_changed_or_unavailable; not an exact-source receipt"
+        )
+        result["checks"].append(
+            {
+                "id": "source-stability",
+                "status": "failed",
+                "reason": "source_changed_during_verification",
+            }
+        )
     result["status"] = (
         "failed"
         if any(item["status"] == "failed" for item in result["checks"])
