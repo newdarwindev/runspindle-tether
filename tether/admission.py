@@ -13,6 +13,26 @@ from dataclasses import dataclass
 from typing import Any, cast
 
 from tether.sanitization import Sanitizer
+from tether.schema import open_store
+
+SCHEMA = """
+            CREATE TABLE IF NOT EXISTS revisions (
+                task TEXT NOT NULL, revision TEXT NOT NULL, scope TEXT NOT NULL,
+                kind TEXT NOT NULL, digest TEXT NOT NULL, envelope TEXT NOT NULL,
+                PRIMARY KEY(task, revision));
+            CREATE TABLE IF NOT EXISTS deliveries (
+                namespace TEXT NOT NULL, event TEXT NOT NULL, digest TEXT NOT NULL,
+                PRIMARY KEY(namespace, event));
+            CREATE TABLE IF NOT EXISTS heads (
+                task TEXT PRIMARY KEY, revision TEXT NOT NULL, scope TEXT NOT NULL,
+                deleted INTEGER NOT NULL);
+            CREATE TABLE IF NOT EXISTS sources (
+                scope TEXT PRIMARY KEY, task TEXT NOT NULL UNIQUE);
+            CREATE TABLE IF NOT EXISTS mirrors (scope TEXT PRIMARY KEY);
+            CREATE TABLE IF NOT EXISTS sanitized_projections (
+                task TEXT NOT NULL, revision TEXT NOT NULL, body TEXT NOT NULL,
+                PRIMARY KEY(task, revision));
+        """
 
 
 class Rejected(ValueError):
@@ -134,25 +154,7 @@ class Admission:
         self.sanitizer = sanitizer if sanitizer is not None else Sanitizer()
         self.authenticate = authenticate
         self.authorize = authorize
-        self.db = sqlite3.connect(path, isolation_level=None)
-        self.db.executescript("""
-            CREATE TABLE IF NOT EXISTS revisions (
-                task TEXT NOT NULL, revision TEXT NOT NULL, scope TEXT NOT NULL,
-                kind TEXT NOT NULL, digest TEXT NOT NULL, envelope TEXT NOT NULL,
-                PRIMARY KEY(task, revision));
-            CREATE TABLE IF NOT EXISTS deliveries (
-                namespace TEXT NOT NULL, event TEXT NOT NULL, digest TEXT NOT NULL,
-                PRIMARY KEY(namespace, event));
-            CREATE TABLE IF NOT EXISTS heads (
-                task TEXT PRIMARY KEY, revision TEXT NOT NULL, scope TEXT NOT NULL,
-                deleted INTEGER NOT NULL);
-            CREATE TABLE IF NOT EXISTS sources (
-                scope TEXT PRIMARY KEY, task TEXT NOT NULL UNIQUE);
-            CREATE TABLE IF NOT EXISTS mirrors (scope TEXT PRIMARY KEY);
-            CREATE TABLE IF NOT EXISTS sanitized_projections (
-                task TEXT NOT NULL, revision TEXT NOT NULL, body TEXT NOT NULL,
-                PRIMARY KEY(task, revision));
-        """)
+        self.db: sqlite3.Connection = open_store(path, SCHEMA, 1413545985)
 
     def close(self) -> None:
         self.db.close()

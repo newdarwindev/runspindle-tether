@@ -15,6 +15,22 @@ from typing import Any, Protocol, cast
 from tether.admission import Admission, Rejected, canonical, counter, identifier, pairs
 from tether.sanitization import Sanitizer
 from tether.testing import Destination, Payload, Record, Reply, confirm_readback
+from tether.schema import open_store
+
+SCHEMA = """
+            CREATE TABLE IF NOT EXISTS provider_attempts (
+                operation TEXT PRIMARY KEY, envelope BLOB NOT NULL,
+                payload_digest TEXT NOT NULL, destination TEXT NOT NULL,
+                state TEXT NOT NULL CHECK(state IN ('attempted','accepted','unknown','rate_limited','failed')),
+                acknowledgement TEXT, observed TEXT, retry_at INTEGER,
+                conflict INTEGER NOT NULL DEFAULT 0 CHECK(conflict IN (0,1)));
+            CREATE TRIGGER IF NOT EXISTS provider_binding_immutable
+                BEFORE UPDATE OF operation,envelope,payload_digest,destination ON provider_attempts
+                BEGIN SELECT RAISE(ABORT,'immutable provider binding'); END;
+            CREATE TRIGGER IF NOT EXISTS provider_attempt_retained
+                BEFORE DELETE ON provider_attempts
+                BEGIN SELECT RAISE(ABORT,'retain uncertain provider attempt'); END;
+        """
 
 
 class Provider(Protocol):
@@ -110,21 +126,7 @@ class ProviderJournal:
         self.admission = admission
         self.authorize = authorize
         self.resolve = resolve
-        self.db = sqlite3.connect(path, isolation_level=None)
-        self.db.executescript("""
-            CREATE TABLE IF NOT EXISTS provider_attempts (
-                operation TEXT PRIMARY KEY, envelope BLOB NOT NULL,
-                payload_digest TEXT NOT NULL, destination TEXT NOT NULL,
-                state TEXT NOT NULL CHECK(state IN ('attempted','accepted','unknown','rate_limited','failed')),
-                acknowledgement TEXT, observed TEXT, retry_at INTEGER,
-                conflict INTEGER NOT NULL DEFAULT 0 CHECK(conflict IN (0,1)));
-            CREATE TRIGGER IF NOT EXISTS provider_binding_immutable
-                BEFORE UPDATE OF operation,envelope,payload_digest,destination ON provider_attempts
-                BEGIN SELECT RAISE(ABORT,'immutable provider binding'); END;
-            CREATE TRIGGER IF NOT EXISTS provider_attempt_retained
-                BEFORE DELETE ON provider_attempts
-                BEGIN SELECT RAISE(ABORT,'retain uncertain provider attempt'); END;
-        """)
+        self.db: sqlite3.Connection = open_store(path, SCHEMA, 1414135809)
 
     def close(self) -> None:
         self.db.close()

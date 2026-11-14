@@ -10,6 +10,7 @@ from typing import Any, cast
 
 from tether.admission import Identity, Rejected, canonical, counter, identifier, pairs
 from tether.journal import ProviderJournal
+from tether.schema import open_store
 from tether.sanitization import Sanitizer
 from tether.testing import Payload
 
@@ -44,6 +45,25 @@ FIELDS = {
     "correction",
     "target",
 }
+
+
+SCHEMA = """
+            CREATE TABLE IF NOT EXISTS feedback_revisions (
+                identity TEXT, revision TEXT, digest TEXT NOT NULL, body BLOB NOT NULL,
+                grant_ref TEXT NOT NULL, policy_revision TEXT NOT NULL,
+                PRIMARY KEY(identity,revision));
+            CREATE TABLE IF NOT EXISTS feedback_deliveries (
+                namespace TEXT,event TEXT,identity TEXT NOT NULL,digest TEXT NOT NULL,
+                PRIMARY KEY(namespace,event));
+            CREATE TABLE IF NOT EXISTS feedback_heads (
+                identity TEXT PRIMARY KEY,revision TEXT NOT NULL,binding BLOB NOT NULL,
+                deleted INTEGER NOT NULL,conflict INTEGER NOT NULL DEFAULT 0,
+                conflict_digest TEXT);
+            CREATE TRIGGER IF NOT EXISTS feedback_immutable_update BEFORE UPDATE ON feedback_revisions
+                BEGIN SELECT RAISE(ABORT,'immutable feedback revision'); END;
+            CREATE TRIGGER IF NOT EXISTS feedback_immutable_delete BEFORE DELETE ON feedback_revisions
+                BEGIN SELECT RAISE(ABORT,'retain feedback revision'); END;
+        """
 
 
 @dataclass(frozen=True)
@@ -144,24 +164,7 @@ class FeedbackStore:
         self.authorize_retention = authorize_retention
         self.verify_target = verify_target
         self.sanitizer = sanitizer if sanitizer is not None else Sanitizer()
-        self.db = sqlite3.connect(path, isolation_level=None)
-        self.db.executescript("""
-            CREATE TABLE IF NOT EXISTS feedback_revisions (
-                identity TEXT, revision TEXT, digest TEXT NOT NULL, body BLOB NOT NULL,
-                grant_ref TEXT NOT NULL, policy_revision TEXT NOT NULL,
-                PRIMARY KEY(identity,revision));
-            CREATE TABLE IF NOT EXISTS feedback_deliveries (
-                namespace TEXT,event TEXT,identity TEXT NOT NULL,digest TEXT NOT NULL,
-                PRIMARY KEY(namespace,event));
-            CREATE TABLE IF NOT EXISTS feedback_heads (
-                identity TEXT PRIMARY KEY,revision TEXT NOT NULL,binding BLOB NOT NULL,
-                deleted INTEGER NOT NULL,conflict INTEGER NOT NULL DEFAULT 0,
-                conflict_digest TEXT);
-            CREATE TRIGGER IF NOT EXISTS feedback_immutable_update BEFORE UPDATE ON feedback_revisions
-                BEGIN SELECT RAISE(ABORT,'immutable feedback revision'); END;
-            CREATE TRIGGER IF NOT EXISTS feedback_immutable_delete BEFORE DELETE ON feedback_revisions
-                BEGIN SELECT RAISE(ABORT,'retain feedback revision'); END;
-        """)
+        self.db: sqlite3.Connection = open_store(path, SCHEMA, 1413873665)
 
     def close(self) -> None:
         self.db.close()
