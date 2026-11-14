@@ -57,12 +57,15 @@ class AggregateTests(unittest.TestCase):
                 "hygiene_sha256": self.hygiene_sha,
                 "image_sha256": self.image_sha,
                 "binding": {
-                    k: self.manifest["image"][k]
-                    for k in (
-                        "controller_sha256",
-                        "recipe_sha256",
-                        "tool_closure_sha256",
-                    )
+                    "image_source_sha": self.manifest["image"]["source_sha"],
+                    **{
+                        k: self.manifest["image"][k]
+                        for k in (
+                            "controller_sha256",
+                            "recipe_sha256",
+                            "tool_closure_sha256",
+                        )
+                    },
                 },
                 "source_fingerprint": "b" * 64,
                 "preflight": {
@@ -140,6 +143,30 @@ class AggregateTests(unittest.TestCase):
         receipts["quality"]["preflight"]["status"] = "failed"
         with self.assertRaises(ValueError):
             self.check(receipts)
+
+    def test_partition_source_fingerprints_must_match(self) -> None:
+        receipts = copy.deepcopy(self.receipts)
+        receipts["rust"]["source_fingerprint"] = "c" * 64
+        with self.assertRaisesRegex(ValueError, "source bytes differ"):
+            self.check(receipts)
+
+    def test_guest_binding_requires_observed_recipe_and_controller(self) -> None:
+        image = self.manifest["image"]
+        observed = {
+            "image_sha256": image["sha256"],
+            "image_source_sha": image["source_sha"],
+            "controller_sha256": image["controller_sha256"],
+            "recipe_sha256": image["recipe_sha256"],
+            "tool_closure_sha256": image["tool_closure_sha256"],
+        }
+        gate.validate_instance_binding(observed, image)
+        observed["recipe_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "binding"):
+            gate.validate_instance_binding(observed, image)
+        observed["recipe_sha256"] = image["recipe_sha256"]
+        observed["image_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "binding"):
+            gate.validate_instance_binding(observed, image)
 
     def test_manifest_missing_partition_and_duplicate_coverage(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

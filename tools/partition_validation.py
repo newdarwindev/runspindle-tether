@@ -28,6 +28,7 @@ PARTITIONS = (
     "mutation_4",
 )
 SHA = re.compile(r"^[0-9a-f]{64}$")
+SOURCE_SHA = re.compile(r"^[0-9a-f]{40}$")
 
 
 def digest(path: Path | str) -> str:
@@ -72,6 +73,10 @@ def manifests(root: Path = ROOT) -> tuple[dict[str, Any], dict[str, Any], str, s
         for k in required
     ):
         raise ValueError("incomplete qualified image pin")
+    if not isinstance(image.get("source_sha"), str) or not SOURCE_SHA.fullmatch(
+        image["source_sha"]
+    ):
+        raise ValueError("missing exact image source revision")
     return (
         manifest,
         inventory,
@@ -80,11 +85,22 @@ def manifests(root: Path = ROOT) -> tuple[dict[str, Any], dict[str, Any], str, s
     )
 
 
-def guest_identity(image: dict[str, str]) -> str:
+def validate_instance_binding(instance: dict[str, Any], image: dict[str, str]) -> None:
+    expected = {
+        "image_sha256": image["sha256"],
+        "image_source_sha": image["source_sha"],
+        "controller_sha256": image["controller_sha256"],
+        "recipe_sha256": image["recipe_sha256"],
+        "tool_closure_sha256": image["tool_closure_sha256"],
+    }
+    if any(instance.get(key) != value for key, value in expected.items()):
+        raise ValueError("wrong or missing qualified image binding")
+
+
+def guest_identity(image: dict[str, str]) -> dict[str, Any]:
     instance = json.loads(Path("/etc/runspindle-instance.json").read_text())
     guest = json.loads(Path("/etc/runspindle-image.json").read_text())
-    if instance.get("image_sha256") != image["sha256"]:
-        raise ValueError("wrong or missing qualified image identity")
+    validate_instance_binding(instance, image)
     if guest.get("rust_closure_sha256") != image["rust_closure_sha256"]:
         raise ValueError("wrong Rust closure")
     if (
@@ -97,7 +113,7 @@ def guest_identity(image: dict[str, str]) -> str:
         != image["quality_closure_sha256"]
     ):
         raise ValueError("wrong quality closure")
-    return cast(str, instance["image_sha256"])
+    return cast(dict[str, Any], instance)
 
 
 def source_sha(root: Path = ROOT) -> str:
@@ -112,7 +128,7 @@ def receipt(
     inventory: dict[str, Any],
     manifest_sha: str,
     hygiene_sha: str,
-    image_sha: str,
+    instance: dict[str, Any],
     head_sha: str,
     run_id: str,
 ) -> dict[str, Any]:
@@ -139,10 +155,15 @@ def receipt(
         "source_sha": head_sha,
         "manifest_sha256": manifest_sha,
         "hygiene_sha256": hygiene_sha,
-        "image_sha256": image_sha,
+        "image_sha256": instance["image_sha256"],
         "binding": {
-            k: manifest["image"][k]
-            for k in ("controller_sha256", "recipe_sha256", "tool_closure_sha256")
+            k: instance[k]
+            for k in (
+                "image_source_sha",
+                "controller_sha256",
+                "recipe_sha256",
+                "tool_closure_sha256",
+            )
         },
         "preflight": preflight,
         "source_fingerprint": before,
@@ -170,6 +191,7 @@ def aggregate(
         raise ValueError("failed, cancelled, or skipped partition")
     by_id = {item["id"]: item for item in inventory["checks"]}
     covered = []
+    fingerprints = set()
     for name in PARTITIONS:
         value = receipts[name]
         expected = {
@@ -181,8 +203,15 @@ def aggregate(
             "hygiene_sha256": hygiene_sha,
             "image_sha256": image_sha,
             "binding": {
-                k: manifest["image"][k]
-                for k in ("controller_sha256", "recipe_sha256", "tool_closure_sha256")
+                "image_source_sha": manifest["image"]["source_sha"],
+                **{
+                    k: manifest["image"][k]
+                    for k in (
+                        "controller_sha256",
+                        "recipe_sha256",
+                        "tool_closure_sha256",
+                    )
+                },
             },
         }
         if (
@@ -194,6 +223,7 @@ def aggregate(
             value["source_fingerprint"]
         ):
             raise ValueError("source fingerprint missing")
+        fingerprints.add(value["source_fingerprint"])
         preflight = value.get("preflight")
         if name == "quality":
             if (
@@ -232,6 +262,8 @@ def aggregate(
             covered.append(check["id"])
     if len(covered) != len(set(covered)) or set(covered) != set(by_id):
         raise ValueError("missing or duplicate mandatory check")
+    if len(fingerprints) != 1:
+        raise ValueError("partition source bytes differ")
     return {
         "status": "passed",
         "source_sha": head_sha,
@@ -247,7 +279,8 @@ def main() -> int:
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     manifest, inventory, manifest_sha, hygiene_sha = manifests()
-    image_sha = guest_identity(manifest["image"])
+    instance = guest_identity(manifest["image"])
+    image_sha = cast(str, instance["image_sha256"])
     head_sha = source_sha()
     run_id = os.environ.get("GITHUB_RUN_ID", "")
     if os.environ.get("GITHUB_SHA") != head_sha or not run_id.isdecimal():
@@ -284,7 +317,7 @@ def main() -> int:
         inventory,
         manifest_sha,
         hygiene_sha,
-        image_sha,
+        instance,
         head_sha,
         run_id,
     )

@@ -1,13 +1,14 @@
 {
   "schema_version": 1,
   "image": {
-    "sha256": "f3a67103dbe60a0e8313315224ab457f95818ca9bb12ca179125890e814fc1cb",
-    "controller_sha256": "c4aa9d7171e402adc02d58214edc8b5ff35c62e1f97e160749a2dd5105291c48",
+    "sha256": "a5db32338fd6721c53e5b5078d82220c4186181a25da28b6aee726787f632cd0",
+    "controller_sha256": "0fef20a99b8a7c21c9f0cf6d3ebfcd87bfe76d481d167db83c23ef3322ac89d0",
     "recipe_sha256": "0fa21327ff73e2aade11eceea18dfc5bd54d9a14f78a5d4a50c74316081555d4",
     "tool_closure_sha256": "809d24f076692a9ae1309dcae2386689fdaa83b1bf495bf996c9077f438783ea",
     "quality_closure_sha256": "3b919750776dc130a3ae18d1026583c206a7166bc7c3877674e4ff3b69016a89",
     "rust_closure_sha256": "d2ddeab3255cd69d082502259083d0a3fa9cf72b53601af90046e4d40cd90eff",
-    "builder_archive_sha256": "9e872bae015df2787ef50be0a1fcd5d96b0f3f2a2f5b11414ef388f1dd61527c"
+    "builder_archive_sha256": "9e872bae015df2787ef50be0a1fcd5d96b0f3f2a2f5b11414ef388f1dd61527c",
+    "source_sha": "45811b5b28f5e2777d3caec22f3af2a423520dba"
   },
   "partitions": {
     "quality": [
