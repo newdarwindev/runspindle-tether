@@ -2,6 +2,8 @@
 # Current scope: explicit blocked gate, no product success claimed.
 name: mirror-test
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
