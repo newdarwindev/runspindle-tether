@@ -1,0 +1,39 @@
+{
+  "evidence_class": "real_sqlite_components_synthetic_authentication_and_provider",
+  "base_revision": "4883cd3acd6ff5812d6890279d7494a1c1cb6dde",
+  "dependencies": "standard_library_and_existing_same_repository_components",
+  "toolchain": {
+    "python": "3.12.14",
+    "sqlite": "3.53.1"
+  },
+  "source_sha256": {
+    "tether/feedback.py": "562830e29d3258d59e7c672b9dc42769af6465c137c624de4e4740c9498f7237",
+    "tether/journal.py": "6603e7ef2c6a7eb4517a4a1996aa8d95420b0950aac7f8d1dbbe8d482aa5926a",
+    "tests/test_feedback.py": "f273b09d3e2ce0a75b5744863d59a4720c81821dd32e985460dbf76d021e4761",
+    "specs/retained-feedback-evidence.md": "f3e923b2681a418c107e112283253dfba1b0adda06f2523375b9b24d062762ce"
+  },
+  "verification": {
+    "normal_tests": 95,
+    "optimized_tests": 95,
+    "new_tests": 13,
+    "fresh_process_replay": "passed",
+    "concurrent_connections": "passed",
+    "bounded_conflict_fence": "passed",
+    "missing_fence_mutation": "observed_in_actual_sqlite",
+    "provider_call_delta": 0,
+    "network_and_execution_tripwires": "passed",
+    "static": "new_and_changed_modules_strict_mypy_and_ruff_pass",
+    "independent_review": "pending",
+    "remote_ci": "not_run",
+    "mutable_callback_target": "cannot_rewrite_authenticated_event",
+    "ephemeral_database_names": "rejected_before_connection"
+  },
+  "limitations": [
+    "production transport authentication and Core/artifact verifier absent",
+    "Refinery collection bridge not implemented",
+    "collection and training require independent explicit consent",
+    "historical target confirmation does not establish current message existence",
+    "component owned SQLite only; no distributed atomicity or hostile store guarantee",
+    "no live collection, credentials, training or provider calls"
+  ]
+}

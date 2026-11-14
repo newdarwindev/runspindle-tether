@@ -129,20 +129,25 @@ class ProviderJournal:
     def close(self) -> None:
         self.db.close()
 
-    def _context(self, raw: bytes, payload: Payload) -> tuple[str, Destination, str]:
+    def _artifact(self, raw: bytes, payload: Payload) -> tuple[dict[str, Any], str]:
         envelope = delivery(raw)
         self.sanitizer.require_clean(envelope)
         if type(payload) is not Payload:
             raise Rejected("payload type")
         self.sanitizer.require_payload(payload)
         digest = payload.digest()
-        p, b = envelope["payload"], envelope["binding"]
+        p = envelope["payload"]
         if (
             len(payload.attachments) != 1
             or payload.attachments[0].attachment_id != p["artifact_id"]
             or hashlib.sha256(payload.attachments[0].content).hexdigest() != p["sha256"]
         ):
             raise Rejected("exact accepted artifact required")
+        return envelope, digest
+
+    def _context(self, raw: bytes, payload: Payload) -> tuple[str, Destination, str]:
+        envelope, digest = self._artifact(raw, payload)
+        p, b = envelope["payload"], envelope["binding"]
         if self.admission is None or self.authorize is None or self.resolve is None:
             raise Rejected("trusted integration unavailable")
         # Core still owns accepted artifact validation and delivery authority. The
@@ -168,6 +173,53 @@ class ProviderJournal:
         if not admitted or head != (str(b["revision"]), 0):
             raise Rejected("missing, superseded or deleted admission")
         return p["delivery_operation_id"], destination, digest
+
+    def retained_target(
+        self, raw: bytes, payload: Payload, message_id: str
+    ) -> dict[str, Any]:
+        """Historical independent readback only; no provider calls or Core acceptance.
+
+        The immutable artifact bytes must still match the retained journal record.
+        This does not check current destination existence or current task authority.
+        """
+        identifier(message_id)
+        self.sanitizer.require_clean(message_id)
+        envelope, digest = self._artifact(raw, payload)
+        p, b = envelope["payload"], envelope["binding"]
+        row = self.db.execute(
+            "SELECT envelope,payload_digest,destination,observed,conflict FROM provider_attempts WHERE operation=?",
+            (p["delivery_operation_id"],),
+        ).fetchone()
+        if (
+            row is None
+            or row[0] != raw
+            or row[1] != digest
+            or row[3] != message_id
+            or row[4] != 0
+        ):
+            raise Rejected("retained target unavailable or conflicted")
+        route = json.loads(row[2], object_pairs_hook=pairs)
+        if type(route) is not list or len(route) != 3:
+            raise Rejected("retained target route")
+        for item in route:
+            identifier(item)
+        if route[0] != b["workspace_id"]:
+            raise Rejected("retained workspace mismatch")
+        target = {
+            "task_id": b["task_id"],
+            "task_revision": b["revision"],
+            "artifact_id": p["artifact_id"],
+            "artifact_revision": p["artifact_revision"],
+            "artifact_sha256": p["sha256"],
+            "delivery_operation_id": p["delivery_operation_id"],
+            "message_id": message_id,
+            "payload_sha256": digest,
+            "workspace_id": route[0],
+            "channel_id": route[1],
+            "thread_id": route[2],
+        }
+        self.sanitizer.require_clean(target)
+        return target
 
     @staticmethod
     def _route(destination: Destination) -> str:
