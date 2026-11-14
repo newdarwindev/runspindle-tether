@@ -1,0 +1,57 @@
+{
+  "evidence_class": "no_network_protocol_component_with_independent_synthetic_http",
+  "base_revision": "22546d6b414cb298a6ec60433505ef6cf7ca9883",
+  "base_tree": "57c0202aba6bc522fc031ca608eb1b57b97a0e97",
+  "primary_documentation_checked_utc": "2026-11-14",
+  "command": "python3 tools/validate.py && python3 -O -m unittest discover -s tests -v",
+  "dependencies": "Python standard library only; no SDK or HTTP implementation",
+  "local_toolchain": {
+    "python": "3.12.14",
+    "ruff": "0.14.5",
+    "mypy": "1.18.2"
+  },
+  "passed": {
+    "normal_tests": 128,
+    "optimized_tests": 128,
+    "new_wire_tests": 22,
+    "repository_validate": true,
+    "strict_mypy_changed_sources": true,
+    "ruff_changed_sources": true,
+    "independent_byte_comparison_mutation_detected": true,
+    "independent_thread_comparison_mutation_detected": true,
+    "unexpected_socket_connect_calls": 0,
+    "provider_journal_source_unchanged": true,
+    "existing_synthetic_receipt_types_unchanged": true
+  },
+  "failed": [],
+  "blocked": [
+    "Core authorization/reservation/receipt bridge",
+    "durable allocation/substep retention and crash/restart protocol",
+    "real account/origin/lease-bound credential helper"
+  ],
+  "not_run": [
+    "independent review",
+    "remote CI",
+    "live Slack requests",
+    "real provider authentication and response qualification",
+    "production sanitization",
+    "runtime activation",
+    "deployment"
+  ],
+  "limitations": [
+    "Injected callbacks and transport are not authenticated authority or provider identity.",
+    "Readback is sequential, not an atomic Slack snapshot or current authority guarantee.",
+    "Result classifications are unqualified wire facts, never journal/Core receipts.",
+    "Explicit upload calls can be repeated by callers; no durable send fence or automatic retries exist.",
+    "Transport must enforce byte/time/redirect bounds before buffering; no concrete HTTP client is provided.",
+    "Strict file-share subset rejects nonempty blocks/structured attachments and incomplete/multiple shares.",
+    "Source protocols require separately retained operation-to-Slack-file binding before production integration."
+  ],
+  "source_sha256": {
+    "tether/slack_wire.py": "02e9f32fbd49b3ec603ca258a7508f656064240cc63daf84757d5a5b45aace67",
+    "tests/test_slack_wire.py": "4bafce8a8944b1a88142ea01e0020837d5b0e092b87ae49b813a73a75e84e25c",
+    "specs/slack-wire-v1.md": "cb4a86d5309b8ede8a475f2c53eb505bfcc50ce2fdbc95150d711baf8ae2319f",
+    "STATUS.json": "33e0eac777886b0771286b0ec94637b5e86d1f26bb8310d799df7ce304d18b30",
+    "provenance.json": "6b0769f12aaa041a75a9eb6dbfba010fb861cec0dddd6b5578669daf923dd2de"
+  }
+}

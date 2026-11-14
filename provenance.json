@@ -68,5 +68,13 @@
     "legacy_source_import": "none",
     "base_revision": "8f13cfbeebbebbd5a041d4a63b8c71751f6d4dda",
     "specification": "specs/store-schema-admission.md"
+  },
+  "slack_wire_source": {
+    "classification": "original_no_network_wire_codecs_and_synthetic_http_tests",
+    "legacy_source_import": "none",
+    "base_revision": "22546d6b414cb298a6ec60433505ef6cf7ca9883",
+    "specification": "specs/slack-wire-v1.md",
+    "upstream_implementation_copied": false,
+    "primary_documentation_checked_utc": "2026-11-14"
   }
 }

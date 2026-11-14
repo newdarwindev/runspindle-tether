@@ -69,3 +69,6 @@ It is not universal secret discovery or full production qualification.
 
 - [SQLite schema admission](store-schema-admission.md): exact-family legacy adoption,
   incompatible-schema rejection and transactional initialization.
+
+- [Slack wire protocol](slack-wire-v1.md): bounded file request codecs and independent
+  synthetic HTTP readback; no live transport, durable upload adapter or journal receipts.
