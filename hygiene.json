@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "checks": [
+    {
+      "id": "scaffold",
+      "command": [
+        "python3",
+        "tools/check_scaffold.py"
+      ],
+      "required_files": [
+        "tools/check_scaffold.py"
+      ],
+      "timeout_seconds": 300
+    },
+    {
+      "id": "static-quality",
+      "command": [
+        "python3",
+        "tools/static_quality.py"
+      ],
+      "required_files": [
+        "tools/static_quality.py"
+      ],
+      "timeout_seconds": 300
+    },
+    {
+      "id": "repository-hygiene",
+      "command": [
+        "python3",
+        "tools/check_repo_hygiene.py"
+      ],
+      "required_files": [
+        "tools/check_repo_hygiene.py"
+      ],
+      "timeout_seconds": 300
+    },
+    {
+      "id": "check-artifacts",
+      "command": [
+        "python3",
+        "tools/check_artifacts.py"
+      ],
+      "required_files": [
+        "tools/check_artifacts.py"
+      ],
+      "timeout_seconds": 300
+    },
+    {
+      "id": "check-shared-fixtures",
+      "command": [
+        "python3",
+        "tools/check_shared_fixtures.py"
+      ],
+      "required_files": [
+        "tools/check_shared_fixtures.py"
+      ],
+      "timeout_seconds": 300
+    },
+    {
+      "id": "python-tests",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "required_files": [
+        "tests"
+      ],
+      "timeout_seconds": 600
+    },
+    {
+      "id": "distributable-build",
+      "not_applicable": "No distributable build command exists in this repository validation contract; this does not claim release acceptance."
+    }
+  ],
+  "lockfiles": [
+    "requirements-quality.txt",
+    "tools/quality-baseline.json"
+  ],
+  "artifact_paths": [],
+  "profiling": {
+    "workloads": [
+      {
+        "id": "python-validation-duration",
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests"
+        ],
+        "required_files": [
+          "tests"
+        ],
+        "timeout_seconds": 600,
+        "kind": "validation"
+      }
+    ]
+  },
+  "limitations": [
+    "Profiling measures deterministic validation workloads, not native/provider performance.",
+    "No evidence upload or retention policy is enabled.",
+    "Native/live acceptance gates remain in their existing separate workflows.",
+    "Raw child output is not included in sanitized verification reports."
+  ]
+}
