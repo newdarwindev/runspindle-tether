@@ -19,6 +19,7 @@
     "component": [
       "check-artifacts",
       "check-shared-fixtures",
+      "check-mirroring-audit",
       "python-tests",
       "distributable-build"
     ],

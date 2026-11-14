@@ -57,6 +57,20 @@
       "timeout_seconds": 300
     },
     {
+      "id": "check-mirroring-audit",
+      "command": [
+        "python3",
+        "tools/check_mirroring_audit.py"
+      ],
+      "required_files": [
+        "tools/check_mirroring_audit.py",
+        "docs/mirroring-coverage.json",
+        "docs/mirroring-audit-evidence.json",
+        "docs/mirroring-audit-original-evidence.json"
+      ],
+      "timeout_seconds": 300
+    },
+    {
       "id": "python-tests",
       "command": [
         "python3",

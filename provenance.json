@@ -7,11 +7,18 @@
     {
       "destination": "docs/MIRRORING_ACCEPTANCE.md",
       "license_review": "MIT notice retained in docs/LICENSE-SRC-014.txt, Copyright (c) 2026 Lars de Ridder; no blanket license applied to other material.",
-      "modifications": "Preserved event coverage and acceptance requirements while omitting private installation snapshots, source locations and local operational metadata.",
+      "modifications": "Complete sanitized section-by-section adaptation and per-adapter event/evidence mapping; original installation snapshots, source locations and local operational metadata remain private.",
       "rights_basis": "Owner-selected migration; original rights retained.",
       "source_description": "Selected legacy coverage audit; detailed dated source record retained privately.",
       "source_id": "SRC-014",
-      "status": "adapted_spec"
+      "status": "adapted_spec",
+      "artifact_scope": "complete",
+      "source_dispositions": "docs/mirroring-coverage.json",
+      "coverage_review": "docs/MIRRORING_COVERAGE.md",
+      "historical_reference": "private_original_snapshot_excluded",
+      "executable_implementation": "none_imported",
+      "verified_behavior": "existing_local_synthetic_suites_only",
+      "live_verification": "not_run"
     }
   ],
   "synthetic_fixture_source": {
@@ -68,5 +75,13 @@
     "legacy_source_import": "none",
     "base_revision": "8f13cfbeebbebbd5a041d4a63b8c71751f6d4dda",
     "specification": "specs/store-schema-admission.md"
+  },
+  "slack_wire_source": {
+    "classification": "original_no_network_wire_codecs_and_synthetic_http_tests",
+    "legacy_source_import": "none",
+    "base_revision": "22546d6b414cb298a6ec60433505ef6cf7ca9883",
+    "specification": "specs/slack-wire-v1.md",
+    "upstream_implementation_copied": false,
+    "primary_documentation_checked_utc": "2026-11-14"
   }
 }
