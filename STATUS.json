@@ -16,5 +16,12 @@
     "evidence": "docs/admission-evidence.json",
     "core_authority_integration": "blocked",
     "live_transport": "not_implemented"
+  },
+  "synthetic_transport": {
+    "status": "process_local_test_adapter",
+    "tests": "tests/test_fake_transport.py",
+    "evidence": "docs/synthetic-transport-evidence.json",
+    "durable_outbox_integration": "not_implemented",
+    "live_transport": "not_implemented"
   }
 }
