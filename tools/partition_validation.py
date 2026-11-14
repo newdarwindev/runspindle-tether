@@ -18,7 +18,15 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from tools import hygiene  # noqa: E402
 
-PARTITIONS = ("quality", "component", "rust", "mutation")
+PARTITIONS = (
+    "quality",
+    "component",
+    "rust",
+    "mutation_1",
+    "mutation_2",
+    "mutation_3",
+    "mutation_4",
+)
 SHA = re.compile(r"^[0-9a-f]{64}$")
 
 

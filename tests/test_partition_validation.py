@@ -112,7 +112,7 @@ class AggregateTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.check(results=results)
         receipts = copy.deepcopy(self.receipts)
-        del receipts["mutation"]
+        del receipts["mutation_4"]
         with self.assertRaises(ValueError):
             self.check(receipts)
 
@@ -148,7 +148,7 @@ class AggregateTests(unittest.TestCase):
                 (gate.ROOT / "hygiene.json").read_bytes()
             )
             manifest = copy.deepcopy(self.manifest)
-            del manifest["partitions"]["mutation"]
+            del manifest["partitions"]["mutation_4"]
             (root / "validation-partitions.json").write_text(json.dumps(manifest))
             with self.assertRaisesRegex(ValueError, "partition manifest"):
                 gate.manifests(root)
