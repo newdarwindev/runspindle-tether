@@ -43,5 +43,7 @@
     "tether/journal.py": "67d40d1145f76751a44edeb23990639abf83df7db9f68516dc2388de894ba7ef",
     "tests/test_provider_journal.py": "95fa30affeedcb7d33d27ea4a795611c5a0131d543bbf50b64698fd50143c04f",
     "specs/provider-journal-v1.md": "c40f23694e81ad70ce5cfe2a26be14df29a726dd14348c191c448a1984bddee8"
-  }
+  },
+  "historical_source_revision": "cf3cd59ec49cdb0261edd612b6e3d31e064f8e08",
+  "current_source_evidence": "docs/sanitization-evidence.json"
 }

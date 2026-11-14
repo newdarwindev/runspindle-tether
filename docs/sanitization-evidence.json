@@ -1,0 +1,41 @@
+{
+  "evidence_class": "bounded_schema_known_secret_sanitizer_real_sqlite_synthetic_output",
+  "base_revision": "791ba48eda97248b304322b0177c0a9e4d85b890",
+  "dependencies": "Python standard library only",
+  "toolchain": {
+    "python": "3.12.14",
+    "sqlite": "3.53.1"
+  },
+  "command": "python3 tools/validate.py && python3 -O -m unittest discover -s tests -v",
+  "passed": {
+    "aggregate_validation": true,
+    "normal_tests": 82,
+    "optimized_tests": 82,
+    "new_sanitization_tests": 18,
+    "independent_database_file_and_output_canary_scans": true,
+    "fresh_process_projection_readback": true,
+    "sql_failure_cancellation_rollback": true,
+    "native_capability_modes_and_availability": true,
+    "sink_bypass_mutation_detected": true,
+    "unexpected_network_calls": 0
+  },
+  "failed": [],
+  "blocked": [
+    "native core/live integration",
+    "full production sanitization qualification"
+  ],
+  "not_run": [
+    "unknown secret discovery",
+    "arbitrary binary/encoding sensitive-content detection",
+    "live providers",
+    "deployment",
+    "remote CI"
+  ],
+  "sha256": {
+    "tether/sanitization.py": "2e1735d59b01b844eb508abe8fedb0ed1fc6870e5465edd2bd4eb68f0dea10ed",
+    "tether/admission.py": "aad92a4a05abfba0b2b79a278fddd03010ccbbdc1d2a407675ca7572f99e1413",
+    "tether/journal.py": "665496fa6fcbc31a55516788860472fd6354a5607f460070fe9f2fe082b92bbd",
+    "tests/test_sanitization.py": "4710f0ce95fb22cdb2be585bf0b93e9d586886ae889153f531d22711ca59e805",
+    "specs/sanitization-v1.md": "1f7a22ecaf089d07dc9e67e9e0ab94ebc3ff691502296bf9e5c3fc1d2672548f"
+  }
+}

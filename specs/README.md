@@ -55,3 +55,11 @@ automatic retry and live-provider acceptance remain blocked/not implemented.
 
 [Capability fixtures](synthetic-native-events-v1.md) model exposed event, final-only,
 snapshot-only and unavailable sources. They do not qualify real native adapters.
+
+## Bounded sanitized event projections
+
+[Sanitization v1](sanitization-v1.md) defines nested event projection limits,
+configured-secret redaction, guarded SQLite persistence and escaped rendering.
+It preserves existing capability truthfulness and rejects dirty immutable
+admission/delivery identities or accepted bytes instead of rewriting authority.
+It is not universal secret discovery or full production qualification.
