@@ -33,5 +33,10 @@
     "classification": "original_process_local_synthetic_test_adapter",
     "legacy_source_import": "none",
     "specification": "specs/synthetic-transport-v1.md"
+  },
+  "synthetic_native_event_source": {
+    "classification": "original_process_local_synthetic_test_fixture",
+    "legacy_source_import": "none",
+    "specification": "specs/synthetic-native-events-v1.md"
   }
 }

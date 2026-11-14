@@ -44,3 +44,8 @@ product acceptance gates above.
 [The process-local transport fixture](synthetic-transport-v1.md) provides exact
 routing and fault-injectable send/update/delete/readback tests. It does not own
 core outbox persistence, retries or real provider integration.
+
+## Synthetic native-event test seam
+
+[Capability fixtures](synthetic-native-events-v1.md) model exposed event, final-only,
+snapshot-only and unavailable sources. They do not qualify real native adapters.
