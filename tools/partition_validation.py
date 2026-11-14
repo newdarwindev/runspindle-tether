@@ -329,6 +329,9 @@ def main() -> int:
             stream.write("receipt=" + encoded + "\n")
     else:
         print(json.dumps(value, sort_keys=True))
+    if value["status"] != "passed":
+        for line in hygiene.failure_summary({"checks": value["checks"]}):
+            print(line, flush=True)
     return 0 if value["status"] == "passed" else 1
 
 

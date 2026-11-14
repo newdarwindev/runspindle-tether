@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from tools import hygiene  # noqa: E402
 from tools import partition_validation as gate  # noqa: E402
 
 
@@ -167,6 +168,12 @@ class AggregateTests(unittest.TestCase):
         observed["image_sha256"] = "0" * 64
         with self.assertRaisesRegex(ValueError, "binding"):
             gate.validate_instance_binding(observed, image)
+
+    def test_failure_summary_is_bounded_and_sanitized(self) -> None:
+        lines = hygiene.failure_summary(
+            {"checks": [{"id": "rust-test", "status": "failed", "exit_code": 2}]}
+        )
+        self.assertEqual(lines, ["hygiene failure: check=rust-test exit=2"])
 
     def test_manifest_missing_partition_and_duplicate_coverage(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
