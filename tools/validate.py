@@ -40,7 +40,7 @@ def main():
     # Each implemented repository checker runs as a real process. Acceptance
     # gates are deliberately excluded and retain their own failing workflows.
     for name in ("check_artifacts.py", "check_references.py", "check_shared_fixtures.py",
-                 "check_model_mutations.py", "check_projection_mutations.py", "check_temporal_mutations.py"):
+                 "check_mirroring_audit.py", "check_model_mutations.py", "check_projection_mutations.py", "check_temporal_mutations.py"):
         if (ROOT / "tools" / name).exists():
             run([sys.executable, "tools/" + name])
     if (ROOT / "tests").exists():

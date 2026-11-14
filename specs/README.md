@@ -72,3 +72,9 @@ It is not universal secret discovery or full production qualification.
 
 - [Slack wire protocol](slack-wire-v1.md): bounded file request codecs and independent
   synthetic HTTP readback; no live transport, durable upload adapter or journal receipts.
+
+## Selected audit adaptation
+
+[SRC-014 coverage and evidence](../docs/MIRRORING_COVERAGE.md) completes the selected
+audit's disposition and adapter matrix. This is artifact-scope completion only;
+the runtime and live acceptance gates above remain unchanged.
