@@ -1,0 +1,47 @@
+{
+  "evidence_class": "real_sqlite_component_with_synthetic_provider_store",
+  "base_revision": "180ff6f3f30ce17a717c349db9602ff9a811263f",
+  "dependencies": "Python standard library only",
+  "toolchain": {
+    "python": "3.12.14",
+    "sqlite": "3.53.1"
+  },
+  "contract_pins": {
+    "core": "83296c3962de7546efdd1bb4e3d7e5b25452509f",
+    "root": "3c1968bab54b774ccf0239c4450e599049a14455"
+  },
+  "command": "python3 tools/validate.py && python3 -O -m unittest discover -s tests -v",
+  "passed": {
+    "aggregate_validation": true,
+    "normal_tests": 53,
+    "optimized_tests": 53,
+    "new_journal_tests": 20,
+    "fresh_process_hard_exit_recovery": true,
+    "competing_first_send_processes": true,
+    "conflict_fence_survives_restart": true,
+    "revocation_during_readback": true,
+    "mutant_independent_provider_sends": 2,
+    "unexpected_network_calls": 0,
+    "revocation_at_readback_commit_lock": true
+  },
+  "failed": [],
+  "blocked": [
+    "native core16 authority/reservation/receipt bridge",
+    "Rust toolchain unavailable"
+  ],
+  "not_run": [
+    "live Slack/provider authentication",
+    "production sanitization",
+    "safe automatic retry",
+    "deployment",
+    "remote CI"
+  ],
+  "unknown": [
+    "actual native provider compatibility"
+  ],
+  "sha256": {
+    "tether/journal.py": "67d40d1145f76751a44edeb23990639abf83df7db9f68516dc2388de894ba7ef",
+    "tests/test_provider_journal.py": "95fa30affeedcb7d33d27ea4a795611c5a0131d543bbf50b64698fd50143c04f",
+    "specs/provider-journal-v1.md": "c40f23694e81ad70ce5cfe2a26be14df29a726dd14348c191c448a1984bddee8"
+  }
+}
