@@ -24,6 +24,13 @@
     "durable_outbox_integration": "not_implemented",
     "live_transport": "not_implemented"
   },
+  "provider_attempt_journal": {
+    "status": "sqlite_component_synthetic_provider_tests_passed",
+    "evidence": "docs/provider-journal-evidence.json",
+    "native_core_integration": "blocked",
+    "live_provider": "not_implemented",
+    "automatic_retry": "not_implemented"
+  },
   "synthetic_native_events": {
     "status": "process_local_test_fixture",
     "specification": "specs/synthetic-native-events-v1.md",
