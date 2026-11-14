@@ -1,0 +1,39 @@
+{
+  "evidence_class": "synthetic_process_local_native_event_fixture",
+  "base_revision": "180ff6f3f30ce17a717c349db9602ff9a811263f",
+  "python": "3.12.14",
+  "dependencies": "Python standard library only; existing FakeSlack fixture",
+  "fixture_clock": 100,
+  "command": "python3 tools/validate.py && python3 -O -m unittest discover -s tests -v",
+  "passed": {
+    "aggregate_validation": true,
+    "normal_tests": 44,
+    "optimized_tests": 44,
+    "new_fixture_tests": 11,
+    "new_file_pinned_lint_format_types": true,
+    "availability_guard_mutation_detected": true,
+    "unexpected_network_calls": 0
+  },
+  "failed": [],
+  "blocked": [
+    "root/core production authority and envelope integration",
+    "durable core outbox integration"
+  ],
+  "not_run": [
+    "real native capability discovery",
+    "whole-envelope production sanitization",
+    "fresh-process/concurrent source guarantees (not implemented)",
+    "live Slack/provider acceptance",
+    "UI qualification",
+    "deployment",
+    "remote CI"
+  ],
+  "unknown": [
+    "real native adapter compatibility"
+  ],
+  "sha256": {
+    "tether/native_testing.py": "499613371e979d82f4c927ce0f41ec970a66c85c177d72a2e2b6775a9df70d04",
+    "tests/test_native_source.py": "49548be20c4e07aee3a09e43c08338926226f89ef62f1e9217893e4d17524e0e",
+    "specs/synthetic-native-events-v1.md": "6cbf2c48fbe9cde3528acc4d1cf815704f9e97f96c4a7651e1b28705267e7837"
+  }
+}

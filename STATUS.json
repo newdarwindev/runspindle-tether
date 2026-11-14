@@ -30,5 +30,11 @@
     "native_core_integration": "blocked",
     "live_provider": "not_implemented",
     "automatic_retry": "not_implemented"
+  },
+  "synthetic_native_events": {
+    "status": "process_local_test_fixture",
+    "specification": "specs/synthetic-native-events-v1.md",
+    "tests": "tests/test_native_source.py",
+    "real_native_capabilities": "not_run"
   }
 }
