@@ -62,5 +62,11 @@
       "tether.journal.ProviderJournal"
     ],
     "specification": "specs/retained-feedback-evidence.md"
+  },
+  "store_schema_admission_source": {
+    "classification": "original_sqlite_schema_admission_and_synthetic_file_tests",
+    "legacy_source_import": "none",
+    "base_revision": "8f13cfbeebbebbd5a041d4a63b8c71751f6d4dda",
+    "specification": "specs/store-schema-admission.md"
   }
 }
