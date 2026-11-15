@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "base_revision": "a530cf3bb591b71f29010d70b775769cf7577c8c",
+  "base_tree": "5b0f2c5960dc376c3f8387c4e44300f5205abe49",
+  "related_issue": "https://github.com/newdarwindev/runspindle-tether/issues/9",
+  "issue_status": "remains_open",
+  "evidence_class": "local_sqlite_component_with_independent_synthetic_http_store",
+  "entrypoints": [
+    "tether.slack_upload.UploadJournal.send",
+    "tether.slack_upload.UploadJournal.lookup"
+  ],
+  "source_provenance": {
+    "implementation": "original_substep_orchestrator_and_synthetic_tests",
+    "legacy_source_imported": false,
+    "upstream_implementation_copied": false,
+    "dependencies_added": false,
+    "reused": [
+      "tether.schema.open_store",
+      "tether.admission.canonical",
+      "tether.sanitization.Sanitizer",
+      "tether.slack_wire.WireClient"
+    ]
+  },
+  "toolchain": {
+    "python": "3.12.14",
+    "sqlite": "3.53.1",
+    "ruff": "0.14.5",
+    "mypy": "1.18.2",
+    "scope": "existing local standard-library and quality installations; no install"
+  },
+  "passed": {
+    "normal_tests": 190,
+    "optimized_tests": 190,
+    "focused_tests": 18,
+    "skips": 0,
+    "scaffold": true,
+    "aggregate": true,
+    "strict_mypy_source_and_test_including_imports": true,
+    "ruff_E4_E7_E9_F_I": true,
+    "ruff_format": true,
+    "six_fresh_process_crash_boundaries": true,
+    "four_process_competing_writers": true,
+    "reentrant_send_fence": true,
+    "independent_provider_substep_phase_and_file_observation": true,
+    "provider_content_destination_effect_queries": true,
+    "journal_content_and_capability_file_scans": true,
+    "unexpected_socket_calls": 0,
+    "duplicate_completion_mutation": "detected_by_independent_assertion",
+    "upload_before_durable_binding_mutation": "detected_by_independent_assertion",
+    "optimized_children": "crash/race/mutation child invocations inherit -O; explicit mutation raises survive optimization",
+    "optimized_aggregate_driver": true,
+    "aggregate_interpreter_scope": "Existing aggregate child commands retain normal Python; separate full -O suite and propagated -O crash/race/mutation children supply optimized evidence."
+  },
+  "commands": [
+    "python3 tools/validate.py",
+    "python3 -O tools/validate.py",
+    "python3 -O -m unittest discover -s tests -v",
+    "ruff check --select E4,E7,E9,F,I tether/slack_upload.py tests/test_slack_upload.py",
+    "ruff format --check tether/slack_upload.py tests/test_slack_upload.py",
+    "mypy --strict tether/slack_upload.py tests/test_slack_upload.py"
+  ],
+  "real_boundaries": [
+    "SQLite exact-family admission and transactions",
+    "durable operation/file bindings before mutating requests",
+    "independent wire byte parsing/readback comparison"
+  ],
+  "fake_boundaries": [
+    "separate synthetic HTTP SQLite service, never Slack",
+    "invented account/workspace/channel/file identities and content",
+    "injected exact-request allow/deny callbacks, not real owner/Core authority"
+  ],
+  "initial_validation_failures_resolved": [
+    "Ruff/import ordering/format and strict test typing diagnostics corrected before final runs",
+    "An attempted STATUS/provenance/index update invalidated the existing exact audit hashes. Those edits were reverted and the complete preexisting records/checksums retained byte-for-byte; new evidence is standalone."
+  ],
+  "blocked": [
+    "Core admission/reservation/current-authority/receipt and ProviderJournal composition",
+    "authenticated account-bound transport and real Slack response qualification",
+    "partial-upload resume/recovery/cleanup authority",
+    "production sanitization and general multi-attachment behavior"
+  ],
+  "not_run": [
+    "independent review of frozen candidate",
+    "remote exact-head CI",
+    "live provider requests",
+    "native/runtime integration",
+    "deployment",
+    "full product acceptance"
+  ],
+  "limits": [
+    "All observations remain unqualified_wire_observation, never accepted/delivered/mirrored.",
+    "Unknown or missing readback is not authoritative absence or permission to resend.",
+    "One store must be shared by all callers; no global uniqueness across stores.",
+    "Interrupted partial uploads conservatively stop; this is at-most-once attempts, not exactly-once delivery or liveness.",
+    "Uploaded content and capability URLs are not retained, so the API does not resume incomplete steps.",
+    "Injected authorizers/transports are trusted application seams, not authenticated authority/provider evidence.",
+    "Authorization and readback are sequential observations, not distributed atomicity or a current remote snapshot.",
+    "Schema triggers protect this API, not arbitrary direct SQL, privileged schema changes or replaced files.",
+    "Previous STATUS/provenance/audit records remain historical bare-wire/component coverage; new standalone evidence does not promote their live/runtime gates."
+  ],
+  "protected_scope": "Every preexisting tracked file except README.md is byte-identical to base, including source, STATUS, provenance, evidence/checksum manifests, workflows, pins and gates.",
+  "primary_documentation_checked_utc": "2026-11-15",
+  "references": [
+    "https://docs.slack.dev/reference/methods/files.getUploadURLExternal/",
+    "https://docs.slack.dev/reference/methods/files.completeUploadExternal/"
+  ],
+  "source_sha256": {
+    "README.md": "ddd531286de49c43d715a9bdb4a7de09b53d724012bb674827175b91418f249d",
+    "specs/durable-slack-upload-v1.md": "5937dbdd7052b34a6c0a26fd3f7e1d85cbba5bec577168c73d6fef9145cc89bc",
+    "tether/slack_upload.py": "bab5c69ee4c982e3002543f8a3e5756a22565b5ca50d3c6d5f428aead5e17091",
+    "tests/test_slack_upload.py": "7b4dc136c4960486e92390190dd996b4e6324550c63c07a89a14fa07bcfa996a"
+  }
+}

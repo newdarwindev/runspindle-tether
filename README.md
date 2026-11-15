@@ -29,3 +29,13 @@ is implied.
 Read [the component-specific technical intent](specs/desired-intent.md) for its
 interfaces, privacy boundaries, failure cases and acceptance obligations. Current
 implementation and evidence limits above remain unchanged.
+
+## Durable upload coordination (bounded component)
+
+[Single-attempt Slack upload coordination](specs/durable-slack-upload-v1.md) now
+wraps the existing wire client with SQLite substep fences and exact independent
+readback. [Current local evidence](docs/durable-slack-upload-evidence.json) records
+synthetic HTTP tests, interruption/race checks and remaining gaps. Earlier
+STATUS/audit records are byte-preserved historical component coverage; the bare
+wire client still has no durability by itself. Core/ProviderJournal composition,
+authenticated transport, partial-upload resume and live acceptance remain blocked.
