@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "evidence_class": "local_synthetic_runtime_hygiene_integration",
+  "hygiene_parent": "f04075f83557c4abdd322a502634f257905f3a50",
+  "merged_runtime_main": "a444b21e53edbaa86d1cf9fab08f52a0d347dbbb",
+  "candidate_identity": "The containing commit identifies these exact source bytes. Separate final clean-source aggregate receipts record the exact commit/tree. No recursive self-hash or future revision qualification is claimed.",
+  "runtime_integration": "All runtime non-import ASTs equal merged main. Existing hygiene import ordering is retained; only the new boundary test import block is additionally sorted for the pinned quality policy.",
+  "verification": {
+    "normal_python": 208,
+    "optimized_python": 208,
+    "skipped": 0,
+    "full_static_new_diagnostics": 0,
+    "unchanged_existing_static_debt": 108,
+    "scaffold": "passed",
+    "repository_hygiene": "passed",
+    "artifacts": "passed",
+    "strict_aggregate_receipts": "Recorded separately against the final clean commit after this evidence is committed.",
+    "optimized_aggregate_scope": "The optimized aggregate driver retains existing normal child commands; the separate optimized Python suite exercises optimized guards.",
+    "boundary_tests": 14,
+    "independent_boundary_probe_tests": 6,
+    "independent_boundary_probe_modes": [
+      "normal",
+      "optimized"
+    ],
+    "explicit_and_suppressed_chain_mutations": "detected in admission and journal",
+    "parser_sanitizer_outcome_comparisons": 3146,
+    "mirroring_audit": "passed normally and optimized"
+  },
+  "current_source_sha256": {
+    "tether/admission.py": "fcc3ab21c87abf5ccdfc5d873c369a1b80cf2c4d16ee39581d7fae1b4f0e4921",
+    "tether/feedback.py": "58a6f2d5466588b38996b91bf836338eae60639bacf1530b8a48cbbd44fdf3e9",
+    "tether/journal.py": "c98eeac8d818d6f51eac13bb378dfa9fb93cb1424281479f3224a9ba096ad426",
+    "tether/sanitization.py": "2077bcd548db09bcb80140d1c5453af437eed94659cec9924d7206f492912987",
+    "tether/slack_wire.py": "c6c4ec94865515024047bc0fd9da588b6ec0074a94df1b1b2a198b22138c86fe",
+    "tests/test_error_boundaries.py": "d3afd4f17ddf873c226c06a82fb243bb82bd2c2770b2e5dd998986981c693f09",
+    "specs/sanitization-v1.md": "88f5dbfd7db09cd6ef2f5f0834b216173d50ea6af605a07f8ec6b70c64a0c8b6"
+  },
+  "historical_evidence": {
+    "scope": "Verbatim prior public records retained without relabeling old test counts or hashes as results for this candidate. Imported runtime records remain results for their original runtime source; current hashes and counts are above.",
+    "sha256": {
+      "docs/mirroring-audit-pre-runtime-hygiene-evidence.json": "474181944de7f6a60956700253807341cb4b58562efe85ccfa6dd6fac037ae9b",
+      "docs/mirroring-audit-runtime-boundary-evidence.json": "61cc931b9f7aec98a77fa5a5d1378434763e3af6575e3f27b10058303bbd84c4"
+    }
+  },
+  "unchanged_gate_sha256": {
+    ".github/workflows/fleet-qualification.yml": "4877c917d24d07fb8ceb882e8c1f801576cc9f6fdd697a352f99950e83d9c829",
+    ".github/workflows/mirror-test.yml": "6e806b7f482b1c956e49ff182ac589cb1c56ee8503202834a9496d950791e1fe",
+    ".github/workflows/tether-ci.yml": "7b92360509d653056127274161886ee108c6fafa243a7abe8c1d3509d2538cde",
+    ".github/workflows/validation.yml": "984c0d8fc34f2fabbf9bf68e7ce13de4e8948806217f64c4426d9ca171b89746",
+    "STATUS.json": "7d19209ab8d70c4ddd46557d1afcb91b1d8b694b4663db358286563981619293",
+    "hygiene.json": "20afbbf219ee10b19406b2f46d2ed9af58868c9d5a546aff5259f137e38af8e7",
+    "requirements-quality.txt": "9cbe1331549216b953f2922f1e8321357ca82bb985e1ea595c87fcee8a8fdc84",
+    "tools/acceptance_gate.py": "1937759346b5314da4afc48894c70a5f8b819e6696a074fb55fc254b2bfb79a9",
+    "tools/hygiene.py": "6162ab8e62cb5cc9c7816b729e76b4537cc3aaa09cf3c3477fd68e65d6889278",
+    "tools/partition_validation.py": "47ed0981e70a971ff28dde7077ce0d0c39adb77fb6ad9aa29bc6ed02bdd71ffc",
+    "tools/quality-baseline.json": "786840907d57036341f82d37d7d625b0872aaa5b4972ce8dad0b04578049958d",
+    "tools/static_quality.py": "f935576227eb495763c6c8116eb698fe3184e720d21e6bf78f8a9212953e0c9d",
+    "tools/validate.py": "b29f49b6ae71b4427328df21ee855f9ac809ea452af9729a3d1f5ada5695118a",
+    "validation-partitions.json": "6d62dd877337dd4f11912dc5dd5b6f77282101903060f39a2e78ca53ae3c7a73"
+  },
+  "unchanged_artifact_sha256": {
+    "docs/LICENSE-SRC-014.txt": "6633fb2316603acd45898cbcd7497f18e045449547eddf137b1919358b57fe2e",
+    "docs/MIRRORING_ACCEPTANCE.md": "c4853930f2257426ac72c107a926f1617b48a60369d5fb079ca464c487261d40",
+    "docs/MIRRORING_COVERAGE.md": "17415f72ffc1feefdbdf47e80cb6d22a3f2f4e59a23ebfd262313d0958f11350",
+    "docs/mirroring-audit-original-evidence.json": "04e7580b6a685a77d1f92736e9fe847b12605f93c1905a1dead2cf8a1487315f",
+    "docs/mirroring-coverage.json": "605f5aad22b51a76442e6e8c2866aa67eae00d83ce349578a83fa59781f09876"
+  },
+  "remaining_limits": [
+    "Independent integration review pending.",
+    "Image-bound partition CI and exact-head remote CI not run for this candidate.",
+    "Runner image binding and all existing workflow, inventory, baseline and status gates remain unchanged.",
+    "No native, browser, server, live provider, production, deployment or activation qualification.",
+    "No install, image build, fleet operation, dispatch, access or credential change.",
+    "Selected-source migration remains partial; no unpublished paper import."
+  ]
+}

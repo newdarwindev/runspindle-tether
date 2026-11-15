@@ -93,10 +93,10 @@
     "tests/test_provider_journal.py": "95fa30affeedcb7d33d27ea4a795611c5a0131d543bbf50b64698fd50143c04f",
     "tests/test_sanitization.py": "4710f0ce95fb22cdb2be585bf0b93e9d586886ae889153f531d22711ca59e805",
     "tests/test_slack_wire.py": "f24c1a33dca2f91c0c9280fbf715310bc500f6b17e4f8ba1db12154069466d9c",
-    "tether/journal.py": "7d6a65aebcbbdc698a288a4c5a4f43f440892a5415feaba6987e704ac87392c3",
+    "tether/journal.py": "c98eeac8d818d6f51eac13bb378dfa9fb93cb1424281479f3224a9ba096ad426",
     "tether/native_testing.py": "499613371e979d82f4c927ce0f41ec970a66c85c177d72a2e2b6775a9df70d04",
-    "tether/sanitization.py": "2e1735d59b01b844eb508abe8fedb0ed1fc6870e5465edd2bd4eb68f0dea10ed",
-    "tether/slack_wire.py": "0d5ecb58473f87d74275c90e8ea1073e46ec6a3b5636117fe29db3501597b313",
+    "tether/sanitization.py": "2077bcd548db09bcb80140d1c5453af437eed94659cec9924d7206f492912987",
+    "tether/slack_wire.py": "c6c4ec94865515024047bc0fd9da588b6ec0074a94df1b1b2a198b22138c86fe",
     "tether/testing.py": "2b84de229c6aff62ec48b52c6decb8dd369e20bade2b0b3d16003ed14ff046c9",
     "tools/check_mirroring_audit.py": "f1cefe07f3374185f9e9b393294daa99f599ce1c18832693d8de019b13062fff",
     "tools/quality-baseline.json": "786840907d57036341f82d37d7d625b0872aaa5b4972ce8dad0b04578049958d",
@@ -130,5 +130,22 @@
     "runner_image_gate": "unchanged",
     "runtime_behavior_changes": "none",
     "source_review": "Original audit/rights/dispositions remain unchanged; fresh local validation is required for current formatted and integrated bytes."
+  },
+  "runtime_hygiene_follow_up": {
+    "hygiene_parent": "f04075f83557c4abdd322a502634f257905f3a50",
+    "runtime_main": "a444b21e53edbaa86d1cf9fab08f52a0d347dbbb",
+    "scope": "Current hash inventory refreshed after merging reviewed exception-boundary runtime fixes. All preceding validation_results and optional_static_checks describe their original hygiene tree, not this candidate. Fresh integration results are separate.",
+    "evidence": "docs/runtime-hygiene-integration-evidence.json",
+    "historical_records": [
+      {
+        "path": "docs/mirroring-audit-pre-runtime-hygiene-evidence.json",
+        "sha256": "474181944de7f6a60956700253807341cb4b58562efe85ccfa6dd6fac037ae9b"
+      },
+      {
+        "path": "docs/mirroring-audit-runtime-boundary-evidence.json",
+        "sha256": "61cc931b9f7aec98a77fa5a5d1378434763e3af6575e3f27b10058303bbd84c4"
+      }
+    ],
+    "live_acceptance": "not_run"
   }
 }

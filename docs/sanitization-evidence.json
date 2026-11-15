@@ -37,5 +37,79 @@
     "tether/journal.py": "665496fa6fcbc31a55516788860472fd6354a5607f460070fe9f2fe082b92bbd",
     "tests/test_sanitization.py": "4710f0ce95fb22cdb2be585bf0b93e9d586886ae889153f531d22711ca59e805",
     "specs/sanitization-v1.md": "1f7a22ecaf089d07dc9e67e9e0ab94ebc3ff691502296bf9e5c3fc1d2672548f"
+  },
+  "original_record_scope": "Top-level results and hashes retain the original sanitizer evidence; exception_boundaries is the current bounded follow-up.",
+  "exception_boundaries": {
+    "base_revision": "7130373187ff70e59c4593ce56f37d8417900738",
+    "evidence_class": "local_synthetic_exception_canaries_independent_sqlite_provider_receipts",
+    "toolchain": {
+      "python": "3.12.14",
+      "sqlite": "3.53.1",
+      "ruff": "0.14.5",
+      "mypy": "1.18.2"
+    },
+    "validation_results": {
+      "status": "passed",
+      "normal_tests": 151,
+      "optimized_tests": 151,
+      "new_boundary_tests": 14,
+      "aggregate_validation": "passed",
+      "optimized_aggregate_driver": "passed",
+      "aggregate_optimization_scope": "Aggregate child commands run without -O; a separate optimized unittest run covers optimized guards.",
+      "scaffold": "passed",
+      "changed_file_ruff": "passed",
+      "changed_file_ruff_format": "passed",
+      "changed_file_strict_mypy": "passed",
+      "explicit_and_suppressed_chaining_mutations": "detected",
+      "network_calls": 0
+    },
+    "commands": [
+      "python3 -m unittest tests.test_error_boundaries -v",
+      "python3 -m unittest discover -s tests -v",
+      "python3 -O -m unittest discover -s tests -v",
+      "python3 tools/check_scaffold.py",
+      "python3 tools/validate.py",
+      "python3 -O tools/validate.py",
+      "ruff check tether/admission.py tether/journal.py tether/feedback.py tether/sanitization.py tether/slack_wire.py tests/test_error_boundaries.py",
+      "ruff format --check tether/admission.py tether/journal.py tether/feedback.py tether/sanitization.py tether/slack_wire.py tests/test_error_boundaries.py",
+      "mypy --strict --follow-imports=skip tether/admission.py tether/journal.py tether/feedback.py tether/sanitization.py tether/slack_wire.py tests/test_error_boundaries.py"
+    ],
+    "covered": [
+      "admission authentication and authority exceptions",
+      "journal authority and route exceptions before and after reservation and readback",
+      "feedback authentication, retention authority and target verifier exceptions before and after lock",
+      "ingress, delivery, feedback, Slack JSON/string and sanitizer Unicode/URL/capability parser wrappers",
+      "unique synthetic canaries in args, str, repr, notes, cause, context and traceback.format_exception",
+      "independent SQLite read connections, file-byte scans and provider call/effect counts",
+      "reservation reopen and exact readback without duplicate send",
+      "no partial feedback writes; default denial and success categories unchanged",
+      "BaseException cancellation propagation, transaction rollback and retained send fences",
+      "explicit-chain and from-None guard-removal mutations detected"
+    ],
+    "not_claimed": [
+      "debugger or traceback frame-local confidentiality",
+      "rich formatters capturing locals",
+      "arbitrary caller exception context",
+      "hostile callback side effects or mutation",
+      "sanitization of arbitrary internal exceptions"
+    ],
+    "not_run": [
+      "real native adapters",
+      "live provider requests",
+      "production qualification",
+      "remote CI of resulting commit",
+      "deployment"
+    ],
+    "issue_10": "remains_open_for_broader_real_adapter_and_production_qualification",
+    "dependencies_added": "none",
+    "sha256": {
+      "tether/admission.py": "fcc3ab21c87abf5ccdfc5d873c369a1b80cf2c4d16ee39581d7fae1b4f0e4921",
+      "tether/journal.py": "be3b2c6331e100fdb33a627c3fd902eb4466f9b9c1f2d833bc6645e6fc734734",
+      "tether/feedback.py": "548676df439ef285d9bb4f1e9cacdc0dd7d8f538fa165e45aa04bf8e45d184d3",
+      "tether/sanitization.py": "2077bcd548db09bcb80140d1c5453af437eed94659cec9924d7206f492912987",
+      "tether/slack_wire.py": "7f442d8f64b56a69ceb65c1be4d13d7c38bbdaa8e3c9e91cc4b9402ebbe4507d",
+      "tests/test_error_boundaries.py": "2fbf541d7c28c167923d72aa3804beb4e6818ecaa80bb7f835d099233d1c0a8b",
+      "specs/sanitization-v1.md": "88f5dbfd7db09cd6ef2f5f0834b216173d50ea6af605a07f8ec6b70c64a0c8b6"
+    }
   }
 }
