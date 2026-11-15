@@ -109,8 +109,9 @@ def delivery(raw: bytes) -> dict[str, Any]:
         ):
             raise Rejected("operation or canonical encoding")
         return cast(dict[str, Any], value)
-    except (ValueError, UnicodeError, TypeError, RecursionError) as exc:
-        raise Rejected("invalid delivery envelope") from exc
+    except (ValueError, UnicodeError, TypeError, RecursionError):
+        pass
+    raise Rejected("invalid delivery envelope")
 
 
 class ProviderJournal:
@@ -154,12 +155,16 @@ class ProviderJournal:
             raise Rejected("trusted integration unavailable")
         # Core still owns accepted artifact validation and delivery authority. The
         # callback must verify both exact envelope and normalized outbound content.
+        destination = None
+        unavailable = False
         try:
             if self.authorize(raw, digest) is not True:
                 raise Rejected("core delivery authorization denied")
             destination = self.resolve(p["account_id"], p["destination_id"])
-        except Exception as exc:
-            raise Rejected("trusted integration unavailable") from exc
+        except Exception:
+            unavailable = True
+        if unavailable:
+            raise Rejected("trusted integration unavailable")
         if type(destination) is not Destination:
             raise Rejected("destination unavailable")
         destination.validate()

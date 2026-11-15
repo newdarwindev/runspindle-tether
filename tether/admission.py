@@ -139,8 +139,10 @@ def decode(raw: bytes) -> dict[str, Any]:
         if canonical(event) != raw:
             raise Rejected("noncanonical")
         return cast(dict[str, Any], event)
-    except (UnicodeError, ValueError, TypeError, RecursionError) as exc:
-        raise Rejected("invalid event") from exc
+    except (UnicodeError, ValueError, TypeError, RecursionError):
+        pass
+    # Leave the handler before raising: even `from None` retains __context__.
+    raise Rejected("invalid event")
 
 
 class Admission:
@@ -184,10 +186,14 @@ class Admission:
             raise Rejected("trusted adapters unavailable")
         if type(raw) is not bytes or len(raw) > 1048576:
             raise Rejected("size or encoding")
+        identity = None
+        unavailable = False
         try:
             identity = self.authenticate(raw, proof)
-        except Exception as exc:
-            raise Rejected("transport authentication unavailable") from exc
+        except Exception:
+            unavailable = True
+        if unavailable:
+            raise Rejected("transport authentication unavailable")
         if type(identity) is not Identity:
             raise Rejected("transport authentication failed")
         event = decode(raw)
@@ -203,10 +209,14 @@ class Admission:
         if claimed != identity:
             raise Rejected("identity or destination mismatch")
         digest = hashlib.sha256(raw).hexdigest()
+        grant = None
+        unavailable = False
         try:
             grant = self.authorize(identity, digest)
-        except Exception as exc:
-            raise Rejected("authority unavailable") from exc
+        except Exception:
+            unavailable = True
+        if unavailable:
+            raise Rejected("authority unavailable")
         if (
             type(grant) is not Grant
             or grant.identity != identity

@@ -138,7 +138,8 @@ def decode(raw: bytes) -> dict[str, Any]:
             raise Rejected("noncanonical feedback")
         return cast(dict[str, Any], value)
     except (ValueError, TypeError, UnicodeError, RecursionError):
-        raise Rejected("invalid feedback") from None
+        pass
+    raise Rejected("invalid feedback")
 
 
 class FeedbackStore:
@@ -180,10 +181,14 @@ class FeedbackStore:
             raise Rejected("trusted feedback adapters unavailable")
         if type(raw) is not bytes or len(raw) > MAX_BYTES:
             raise Rejected("feedback size or encoding")
+        identity = None
+        unavailable = False
         try:
             identity = self.authenticate(raw, proof)
         except Exception:
-            raise Rejected("feedback authentication unavailable") from None
+            unavailable = True
+        if unavailable:
+            raise Rejected("feedback authentication unavailable")
         event = decode(raw)
         claimed = Identity(
             *(event[k] for k in ("actor_id", "workspace_id", "channel_id", "thread_id"))
@@ -197,13 +202,18 @@ class FeedbackStore:
         verify_target = self.verify_target
 
         def verify() -> FeedbackGrant:
+            grant = None
+            target_ok = False
+            unavailable = False
             try:
                 grant = authorize(identity, event_sha, target_sha)
                 target_ok = verify_target(
                     delivery_raw, payload, json.loads(canonical(event["target"]))
                 )
             except Exception:
-                raise Rejected("feedback authority unavailable") from None
+                unavailable = True
+            if unavailable:
+                raise Rejected("feedback authority unavailable")
             if (
                 type(grant) is not FeedbackGrant
                 or type(grant.identity) is not Identity

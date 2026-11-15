@@ -90,3 +90,44 @@ runner/image change, live provider, deployment or standing service is introduced
 Known-secret configuration and the defined schema bound the result. Unknown
 secrets, arbitrary encoded/binary content, real provider compatibility, native
 core integration and full production sanitization remain outside acceptance.
+
+## Bounded rejection exception metadata
+
+The follow-up on base `7130373187ff70e59c4593ce56f37d8417900738` keeps the
+existing error classes and fixed public categories while removing retained local
+exception chains. Admission authentication/authority, journal authority/route
+resolution, and feedback authentication/retention-authority/target-verification
+callbacks translate `Exception` failures only after leaving their local handler.
+A new fixed-category error has no callback-derived arguments, notes, cause or
+context, so ordinary `traceback.format_exception` output does not include the
+callback exception. `raise ... from None` alone is insufficient: it hides the
+printed chain but still exposes the original through `__context__`.
+
+The same boundary applies to existing ingress, delivery and feedback decoding,
+Slack wire JSON/string decoding, and sanitizer Unicode, URL and capability-state
+parsing. These wrappers preserve their prior accepted inputs, rejected-input
+categories and caught exception types. Parser errors are discarded, not copied
+or interpolated. This is a bounded public exception boundary, not a generic
+exception scrubber. It does not promise secrecy for debugger/traceback frame
+locals, rich formatters that capture locals, arbitrary caller exception context,
+exceptions outside these wrappers, or malicious callbacks with their own side
+effects or mutation of exception/runtime objects.
+
+Default-deny decisions, authority rechecks and transaction boundaries are
+unchanged. Admission rejection adds no rows; feedback rejection, including the
+check after obtaining the write lock, rolls back without partial revisions.
+Journal denial after reservation retains the uncertain attempt and never permits
+another send. Denial after provider readback, including after the journal lock,
+does not promote or persist an observation. `BaseException` cancellation still
+propagates; rollback and durable send fences remain in force. A successful call
+or an exact later readback retains its existing semantics.
+
+`tests/test_error_boundaries.py` checks unique synthetic canaries in exception
+arguments, strings, reprs, notes, causes, contexts and ordinary formatted
+tracebacks. Independent SQLite read connections and file scans verify retained
+state; the separate synthetic provider database verifies call/effect counts.
+Tests cover callback failures before/after locks and reservation, restart/retry
+without duplicate sends, malformed/oversized nesting and Unicode, successful
+paths and cancellation. Disposable mutations restore both explicit chaining and
+`from None` inside an authentication handler; the same canary guard must fail.
+Issue #10 stays open for broader real-adapter and production qualification.
