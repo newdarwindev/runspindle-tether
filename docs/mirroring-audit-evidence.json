@@ -96,7 +96,7 @@
     "tether/journal.py": "c98eeac8d818d6f51eac13bb378dfa9fb93cb1424281479f3224a9ba096ad426",
     "tether/native_testing.py": "499613371e979d82f4c927ce0f41ec970a66c85c177d72a2e2b6775a9df70d04",
     "tether/sanitization.py": "2077bcd548db09bcb80140d1c5453af437eed94659cec9924d7206f492912987",
-    "tether/slack_wire.py": "c6c4ec94865515024047bc0fd9da588b6ec0074a94df1b1b2a198b22138c86fe",
+    "tether/slack_wire.py": "3ad814a732c96db223ada95f41e9954919cdbdf8775bdc744e11816c9facb5ad",
     "tether/testing.py": "2b84de229c6aff62ec48b52c6decb8dd369e20bade2b0b3d16003ed14ff046c9",
     "tools/check_mirroring_audit.py": "f1cefe07f3374185f9e9b393294daa99f599ce1c18832693d8de019b13062fff",
     "tools/quality-baseline.json": "786840907d57036341f82d37d7d625b0872aaa5b4972ce8dad0b04578049958d",
@@ -144,6 +144,23 @@
       {
         "path": "docs/mirroring-audit-runtime-boundary-evidence.json",
         "sha256": "61cc931b9f7aec98a77fa5a5d1378434763e3af6575e3f27b10058303bbd84c4"
+      }
+    ],
+    "live_acceptance": "not_run"
+  },
+  "upload_conflict_hygiene_follow_up": {
+    "hygiene_parent": "203bf0de5c700dbfcd2b415db6c31dcb4b416eec",
+    "merged_runtime_main": "a2bff8a356b4986fa6511f93073dbc97e14dcf45",
+    "scope": "Refresh only current wire-source hash for the merged exact-upload-conflict fix. Prior validation counts remain historical and the current integration evidence is separate.",
+    "evidence": "docs/upload-conflict-hygiene-evidence.json",
+    "historical_records": [
+      {
+        "path": "docs/mirroring-audit-pre-upload-conflict-hygiene-evidence.json",
+        "sha256": "f9827afd990f3624ff2f4c329d59887b8eafc92ae96ca13dd3cce7291cbfa9fb"
+      },
+      {
+        "path": "docs/mirroring-audit-upload-conflict-source-evidence.json",
+        "sha256": "4526b7c416bb871d96a7c56cf7b64daba97d78c233fa3ea6fb173d8d84e210a3"
       }
     ],
     "live_acceptance": "not_run"
