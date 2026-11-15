@@ -90,11 +90,13 @@ class Sanitizer:
         for secret in secrets:
             if type(secret) is not str or not secret or len(secret) > 4096:
                 raise UnsafeProjection("invalid redaction configuration")
+            encoded = None
             try:
-                if len(secret.encode("utf-8")) > 4096:
-                    raise UnsafeProjection("invalid redaction configuration")
+                encoded = secret.encode("utf-8")
             except UnicodeError:
-                raise UnsafeProjection("invalid redaction configuration") from None
+                pass
+            if encoded is None or len(encoded) > 4096:
+                raise UnsafeProjection("invalid redaction configuration")
             # Accepted artifact bytes are immutable: retain the exact configured
             # spelling as well as its normalized projection representation.
             for value in {secret, unicodedata.normalize("NFC", secret)}:
@@ -127,10 +129,14 @@ class Sanitizer:
             if type(item) is str:
                 if len(item) > self.limits.input_bytes:
                     raise UnsafeProjection("projection byte limit")
+                encoded = None
                 try:
-                    size += len(item.encode("utf-8"))
+                    encoded = item.encode("utf-8")
                 except UnicodeError:
-                    raise UnsafeProjection("invalid Unicode") from None
+                    pass
+                if encoded is None:
+                    raise UnsafeProjection("invalid Unicode")
+                size += len(encoded)
             elif item is None or type(item) is bool:
                 size += 4
             elif type(item) is int:
@@ -188,7 +194,8 @@ class Sanitizer:
                 urlunsplit((value.scheme.lower(), host, value.path, "", ""))
             )
         except (ValueError, UnicodeError):
-            raise UnsafeProjection("invalid URL") from None
+            pass
+        raise UnsafeProjection("invalid URL")
 
     def _embedded_url(self, match: re.Match[str]) -> str:
         return self._url(match.group(0))
@@ -294,11 +301,14 @@ class Sanitizer:
                 "live_coverage",
             }:
                 raise UnsafeProjection("capability fields")
+            mode = None
             try:
                 mode = Mode(matrix["mode"])
                 Availability(matrix["availability"])
             except (ValueError, TypeError):
-                raise UnsafeProjection("unsupported capability state") from None
+                mode = None
+            if mode is None:
+                raise UnsafeProjection("unsupported capability state")
             if (
                 matrix
                 != {

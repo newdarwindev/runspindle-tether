@@ -29,11 +29,15 @@ class WireRejected(ValueError):
 def _string(value: object, limit: int = MAX_BYTES) -> str:
     if type(value) is not str:
         raise WireRejected("string type")
+    encoded = None
     try:
-        if len(value.encode("utf-8")) > limit:
-            raise WireRejected("string limit")
-    except UnicodeError as exc:
-        raise WireRejected("string encoding") from exc
+        encoded = value.encode("utf-8")
+    except UnicodeError:
+        pass
+    if encoded is None:
+        raise WireRejected("string encoding")
+    if len(encoded) > limit:
+        raise WireRejected("string limit")
     return value
 
 
@@ -103,8 +107,9 @@ def _json(raw: bytes) -> dict[str, Any]:
         if type(result) is not dict:
             raise WireRejected("JSON object required")
         return cast(dict[str, Any], result)
-    except (ValueError, UnicodeError, RecursionError, OverflowError) as exc:
-        raise WireRejected("invalid JSON response") from exc
+    except (ValueError, UnicodeError, RecursionError, OverflowError):
+        pass
+    raise WireRejected("invalid JSON response")
 
 
 @dataclass(frozen=True)
