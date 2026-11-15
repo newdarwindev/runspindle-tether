@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "evidence_class": "local_retained_task_source_deny_only_observations",
+  "validated_source_revision": "49ab76415b395b51ae3983c50bb8f87d675b5cef",
+  "validated_source_tree": "374f6e00bf5a6f6ba749c959c25b7e9966ae8095",
+  "dependency": {
+    "repository": "newdarwindev/runspindle-tether",
+    "revision": "3adbaa13d70d5daabad849c373283ba15d69b7ac",
+    "branch": "ci/signed-feedback-invalidation-v2-20261115",
+    "status": "Public producer branch; its own draft PR creation remains held. This receipt does not authorize or retry that operation.",
+    "v1_test_fixture_revision": "040b71f2213a34f34e6b6a40124ed1164b93ce30"
+  },
+  "sha256": {
+    "tether/source_observation.py": "8b96b00233057e37b378cf27a6977c9345bf25c20c994321bd562e44369e6421",
+    "tests/test_source_observation.py": "763a756ad9d8bb200b20ebf0228e09025f1a1e129fa2a01935d9693d241a5e5a",
+    "specs/task-source-observation-v1.md": "c18a70b1f234b41604a724bb9a5033362d530471234d1cd9abdfd63d9d864a9a"
+  },
+  "validation": {
+    "aggregate": {
+      "command": "RUNSPINDLE_TETHER_V1_SOURCE=/path/to/pinned/v1 python3 tools/validate.py",
+      "status": "passed",
+      "exit_code": 0,
+      "tests": 307,
+      "skipped": 0,
+      "checks": [
+        "reproducible-inputs",
+        "scaffold",
+        "static-quality",
+        "repository-hygiene",
+        "check-artifacts",
+        "check-shared-fixtures",
+        "check-mirroring-audit",
+        "python-tests"
+      ],
+      "distributable_build": "not_applicable; no release acceptance claim"
+    },
+    "optimized": {
+      "command": "RUNSPINDLE_TETHER_V1_SOURCE=/path/to/pinned/v1 python3 -O -m unittest discover -s tests -v",
+      "status": "passed",
+      "exit_code": 0,
+      "tests": 307
+    },
+    "focused": {
+      "command": "python3 [-O] -m unittest discover -s tests -p test_source_observation.py -q",
+      "normal_tests": 16,
+      "optimized_tests": 16,
+      "status": "passed"
+    },
+    "environment": "Existing pinned quality tools; synthetic HMAC/SQLite fixtures only; no package installation."
+  },
+  "independent_review": {
+    "source_revision": "49ab76415b395b51ae3983c50bb8f87d675b5cef",
+    "status": "approved",
+    "normal_focused_tests": 16,
+    "optimized_focused_tests": 16,
+    "additional_probes": {
+      "nested_channel_variants": 8,
+      "invalid_path_and_type_probes": 6
+    },
+    "fixes_verified": [
+      "Contradictory nested message and previous_message channels reject before authorization.",
+      "Empty, :memory:, and file: URI paths reject before SQLite open.",
+      "Matching nested channel remains accepted under exact host authorization."
+    ],
+    "spec_only_coordination": "Root runtime contract review found no normative blocker; not implementation/runtime/security verification."
+  },
+  "limitations": [
+    "Partial issues #8/#10 only; neither broad issue acceptance nor live qualification is claimed.",
+    "Only already-retained original Admission sources are observed; missing originals reject and no pre-create fence exists.",
+    "The component retains immutable negative facts only. Unknown never grants eligibility or positive authority.",
+    "No automatic revision, cancellation, dispatch, positive consumer integration, or cross-store atomicity.",
+    "Original author is historical linkage, not editor or deleting actor. Admission lacks original ingress app provenance; SourceKey app binds current observation and host approves linkage.",
+    "Replay/conflict namespace is app/workspace/channel plus event ID, not a global event ledger.",
+    "File-backed durability depends on host storage. No backup, migration, service, credentials, permission change, or live Slack operation is included.",
+    "Host-authorized successor revision mapping remains deferred and must honor prior observed terminal Core state."
+  ],
+  "receipt_scope": "Evidence-only addition after validation; validated source/tests/spec hashes above are unchanged. No full-suite rerun on receipt-only commit is claimed."
+}
