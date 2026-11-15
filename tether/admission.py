@@ -209,33 +209,39 @@ class Admission:
         if claimed != identity:
             raise Rejected("identity or destination mismatch")
         digest = hashlib.sha256(raw).hexdigest()
-        grant = None
-        unavailable = False
-        try:
-            grant = self.authorize(identity, digest)
-        except Exception:
-            unavailable = True
-        if unavailable:
-            raise Rejected("authority unavailable")
-        if (
-            type(grant) is not Grant
-            or grant.identity != identity
-            or grant.event_digest != digest
-        ):
-            raise Rejected("authority mismatch")
-        if grant.revision != event["revision"]:
-            raise Rejected("authority revision")
-        for key in (
-            "task_id",
-            "operation_id",
-            "policy_revision",
-            "host_id",
-            "grant_ref",
-            "delivery_namespace",
-        ):
-            identifier(getattr(grant, key))
-        counter(grant.revision)
-        counter(grant.lease_epoch)
+        authorize = self.authorize
+
+        def verified_grant() -> Grant:
+            grant = None
+            unavailable = False
+            try:
+                grant = authorize(identity, digest)
+            except Exception:
+                unavailable = True
+            if unavailable:
+                raise Rejected("authority unavailable")
+            if (
+                type(grant) is not Grant
+                or grant.identity != identity
+                or grant.event_digest != digest
+            ):
+                raise Rejected("authority mismatch")
+            if grant.revision != event["revision"]:
+                raise Rejected("authority revision")
+            for key in (
+                "task_id",
+                "operation_id",
+                "policy_revision",
+                "host_id",
+                "grant_ref",
+                "delivery_namespace",
+            ):
+                identifier(getattr(grant, key))
+            counter(grant.revision)
+            counter(grant.lease_epoch)
+            return grant
+
+        grant = verified_grant()
         envelope = {
             "version": "runspindle.envelope.v1",
             "message_type": "admission_request",
@@ -264,6 +270,10 @@ class Admission:
         encoded = canonical(envelope).decode()
         self.db.execute("BEGIN IMMEDIATE")
         try:
+            # The resolver may revoke or replace a grant while SQLite waits for
+            # another writer. Never persist or accept a replay on the old grant.
+            if verified_grant() != grant:
+                raise Rejected("authority changed while awaiting admission")
             if (
                 event["mirrored"]
                 or self.db.execute(

@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "base_revision": "a2bff8a356b4986fa6511f93073dbc97e14dcf45",
+  "base_tree": "2e31f5a0ed786979e033bb9bc0bc59dca2ffcd16",
+  "related_issue": "https://github.com/newdarwindev/runspindle-tether/issues/8",
+  "issue_status": "remains_open",
+  "entrypoint": "tether.admission.Admission.ingest, also used by SignedSlackIngress",
+  "evidence_class": "local_component_actual_sqlite_lock_and_fresh_processes_synthetic_authority",
+  "regression": {
+    "before": "Authority was checked before BEGIN IMMEDIATE only. A competing SQLite writer could hold that call while the grant was revoked, after which create/edit/delete writes were committed and replay was acknowledged.",
+    "baseline_observed": "The four negative cases failed on unchanged base: create/edit/delete returned admitted and replay returned duplicate after revocation. The independent observer sees forbidden durable changes for the three non-replay cases.",
+    "fix": "Revalidate the full grant after the local SQLite write lock is acquired, before any admission read/write or duplicate acknowledgment. Require exactly the same validated Grant.",
+    "scope": "No wire shape, schema, retry/dispatch authority, provider access or runtime activation added."
+  },
+  "passed": {
+    "focused_tests": 6,
+    "normal_full_tests": 209,
+    "optimized_full_tests": 209,
+    "skips": 0,
+    "normal_aggregate": true,
+    "scaffold_and_artifact_checks": true,
+    "ruff_E4_E7_E9_F_I": true,
+    "ruff_format": true,
+    "strict_mypy_including_imports": true,
+    "actual_competing_sqlite_writer": true,
+    "fresh_process_create_edit_delete_replay": true,
+    "all_retained_tables_unchanged_when_denied": true,
+    "changed_grant_bindings_rejected": true,
+    "bool_counter_alias_revalidated": true,
+    "callback_errors_detached": true,
+    "cancellation_rolled_back_and_propagated": true,
+    "fresh_process_retry_after_explicit_authority_restoration": true,
+    "mutation": "Removing the post-lock recheck causes all four negative regression cases to fail; independently read durable state changes in create/edit/delete cases.",
+    "optimized_children": "Fresh-process and mutation children inherit -O; behavioral oracles use unittest assertions.",
+    "unexpected_network_calls": 0
+  },
+  "real_boundaries": [
+    "Existing actual SQLite database schema and transaction machinery",
+    "Fresh Python process blocked behind an independently held write transaction",
+    "Independent full SQLite dumps and row counts"
+  ],
+  "fake_boundaries": [
+    "Synthetic grant resolver controlled by a disposable local file",
+    "Invented actor, task, host, destination, event, and text",
+    "Synthetic transport authentication in fixtures; no live account or Core authorization service"
+  ],
+  "toolchain": {
+    "python": "3.12.14",
+    "sqlite": "3.53.1",
+    "ruff": "0.14.5",
+    "mypy": "1.18.2",
+    "dependencies_added": false,
+    "installation_performed": false
+  },
+  "commands": [
+    "python3 tools/validate.py",
+    "python3 -O -m unittest discover -s tests -v",
+    "python3 -m unittest tests.test_admission_authority -v",
+    "ruff check --select E4,E7,E9,F,I tether/admission.py tests/test_admission_authority.py tests/test_slack_ingress.py",
+    "ruff format --check tether/admission.py tests/test_admission_authority.py tests/test_slack_ingress.py",
+    "mypy --strict tether/admission.py tests/test_admission_authority.py tests/test_slack_ingress.py"
+  ],
+  "protected_scope": "STATUS, schemas, workflows, image gates, pins, static baselines, provenance and existing historical evidence receipts are byte-preserved. No provider, native, runtime, infrastructure, credential, security setting, installation or deployment change.",
+  "not_run": [
+    "Independent review of frozen commit",
+    "Remote exact-head CI",
+    "Live provider/native/runtime acceptance",
+    "Deployment"
+  ],
+  "limits": [
+    "The resolver is trusted, bounded, side-effect-free and non-reentrant. Its post-lock call must not perform provider/network work or wait on this database.",
+    "The local recheck does not make revocation after that check atomic with a remote authority service or dispatch; Core still requires its authoritative admission/dispatch gate.",
+    "No automatic retry or production compatibility qualification is introduced.",
+    "Existing signed-ingress evidence remains a historical record of its original revision."
+  ],
+  "source_sha256": {
+    "tether/admission.py": "13c4ca51c00e745a5be068183e1f44999c43cf24afb8e4d18fdc41062acfc036",
+    "tests/test_admission_authority.py": "d3c2d6ed9dee9e6fe871eadf259335ecdcd4dec2bdf1a3780834d6ef63e188dd",
+    "tests/test_slack_ingress.py": "faf943bdb337de3361952b89ef902bde6d51567515b0931c446a2cb85db91e09",
+    "specs/admission-v1.md": "34f2ca7457794bfa782f5befce95e66d4ad11b975adc09cff5657ae4e854147c"
+  }
+}

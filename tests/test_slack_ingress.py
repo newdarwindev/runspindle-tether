@@ -1,24 +1,24 @@
 """Real HMAC, existing SQLite consumer, synthetic secrets/authority; no sockets."""
 
 import asyncio
-from dataclasses import replace
 import hashlib
 import hmac
 import importlib.util
 import json
-from pathlib import Path
 import socket
 import sqlite3
 import subprocess
 import sys
 import tempfile
 import traceback
-from typing import Any
 import unittest
+from dataclasses import replace
+from pathlib import Path
+from typing import Any
 from unittest.mock import patch
 
-from tether.admission import Grant, Identity, Rejected, canonical
 import tether.slack_ingress as ingress
+from tether.admission import Grant, Identity, Rejected, canonical
 from tether.slack_ingress import Route, SignedSlackIngress
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -172,7 +172,9 @@ class SignedIngressTests(unittest.TestCase):
         raw = wire(callback())
         self.assertNotEqual(raw, canonical(normalized()))
         self.assertEqual(self.app.ingest(raw, headers(raw)), "admitted")
-        self.assertEqual(self.authority_calls, [(ROUTE.identity, grant.event_digest)])
+        self.assertEqual(
+            self.authority_calls, [(ROUTE.identity, grant.event_digest)] * 2
+        )
         with sqlite3.connect(self.path) as db:
             rows = db.execute("SELECT digest, envelope FROM revisions").fetchall()
         self.assertEqual(len(rows), 1)
