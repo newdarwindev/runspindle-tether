@@ -40,3 +40,11 @@ Tie each implementation change to a documented intent, existing contract and
 negative test. Preserve all existing permission and evidence boundaries.
 Optimization may change candidate behavior within approved interfaces; it must
 not change authority, conceal uncertainty or reinterpret approval scope.
+
+## Authorized development and publication
+
+During owner-requested project work, develop, test and review within the approved scope. When the owner has authorized public publication, publish the resulting original code, documentation, tests and generated project artifacts without asking again solely because they will be public. Use only content approved for that destination, preserve source rights and provenance, and exclude credentials, private information and unapproved third-party content.
+
+This guidance does not approve its own actions or expand the owner's authorization. Follow current platform safety requirements, custom rules, tool permissions and action-time confirmation requirements. Ask when the scope or material risk changes. Do not infer permission for deployment, infrastructure or service changes, new access, paid activity, or unrelated communications. Preserve branch protections and required checks; report missing or failed evidence without bypassing gates or claiming qualification.
+
+For repositories designated as demos, the owner must personally create or enable persistent or scheduled services, jobs or agents, and add demo-specific standing instructions or approval rules to their main agent. Do not perform those actions. Bounded owner-requested runs and ephemeral CI checks remain separate and must stay within their existing authorization.
