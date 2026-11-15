@@ -5,11 +5,11 @@ Only ordinary creates for one explicitly configured app/user/destination bind.
 See specs/signed-slack-ingress-v1.md for the deliberately narrow trust boundary.
 """
 
-from collections.abc import Callable
-from dataclasses import dataclass, field
 import hashlib
 import hmac
 import re
+from collections.abc import Callable
+from dataclasses import dataclass, field
 from typing import Any
 
 from tether.admission import Admission, Grant, Identity, Rejected, canonical

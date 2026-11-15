@@ -10,8 +10,8 @@ from typing import Any, cast
 
 from tether.admission import Identity, Rejected, canonical, counter, identifier, pairs
 from tether.journal import ProviderJournal
-from tether.schema import open_store
 from tether.sanitization import Sanitizer
+from tether.schema import open_store
 from tether.testing import Payload
 
 MAX_EVENTS = 1000

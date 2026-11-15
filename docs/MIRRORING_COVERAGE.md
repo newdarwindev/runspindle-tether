@@ -138,17 +138,25 @@ is authorized by the contract or by a passing local test.
 
 ## Reproduction and completion scope
 
-Run from the repository root, with Python standard library and Git:
+Run from the repository root. Core artifact checks use the Python standard
+library and Git; the integrated hygiene runner also requires the pinned quality
+tools.
 
 - `python3 tools/check_mirroring_audit.py`
+- `python3 tools/check_repo_hygiene.py`
+- `python3 tools/static_quality.py` (requires the existing pinned quality tools)
 - `python3 -m unittest tests.test_native_source tests.test_fake_transport tests.test_provider_journal tests.test_sanitization tests.test_slack_wire tests.test_mirroring_audit -v`
 - `python3 tools/validate.py`
 - `python3 -O tools/validate.py`
 - `python3 -O -m unittest discover -s tests -v`
 
-[Retained evidence](mirroring-audit-evidence.json) records observed results and
-current file hashes; older component evidence remains historical at its recorded
-pins. [The artifact manifest](evidence-artifacts.json) checks adapted bytes and
+[Current retained evidence](mirroring-audit-evidence.json) records fresh integration
+results and current file hashes. The [original artifact record](mirroring-audit-original-evidence.json)
+is preserved verbatim at its recorded source commit and pinned hash. Its original
+results and self-identification refer to that original commit, not the newer commit
+containing the archive. Formatting and mandatory-inventory integration require
+new validation; no old result is transferred to changed bytes. Other component
+evidence also remains historical at its recorded pins. [The artifact manifest](evidence-artifacts.json) checks adapted bytes and
 notice integrity. The audit checker uses explicit exceptions rather than Python
 `assert`, so its negative checks remain effective under `-O`.
 

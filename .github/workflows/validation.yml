@@ -1,3 +1,5 @@
+# Mandatory checks are assigned exactly once in validation-partitions.json.
+# Missing, failed, cancelled or mismatched receipts keep the required gate red.
 name: validation
 on:
   push:
@@ -9,13 +11,121 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 jobs:
-  strix-linux-x64:
-    name: validation / strix-linux-x64
+  quality:
+    name: validation / quality
     runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
     timeout-minutes: 15
+    outputs:
+      receipt: ${{ steps.partition.outputs.receipt }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - name: Run implemented validation
-        run: python3 tools/validate.py
+      - id: partition
+        name: Run quality partition
+        run: python3 tools/partition_validation.py quality --output "$GITHUB_OUTPUT"
+  component:
+    name: validation / component
+    runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
+    timeout-minutes: 15
+    outputs:
+      receipt: ${{ steps.partition.outputs.receipt }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - id: partition
+        name: Run component partition
+        run: python3 tools/partition_validation.py component --output "$GITHUB_OUTPUT"
+  rust:
+    name: validation / rust
+    runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
+    timeout-minutes: 15
+    outputs:
+      receipt: ${{ steps.partition.outputs.receipt }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - id: partition
+        name: Run rust partition
+        run: python3 tools/partition_validation.py rust --output "$GITHUB_OUTPUT"
+  mutation_1:
+    name: validation / mutation_1
+    runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
+    timeout-minutes: 15
+    outputs:
+      receipt: ${{ steps.partition.outputs.receipt }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - id: partition
+        name: Run mutation_1 partition
+        run: python3 tools/partition_validation.py mutation_1 --output "$GITHUB_OUTPUT"
+  mutation_2:
+    name: validation / mutation_2
+    runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
+    timeout-minutes: 15
+    outputs:
+      receipt: ${{ steps.partition.outputs.receipt }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - id: partition
+        name: Run mutation_2 partition
+        run: python3 tools/partition_validation.py mutation_2 --output "$GITHUB_OUTPUT"
+  mutation_3:
+    name: validation / mutation_3
+    runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
+    timeout-minutes: 15
+    outputs:
+      receipt: ${{ steps.partition.outputs.receipt }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - id: partition
+        name: Run mutation_3 partition
+        run: python3 tools/partition_validation.py mutation_3 --output "$GITHUB_OUTPUT"
+  mutation_4:
+    name: validation / mutation_4
+    runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
+    timeout-minutes: 15
+    outputs:
+      receipt: ${{ steps.partition.outputs.receipt }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - id: partition
+        name: Run mutation_4 partition
+        run: python3 tools/partition_validation.py mutation_4 --output "$GITHUB_OUTPUT"
+  strix-linux-x64:
+    name: validation / strix-linux-x64
+    if: ${{ always() }}
+    needs: [quality, component, rust, mutation_1, mutation_2, mutation_3, mutation_4]
+    runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
+    timeout-minutes: 5
+    env:
+      RECEIPT_QUALITY: ${{ needs.quality.outputs.receipt }}
+      RESULT_QUALITY: ${{ needs.quality.result }}
+      RECEIPT_COMPONENT: ${{ needs.component.outputs.receipt }}
+      RESULT_COMPONENT: ${{ needs.component.result }}
+      RECEIPT_RUST: ${{ needs.rust.outputs.receipt }}
+      RESULT_RUST: ${{ needs.rust.result }}
+      RECEIPT_MUTATION_1: ${{ needs.mutation_1.outputs.receipt }}
+      RESULT_MUTATION_1: ${{ needs.mutation_1.result }}
+      RECEIPT_MUTATION_2: ${{ needs.mutation_2.outputs.receipt }}
+      RESULT_MUTATION_2: ${{ needs.mutation_2.result }}
+      RECEIPT_MUTATION_3: ${{ needs.mutation_3.outputs.receipt }}
+      RESULT_MUTATION_3: ${{ needs.mutation_3.result }}
+      RECEIPT_MUTATION_4: ${{ needs.mutation_4.outputs.receipt }}
+      RESULT_MUTATION_4: ${{ needs.mutation_4.result }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify exact partition coverage and image binding
+        run: python3 tools/partition_validation.py aggregate

@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "source_id": "SRC-014",
+  "evidence_class": "artifact_review_and_local_synthetic_validation",
+  "base_revision": "7130373187ff70e59c4593ce56f37d8417900738",
+  "base_tree": "188d2905cd3298809d97a7097b75c08a5f888a45",
+  "source_review": {
+    "status": "complete_selected_artifact_only",
+    "original_revision_and_hashes": "verified_against_private_retained_mapping_not_published",
+    "sections": 4,
+    "substantive_disposition_units": 19,
+    "historical_adapter_profiles": 4,
+    "rebuild_obligations": 5,
+    "private_snapshot_rows_excluded": 4,
+    "license": "MIT notice byte-preserved; no blanket relicense of unrelated material",
+    "imported_code_dependencies_binaries_figures": "none",
+    "remaining_rights_or_content_blockers": "none_for_this_sanitized_adaptation",
+    "review_limit": "Public checks validate the opaque inventory; private source fidelity requires source review."
+  },
+  "validation_commands": [
+    "python3 tools/check_scaffold.py",
+    "python3 tools/check_mirroring_audit.py",
+    "python3 -m unittest discover -s tests -v",
+    "python3 -O -m unittest discover -s tests -v",
+    "python3 tools/validate.py",
+    "python3 -O tools/validate.py",
+    "python3 tools/check_repo_hygiene.py",
+    "python3 tools/static_quality.py"
+  ],
+  "validation_results": {
+    "status": "passed",
+    "normal_tests": 194,
+    "optimized_tests": 194,
+    "artifact_tests": 11,
+    "integration_regressions": 2,
+    "scaffold_check": "passed",
+    "artifact_coverage_integrity": "passed",
+    "repository_hygiene": "passed",
+    "normal_aggregate": "passed",
+    "optimized_aggregate_driver": "passed",
+    "aggregate_optimization_scope": "The strict aggregate driver launches child commands without -O. Separate optimized unittest and optimized checker mutation subprocesses exercise optimized guards.",
+    "semantic_mutation_cases_from_original_lift": 26,
+    "semantic_mutation_hashes_refreshed": true,
+    "original_evidence_integrity_and_classification_mutations": "detected",
+    "mandatory_component_partition_assignment": "verified",
+    "notice_integrity_and_manifest_hash_mutations": "detected",
+    "bounded_publication_form_check": "passed",
+    "quality_baseline": "byte_unchanged",
+    "partition_image_and_gate": "unchanged; actual image-bound partition qualification not run locally",
+    "runtime_behavior_changes": "none; incoming wire imports sorted for the pinned lint policy",
+    "dependencies_added": "none"
+  },
+  "live_receipts": "not_run",
+  "not_run": [
+    "independent review of resulting commit",
+    "remote CI of resulting commit",
+    "real native adapter qualification",
+    "authenticated Slack provider requests",
+    "live acceptance",
+    "runtime activation",
+    "deployment"
+  ],
+  "closure_scope": {
+    "artifact_issue": 2,
+    "runtime_issues_remaining_open": [
+      1,
+      3,
+      8,
+      9,
+      10
+    ],
+    "product_gate": "F01_not_run",
+    "selected_source_migration": "partial"
+  },
+  "reviewed_commit_record": "The containing commit identifies these exact bytes; final commit/tree and manifest hash are retained in the publication receipt and private mapping. No recursive self-hash is claimed.",
+  "sha256": {
+    "STATUS.json": "7d19209ab8d70c4ddd46557d1afcb91b1d8b694b4663db358286563981619293",
+    "docs/LICENSE-SRC-014.txt": "6633fb2316603acd45898cbcd7497f18e045449547eddf137b1919358b57fe2e",
+    "docs/MIRRORING_ACCEPTANCE.md": "c4853930f2257426ac72c107a926f1617b48a60369d5fb079ca464c487261d40",
+    "docs/MIRRORING_COVERAGE.md": "17415f72ffc1feefdbdf47e80cb6d22a3f2f4e59a23ebfd262313d0958f11350",
+    "docs/THIRD_PARTY_NOTICES.md": "fa9e95c6688fcc2a7c93cc392112ebcbf2f3decf880c3ccd3ee422d0b1cae43b",
+    "docs/mirroring-audit-original-evidence.json": "04e7580b6a685a77d1f92736e9fe847b12605f93c1905a1dead2cf8a1487315f",
+    "docs/mirroring-coverage.json": "605f5aad22b51a76442e6e8c2866aa67eae00d83ce349578a83fa59781f09876",
+    "docs/slack-wire-evidence.json": "78f896ab7ff4596b916204a7b8337a24a7f42b39106a188b7e8bbd8836c1cff6",
+    "hygiene.json": "20afbbf219ee10b19406b2f46d2ed9af58868c9d5a546aff5259f137e38af8e7",
+    "provenance.json": "d6781eb06b86b63b6a705153727c7f616a8d3188a270dba685fa2d3b575f7c56",
+    "requirements-quality.txt": "9cbe1331549216b953f2922f1e8321357ca82bb985e1ea595c87fcee8a8fdc84",
+    "specs/README.md": "4ee75114ab9f3bc6666319c949ffa3a76464ce1be5eeaef8075c02f0c0070755",
+    "specs/slack-wire-v1.md": "cb4a86d5309b8ede8a475f2c53eb505bfcc50ce2fdbc95150d711baf8ae2319f",
+    "tests/test_fake_transport.py": "d440c3217dba6072ebca9abb4770ee132f391d8b288b176a4f80e8dfc427d730",
+    "tests/test_mirroring_audit.py": "98b17a648b56a082aec2bfcf234b6ac73091d5b42a0472844db9109f4ad33b49",
+    "tests/test_native_source.py": "49548be20c4e07aee3a09e43c08338926226f89ef62f1e9217893e4d17524e0e",
+    "tests/test_provider_journal.py": "95fa30affeedcb7d33d27ea4a795611c5a0131d543bbf50b64698fd50143c04f",
+    "tests/test_sanitization.py": "4710f0ce95fb22cdb2be585bf0b93e9d586886ae889153f531d22711ca59e805",
+    "tests/test_slack_wire.py": "f24c1a33dca2f91c0c9280fbf715310bc500f6b17e4f8ba1db12154069466d9c",
+    "tether/journal.py": "c98eeac8d818d6f51eac13bb378dfa9fb93cb1424281479f3224a9ba096ad426",
+    "tether/native_testing.py": "499613371e979d82f4c927ce0f41ec970a66c85c177d72a2e2b6775a9df70d04",
+    "tether/sanitization.py": "2077bcd548db09bcb80140d1c5453af437eed94659cec9924d7206f492912987",
+    "tether/slack_wire.py": "c6c4ec94865515024047bc0fd9da588b6ec0074a94df1b1b2a198b22138c86fe",
+    "tether/testing.py": "2b84de229c6aff62ec48b52c6decb8dd369e20bade2b0b3d16003ed14ff046c9",
+    "tools/check_mirroring_audit.py": "f1cefe07f3374185f9e9b393294daa99f599ce1c18832693d8de019b13062fff",
+    "tools/quality-baseline.json": "786840907d57036341f82d37d7d625b0872aaa5b4972ce8dad0b04578049958d",
+    "tools/validate.py": "b29f49b6ae71b4427328df21ee855f9ac809ea452af9729a3d1f5ada5695118a",
+    "validation-partitions.json": "6d62dd877337dd4f11912dc5dd5b6f77282101903060f39a2e78ca53ae3c7a73"
+  },
+  "optional_static_checks": {
+    "commands": [
+      "python3 tools/static_quality.py"
+    ],
+    "status": "passed",
+    "new_diagnostics": 0,
+    "existing_debt": 108,
+    "python_files": 36,
+    "ruff": "0.14.5",
+    "mypy": "1.18.2",
+    "python": "3.12.14",
+    "scope": "Full pinned static-quality inventory; the existing reviewed debt baseline was not regenerated or expanded."
+  },
+  "historical_validation": {
+    "path": "docs/mirroring-audit-original-evidence.json",
+    "sha256": "04e7580b6a685a77d1f92736e9fe847b12605f93c1905a1dead2cf8a1487315f",
+    "source_commit": "9c89f59867d760cec2f128ca95392526a2cf721e",
+    "merge_commit": "7130373187ff70e59c4593ce56f37d8417900738",
+    "scope": "Verbatim original public artifact-validation record. Its commands, hashes and results apply only to its original source tree, never to these integration bytes."
+  },
+  "integration_context": {
+    "hygiene_parent": "1ee6fb75b8eff775a549cbb8f738d64edeb90855",
+    "mandatory_audit_check": "check-mirroring-audit in hygiene.json and component partition",
+    "quality_baseline": "unchanged",
+    "runner_image_gate": "unchanged",
+    "runtime_behavior_changes": "none",
+    "source_review": "Original audit/rights/dispositions remain unchanged; fresh local validation is required for current formatted and integrated bytes."
+  },
+  "runtime_hygiene_follow_up": {
+    "hygiene_parent": "f04075f83557c4abdd322a502634f257905f3a50",
+    "runtime_main": "a444b21e53edbaa86d1cf9fab08f52a0d347dbbb",
+    "scope": "Current hash inventory refreshed after merging reviewed exception-boundary runtime fixes. All preceding validation_results and optional_static_checks describe their original hygiene tree, not this candidate. Fresh integration results are separate.",
+    "evidence": "docs/runtime-hygiene-integration-evidence.json",
+    "historical_records": [
+      {
+        "path": "docs/mirroring-audit-pre-runtime-hygiene-evidence.json",
+        "sha256": "474181944de7f6a60956700253807341cb4b58562efe85ccfa6dd6fac037ae9b"
+      },
+      {
+        "path": "docs/mirroring-audit-runtime-boundary-evidence.json",
+        "sha256": "61cc931b9f7aec98a77fa5a5d1378434763e3af6575e3f27b10058303bbd84c4"
+      }
+    ],
+    "live_acceptance": "not_run"
+  }
+}

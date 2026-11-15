@@ -11,8 +11,15 @@ from typing import cast
 from unittest.mock import patch
 from urllib.parse import parse_qs, urlsplit
 
-from test_slack_upload import INTENT, MESSAGE, PYTHON, ROOT, SCOPE, StoredHTTP, response
-
+from tests.test_slack_upload import (
+    INTENT,
+    MESSAGE,
+    PYTHON,
+    ROOT,
+    SCOPE,
+    StoredHTTP,
+    response,
+)
 from tether.sanitization import Sanitizer
 from tether.slack_upload import UploadJournal
 from tether.slack_wire import FileBinding, Request, Response, WireClient

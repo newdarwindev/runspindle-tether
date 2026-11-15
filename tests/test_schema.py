@@ -1,16 +1,19 @@
 """Actual SQLite schema admission, using only synthetic disposable stores."""
 
-from pathlib import Path
 import sqlite3
 import subprocess
 import sys
 import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
-from tether.admission import Admission, SCHEMA as ADMISSION
-from tether.feedback import FeedbackStore, SCHEMA as FEEDBACK
-from tether.journal import ProviderJournal, SCHEMA as JOURNAL
+from tether.admission import SCHEMA as ADMISSION
+from tether.admission import Admission
+from tether.feedback import SCHEMA as FEEDBACK
+from tether.feedback import FeedbackStore
+from tether.journal import SCHEMA as JOURNAL
+from tether.journal import ProviderJournal
 from tether.schema import SchemaRejected, open_store
 
 PYTHON = [sys.executable, *(["-O"] if sys.flags.optimize else [])]

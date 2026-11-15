@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "accountable_owner": "newdarwindev",
+  "required_pr_sections": [
+    "Scope",
+    "BDD acceptance",
+    "Tests and evidence",
+    "Provenance",
+    "Generated files",
+    "Owner and exceptions"
+  ],
+  "exceptions": []
+}

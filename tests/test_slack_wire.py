@@ -1,19 +1,19 @@
 """Independent synthetic HTTP observations; never provider or live acceptance."""
 
-from dataclasses import replace
 import json
-from pathlib import Path
 import socket
 import subprocess
 import sys
 import unittest
+from dataclasses import replace
+from pathlib import Path
 from unittest.mock import patch
 from urllib.parse import parse_qs, urlsplit
 
 from tether.slack_wire import (
     API,
-    ContentFacts,
     MAX_BYTES,
+    ContentFacts,
     FileBinding,
     FileIntent,
     Request,

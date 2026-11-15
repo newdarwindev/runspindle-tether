@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "evidence_class": "local_signed_ingress_hygiene_integration",
+  "hygiene_parent": "d300e1a9ebf21989b4ab838025aeea3945cc6290",
+  "merged_runtime_main": "a530cf3bb591b71f29010d70b775769cf7577c8c",
+  "source_pr": "https://github.com/newdarwindev/runspindle-tether/pull/22",
+  "candidate_identity": "The containing commit/tree identifies these bytes; separate final clean-source aggregate receipts retain the exact source identity. No recursive self-hash or future qualification is claimed.",
+  "adaptation": "Only import ordering in tether/slack_ingress.py and tests/test_slack_ingress.py differs from merged main. Import inventories and non-import ASTs are identical. The original source specification and evidence are byte-preserved and retain their original source identities.",
+  "source_comparison": {
+    "tether/slack_ingress.py": {
+      "main_sha256": "f4be247c5d8ff0d1c7e75ed599a02530cdd4cbf261738806f865ba8ecd80112e",
+      "current_sha256": "c494d423a1dd0ee368457218e4c1ace0cbe7d4d98b216033b9a1c6c7494ef167",
+      "byte_identical": false,
+      "same_import_inventory_and_non_import_ast": true,
+      "normalized_ast_sha256": "0ee252628013627101551052267c7cc351e682157b19b7fa0d320ed4975359fd"
+    },
+    "tests/test_slack_ingress.py": {
+      "main_sha256": "a4061a00d8931d46bfe1a60d67aee017413a741346b0c328d46c2521d5aa3e71",
+      "current_sha256": "7aeb99239e80f45a673aff7acee805eb10619d78357ab159d664a373dfb6f2e6",
+      "byte_identical": false,
+      "same_import_inventory_and_non_import_ast": true,
+      "normalized_ast_sha256": "3e22284241f55ff0cbb1918868a6835bd634ce446dcd17213598e3025086c125"
+    },
+    "specs/signed-slack-ingress-v1.md": {
+      "main_sha256": "b23d195090f7a50f851b886b29551982f1402f483801e65e1d795b17fab20c5c",
+      "current_sha256": "b23d195090f7a50f851b886b29551982f1402f483801e65e1d795b17fab20c5c",
+      "byte_identical": true
+    },
+    "docs/signed-slack-ingress-evidence.json": {
+      "main_sha256": "869f7eacc525fd7e3f2cdc68f7d47dca3a953d7117d01df4ad3262b57b85f31e",
+      "current_sha256": "869f7eacc525fd7e3f2cdc68f7d47dca3a953d7117d01df4ad3262b57b85f31e",
+      "byte_identical": true
+    }
+  },
+  "verification": {
+    "normal_python": 229,
+    "optimized_python": 229,
+    "skipped": 0,
+    "whole_repository_new_static_diagnostics": 0,
+    "unchanged_static_debt": 108,
+    "changed_file_hygiene_lint_and_format": "passed",
+    "changed_file_strict_mypy_including_imports": "passed",
+    "strict_aggregates": "Recorded separately after committing against final clean source.",
+    "optimized_aggregate_scope": "Existing child commands remain normal Python; the separate optimized full suite supplies optimized evidence."
+  },
+  "protected_baseline": {
+    "tracked_files": 98,
+    "all_byte_identical": true,
+    "gates_pins_baselines_status_workflows_inventory_and_historical_receipts": "unchanged",
+    "git_tree": "ce3e35e9bfbf179d8972eada2045a5f19a033dc7"
+  },
+  "historical_gate_failure": "Initial exact import integration failed with two new I001 diagnostics. Only import ordering was corrected; no baseline, gate or diagnostic suppression changed.",
+  "remaining_limits": [
+    "Independent exact-integration review pending.",
+    "Image-bound CI remains separately blocked; no CI ref, workflow dispatch or retry is part of this integration.",
+    "PR22 exact-head validation and main merge do not qualify this hygiene head.",
+    "Issue8 and parent3 remain open for unsupported events, real Core authority, transport/live acceptance and deployment.",
+    "No credential, provider, server, image, runtime or infrastructure action."
+  ],
+  "commands": [
+    "python3 -m unittest discover -s tests -v",
+    "python3 -O -m unittest discover -s tests -v",
+    "python3 tools/static_quality.py",
+    "python3 tools/validate.py",
+    "python3 -O tools/validate.py",
+    "ruff check --isolated --select E4,E7,E9,F,I tether/slack_ingress.py tests/test_slack_ingress.py",
+    "ruff format --check tether/slack_ingress.py tests/test_slack_ingress.py",
+    "mypy --strict tether/slack_ingress.py tests/test_slack_ingress.py"
+  ]
+}

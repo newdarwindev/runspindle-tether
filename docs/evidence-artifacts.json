@@ -29,7 +29,7 @@
         "SRC-014"
       ],
       "source_relationship": "sanitized requirement and evidence mapping; historical snapshots excluded; no source implementation imported",
-      "sha256": "b7c3292fc81f890a61074bcdae62348b2fafb1f2fcf6141d136eaabb53e035b3"
+      "sha256": "17415f72ffc1feefdbdf47e80cb6d22a3f2f4e59a23ebfd262313d0958f11350"
     },
     {
       "implementation_evidence": false,
@@ -49,7 +49,18 @@
         "SRC-014"
       ],
       "source_relationship": "sanitized requirement and evidence mapping; historical snapshots excluded; no source implementation imported",
-      "sha256": "4526b7c416bb871d96a7c56cf7b64daba97d78c233fa3ea6fb173d8d84e210a3"
+      "sha256": "d65fe9814f6909939ca56b42bff91ebcce9c8e172ba27edeb857718cc49aa17e"
+    },
+    {
+      "implementation_evidence": false,
+      "kind": "retained_historical_validation_record",
+      "path": "docs/mirroring-audit-original-evidence.json",
+      "source_ids": [
+        "SRC-014"
+      ],
+      "source_relationship": "byte-preserved public artifact-validation evidence from source commit 9c89f59867d760cec2f128ca95392526a2cf721e; historical only, not verification of integration bytes",
+      "sha256": "04e7580b6a685a77d1f92736e9fe847b12605f93c1905a1dead2cf8a1487315f",
+      "historical_original": true
     },
     {
       "implementation_evidence": false,

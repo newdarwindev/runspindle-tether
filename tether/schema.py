@@ -1,7 +1,7 @@
 """Exact SQLite family admission; no repair of unknown or damaged stores."""
 
-from pathlib import Path
 import sqlite3
+from pathlib import Path
 
 
 class SchemaRejected(ValueError):

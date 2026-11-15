@@ -14,8 +14,8 @@ from typing import Any, Protocol, cast
 
 from tether.admission import Admission, Rejected, canonical, counter, identifier, pairs
 from tether.sanitization import Sanitizer
-from tether.testing import Destination, Payload, Record, Reply, confirm_readback
 from tether.schema import open_store
+from tether.testing import Destination, Payload, Record, Reply, confirm_readback
 
 SCHEMA = """
             CREATE TABLE IF NOT EXISTS provider_attempts (

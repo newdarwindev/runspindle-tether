@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "evidence_class": "local_upload_conflict_hygiene_integration",
+  "hygiene_parent": "203bf0de5c700dbfcd2b415db6c31dcb4b416eec",
+  "hygiene_parent_tree": "437fac389abcb0392bdb25dc105c1bb343d15858",
+  "merged_runtime_main": "a2bff8a356b4986fa6511f93073dbc97e14dcf45",
+  "source_pr": "https://github.com/newdarwindev/runspindle-tether/pull/24",
+  "source_ci_run": "https://github.com/newdarwindev/runspindle-tether/actions/runs/43694231347",
+  "source_ci_head": "acbd83426253e9cd641d4da05d99788805d700f8",
+  "candidate_identity": "The containing commit/tree identifies these bytes. Final clean-source aggregate receipts are separate; no recursive self-hash or future CI qualification is claimed.",
+  "adaptation": "Changed upload runtime files match merged main exactly, as do the feature documentation and evidence listed below. Inherited import-sorting differences in feedback, journal, schema and slack_ingress remain unchanged by this integration. The new test qualifies its helper import as tests.test_slack_upload for the existing explicit-package-bases type checker, with import ordering only. Test non-import AST is identical. No baseline or checker was changed.",
+  "source_comparison": {
+    "README.md": {
+      "main_sha256": "23960883767fad25950c1c223510b1f329e5320f46bb71dc436b29de5b4350fb",
+      "current_sha256": "23960883767fad25950c1c223510b1f329e5320f46bb71dc436b29de5b4350fb",
+      "byte_identical": true
+    },
+    "tether/slack_wire.py": {
+      "main_sha256": "3ad814a732c96db223ada95f41e9954919cdbdf8775bdc744e11816c9facb5ad",
+      "current_sha256": "3ad814a732c96db223ada95f41e9954919cdbdf8775bdc744e11816c9facb5ad",
+      "byte_identical": true
+    },
+    "tether/slack_upload.py": {
+      "main_sha256": "9d5ea1d023a4450e5088993d6d24fcaca8ec5f544526df8fb20378494e90b49c",
+      "current_sha256": "9d5ea1d023a4450e5088993d6d24fcaca8ec5f544526df8fb20378494e90b49c",
+      "byte_identical": true
+    },
+    "tests/test_upload_conflicts.py": {
+      "main_sha256": "41d05d46561d323e817d7d9947f9c9f71ba552401716058bee4f6cfad6fedb40",
+      "current_sha256": "4a9631ad72c0f65a5fda4c5d116a3c6def86df9a08c17a643804f345175dad52",
+      "byte_identical": false,
+      "non_import_ast_equal": true
+    },
+    "specs/durable-slack-upload-v1.md": {
+      "main_sha256": "6201d4618e1c09dcd8f8ae3451482caf6f4256cbd999296c2d89e485ac7fc555",
+      "current_sha256": "6201d4618e1c09dcd8f8ae3451482caf6f4256cbd999296c2d89e485ac7fc555",
+      "byte_identical": true
+    },
+    "docs/upload-conflict-evidence.json": {
+      "main_sha256": "e5ef19f39bd67fbf378b82e80360302b411b8b0fc472dd011f89fa9fbf3fa82a",
+      "current_sha256": "e5ef19f39bd67fbf378b82e80360302b411b8b0fc472dd011f89fa9fbf3fa82a",
+      "byte_identical": true
+    }
+  },
+  "verification": {
+    "normal_python": 260,
+    "optimized_python": 260,
+    "skipped": 0,
+    "whole_repository_new_static_diagnostics": 0,
+    "unchanged_static_debt": 108,
+    "changed_file_hygiene_lint_and_format": "passed",
+    "changed_file_strict_mypy_including_imports": "passed",
+    "strict_aggregates": "Recorded separately after committing against the final clean source.",
+    "optimized_aggregate_scope": "Existing aggregate child commands remain normal Python; the separate full -O suite and propagated -O fixture subprocesses provide optimized evidence."
+  },
+  "initial_validation_failure": "Whole-repository static quality correctly found four related diagnostics from an unqualified test helper import. The import was qualified and both full suites plus all static checks rerun. No baseline expansion or gate change.",
+  "protected_baseline": {
+    "tracked_files": 108,
+    "byte_identical_files": 102,
+    "changed_files": [
+      "README.md",
+      "docs/evidence-artifacts.json",
+      "docs/mirroring-audit-evidence.json",
+      "specs/durable-slack-upload-v1.md",
+      "tether/slack_upload.py",
+      "tether/slack_wire.py"
+    ],
+    "scope": "README/spec/runtime files take merged main bytes. Current audit updates only wire hash plus follow-up and enclosing manifest digest. All gate/pin/baseline/STATUS/workflow/inventory bytes and previous standalone evidence are unchanged."
+  },
+  "historical_records": [
+    {
+      "path": "docs/mirroring-audit-pre-upload-conflict-hygiene-evidence.json",
+      "sha256": "f9827afd990f3624ff2f4c329d59887b8eafc92ae96ca13dd3cce7291cbfa9fb"
+    },
+    {
+      "path": "docs/mirroring-audit-upload-conflict-source-evidence.json",
+      "sha256": "4526b7c416bb871d96a7c56cf7b64daba97d78c233fa3ea6fb173d8d84e210a3"
+    }
+  ],
+  "remaining_limits": [
+    "Independent exact-integration review pending.",
+    "Required image-bound CI remains blocked/unverified. No ci/* branch, workflow dispatch or rerun is part of this integration.",
+    "Issue9 and parent1 remain open for real Core/provider authority, authenticated transport, partial-upload recovery and production/live qualification.",
+    "No runtime, live provider, installation, credential, service, image, permission or deployment action."
+  ],
+  "commands": [
+    "python3 -m unittest discover -s tests -v",
+    "python3 -O -m unittest discover -s tests -v",
+    "python3 tools/static_quality.py",
+    "python3 tools/validate.py",
+    "python3 -O tools/validate.py",
+    "ruff check --isolated --select E4,E7,E9,F,I tether/slack_wire.py tether/slack_upload.py tests/test_upload_conflicts.py",
+    "ruff format --check tether/slack_wire.py tether/slack_upload.py tests/test_upload_conflicts.py",
+    "mypy --strict --explicit-package-bases tether/slack_wire.py tether/slack_upload.py tests/test_upload_conflicts.py"
+  ]
+}

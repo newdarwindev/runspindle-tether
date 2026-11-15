@@ -18,8 +18,10 @@ from unittest.mock import patch
 from tests.test_admission import authenticate, event, grant, proof
 from tests.test_feedback import retention, target_authority
 from tests.test_provider_journal import PAYLOAD, DurableFake, authorize, envelope, route
-from tether.admission import Admission, Rejected, canonical, decode as ingress_decode
-from tether.feedback import FeedbackStore, decode as feedback_decode
+from tether.admission import Admission, Rejected, canonical
+from tether.admission import decode as ingress_decode
+from tether.feedback import FeedbackStore
+from tether.feedback import decode as feedback_decode
 from tether.journal import ProviderJournal, delivery
 from tether.sanitization import Sanitizer, UnsafeProjection
 from tether.slack_wire import WireRejected, _json, _string
