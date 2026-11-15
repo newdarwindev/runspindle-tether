@@ -10,8 +10,11 @@ implementation. No SDK or upstream implementation was copied.
 
 `SignedSlackIngress(path, signing_secret, route, clock, authorize, sanitizer)` owns
 an existing `Admission` instance. `ingest(raw, headers)` returns its `admitted` or
-`duplicate` result; rejection raises a fixed-category `Rejected`. These mean a
-local admission record exists, not that work ran or a message was delivered.
+`duplicate` result. Signature and supported-shape rejection raises a fixed-category
+`Rejected`; downstream Admission, Sanitizer and SQLite exceptions keep their
+existing behavior, and `BaseException` cancellation propagates. A successful
+return means a local admission record exists, not that work ran or a message was
+delivered.
 The supported subset is an ordinary text-only `message` create in an
 `event_callback`, exactly matching the trusted `Route` app, workspace, actor,
 channel and parent timestamp. A root message may omit `thread_ts` only when its

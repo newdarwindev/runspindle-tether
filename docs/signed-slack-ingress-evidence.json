@@ -83,6 +83,6 @@
   "sha256": {
     "tether/slack_ingress.py": "c7ec7051f7cfa7a37abc7ae0714f1eddae3d7509fa065febf9c95c835f6cc330",
     "tests/test_slack_ingress.py": "18ad30515ef98f6e8ab75b12d415dc0a3c9b7fcda5c50fe385f16e9ba57bb668",
-    "specs/signed-slack-ingress-v1.md": "f5e514a617c831a25fb0c8761bfd26d72ebb179ead47c085042589489b057206"
+    "specs/signed-slack-ingress-v1.md": "97500e450f69a50c6fd423767c9aea26d92015930c861e6e8acfbaa9c0d4aacc"
   }
 }
