@@ -84,8 +84,12 @@ are therefore unsupported, including ones with plain-text fallback. The library
 does not silently drop those structures and claim complete message support.
 
 Slack Connect/external shared channels, Enterprise routing, conflicting context
-workspace and multi-installation authorization lists reject. Optional supported
-installation metadata never grants execution permission. Unknown informational
+workspace and multi-installation authorization lists reject. Known routing fields
+at callback, event and authorization levels are checked rather than discarded:
+`team`, `team_id`, `user_team` and `context_team_id`, when present, must be the
+configured workspace string. Non-null `enterprise`, `enterprise_id` and
+`context_enterprise_id` reject; explicit installation/shared-channel flags must
+be false. Optional supported installation metadata never grants execution permission. Unknown informational
 fields are ignored, not persisted or interpreted as authority. URL verification,
 app mentions, rate-limit callbacks and every other event kind are rejected; a
 future challenge handler must remain separate from task admission.
@@ -113,6 +117,10 @@ immutable SDK pins. Implementation base: Tether
   channel, text, timestamp, optional thread and distinct subtype semantics. This
   adapter supports a deliberately narrower subset, not the whole event catalog.
 
+- [Bolt request routing reference](https://docs.slack.dev/tools/bolt-python/reference/request/internals.html):
+  actor workspace and alternate Enterprise routing fields inform the explicit
+  exclusion checks. No Bolt dependency or routing implementation is imported.
+
 ## Reproduction and evidence
 
 From this checkout:
@@ -123,7 +131,9 @@ Focused suite: `python3 -m unittest tests.test_slack_ingress -v`.
 See [the bounded evidence](../docs/signed-slack-ingress-evidence.json).
 
 Tests exercise actual HMAC verification and existing SQLite admission with an
-independent synthetic signer and explicitly fake authority. Socket creation is
+independent synthetic signer and explicitly fake authority. A separate manual
+SHA256 inner/outer-pad signer exercises contradictory routing metadata and a
+positive control without using the implementation's HMAC functions. Socket creation is
 forbidden. Independent SQLite connections inspect rows; byte scans verify that
 secrets, raw message and signatures are not retained. Fresh Python processes,
 normal and optimized, replay admitted and mirrored events. Wrong signatures,

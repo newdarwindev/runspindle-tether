@@ -77,6 +77,19 @@ def headers(
     )
 
 
+def manual_headers(raw: bytes) -> tuple[tuple[str, str], ...]:
+    # Separate HMAC implementation: SHA256 ipad/opad, no hmac module calls.
+    key = SECRET.ljust(64, b"\0")
+    message = f"v0:{NOW}:".encode() + raw
+    inner = hashlib.sha256(bytes(c ^ 0x36 for c in key) + message).digest()
+    digest = hashlib.sha256(bytes(c ^ 0x5C for c in key) + inner).hexdigest()
+    return (
+        ("Content-Type", "application/json"),
+        ("X-Slack-Request-Timestamp", str(NOW)),
+        ("X-Slack-Signature", "v0=" + digest),
+    )
+
+
 def normalized(**changes: Any) -> dict[str, Any]:
     expected = {
         "version": "runspindle.tether.ingress.v1",
@@ -335,6 +348,64 @@ class SignedIngressTests(unittest.TestCase):
             value = callback()
             value[key] = data
             self.reject(wire(value))
+
+    def test_manual_hmac_cross_workspace_and_enterprise_routing_deny_before_authority(
+        self,
+    ) -> None:
+        self.allow()
+        # Both the normal authorizations form and the older absent form must
+        # reject contradictory actor workspace and fallback Enterprise fields.
+        for include_authorizations in (True, False):
+            locations = (
+                ("callback", "event", "authorization")
+                if include_authorizations
+                else ("callback", "event")
+            )
+            for location in locations:
+                for key, data in (
+                    ("user_team", "TOTHER"),
+                    ("user_team", "EOTHER"),
+                    ("team", "TOTHER"),
+                    ("team_id", "TOTHER"),
+                    ("context_team_id", "TOTHER"),
+                    ("enterprise_id", "EOTHER"),
+                    ("enterprise_id", ""),
+                    ("enterprise", {"id": "EOTHER"}),
+                    ("context_enterprise_id", "EOTHER"),
+                    ("is_enterprise_install", True),
+                    ("is_enterprise_install", "true"),
+                    ("is_ext_shared_channel", True),
+                ):
+                    with self.subTest(
+                        location=location,
+                        key=key,
+                        data=data,
+                        auth=include_authorizations,
+                    ):
+                        value = callback()
+                        if not include_authorizations:
+                            del value["authorizations"]
+                        target = (
+                            value
+                            if location == "callback"
+                            else value["event"]
+                            if location == "event"
+                            else value["authorizations"][0]
+                        )
+                        target[key] = data
+                        raw = wire(value)
+                        self.reject(raw, manual_headers(raw))
+        # The manual producer itself must authenticate; negatives cannot pass
+        # merely because its signatures are wrong.
+        value = callback(
+            user_team=ROUTE.workspace_id,
+            team=ROUTE.workspace_id,
+            enterprise_id=None,
+            is_enterprise_install=False,
+        )
+        value["enterprise_id"] = None
+        raw = wire(value)
+        self.assertEqual(self.app.ingest(raw, manual_headers(raw)), "admitted")
 
     def test_bot_edited_deleted_structured_messages_and_url_challenge_are_not_work(
         self,

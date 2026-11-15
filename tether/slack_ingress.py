@@ -96,6 +96,24 @@ def _headers(rows: object, body_size: int) -> dict[str, str]:
     return result
 
 
+def _routing_fields(value: dict[str, Any], workspace_id: str) -> None:
+    # Known alternate Slack routing fields are not harmless unknown metadata.
+    # This subset has no Enterprise or cross-workspace identity mapping.
+    if value.get("is_ext_shared_channel", False) is not False:
+        raise Rejected("unsupported Slack shared-channel routing")
+    for key in ("team", "team_id", "user_team", "context_team_id"):
+        if key in value and value[key] != workspace_id:
+            raise Rejected("Slack workspace routing binding")
+    if (
+        any(
+            value.get(key) is not None
+            for key in ("enterprise", "enterprise_id", "context_enterprise_id")
+        )
+        or value.get("is_enterprise_install", False) is not False
+    ):
+        raise Rejected("unsupported Slack enterprise routing")
+
+
 def _normalize(value: dict[str, Any], route: Route) -> bytes:
     if value.get("type") != "event_callback":
         raise Rejected("unsupported Slack callback")
@@ -106,15 +124,7 @@ def _normalize(value: dict[str, Any], route: Route) -> bytes:
         raise Rejected("Slack installation binding")
     # Cross-workspace/Enterprise installation routing needs a separate reviewed
     # mapping. Never infer authority from authorizations or a shared channel.
-    if (
-        value.get("is_ext_shared_channel", False) is not False
-        or (
-            "context_team_id" in value
-            and value["context_team_id"] != route.workspace_id
-        )
-        or value.get("context_enterprise_id") is not None
-    ):
-        raise Rejected("unsupported Slack installation")
+    _routing_fields(value, route.workspace_id)
     if "authorizations" in value:
         authorizations = value["authorizations"]
         if type(authorizations) is not list or len(authorizations) != 1:
@@ -123,10 +133,9 @@ def _normalize(value: dict[str, Any], route: Route) -> bytes:
         if (
             type(authorization) is not dict
             or authorization.get("team_id") != route.workspace_id
-            or (authorization.get("enterprise_id") is not None)
-            or authorization.get("is_enterprise_install", False) is not False
         ):
             raise Rejected("unsupported Slack authorizations")
+        _routing_fields(authorization, route.workspace_id)
     event_id = _string(value.get("event_id"), 64)
     if not re.fullmatch(r"Ev[A-Za-z0-9]{1,62}", event_id):
         raise Rejected("Slack event identifier")
@@ -154,8 +163,7 @@ def _normalize(value: dict[str, Any], route: Route) -> bytes:
         raise Rejected("unsupported Slack message")
     if event.get("user") != route.actor_id or event.get("channel") != route.channel_id:
         raise Rejected("Slack actor or channel binding")
-    if "team" in event and event["team"] != route.workspace_id:
-        raise Rejected("Slack message workspace binding")
+    _routing_fields(event, route.workspace_id)
     stamp = _ts(event.get("ts"))
     thread = _ts(event.get("thread_ts", stamp))
     if thread != route.thread_ts:

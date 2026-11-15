@@ -26,15 +26,15 @@
     "fresh-process SQLite deduplication and mirror suppression"
   ],
   "fake_boundaries": [
-    "synthetic signing secret and independent signer",
+    "synthetic signing secret; independent hmac.digest signer plus manual SHA256 inner/outer-pad signer",
     "synthetic exact digest/identity grants",
     "injected integer clock",
     "invented Slack identities and payloads"
   ],
   "validation": {
-    "focused_tests": 20,
-    "normal_tests": 171,
-    "optimized_tests": 171,
+    "focused_tests": 21,
+    "normal_tests": 172,
+    "optimized_tests": 172,
     "skips": 0,
     "scaffold": "passed",
     "aggregate": "passed",
@@ -78,11 +78,16 @@
   "references": [
     "https://docs.slack.dev/authentication/verifying-requests-from-slack/",
     "https://docs.slack.dev/apis/events-api/",
-    "https://docs.slack.dev/reference/events/message/"
+    "https://docs.slack.dev/reference/events/message/",
+    "https://docs.slack.dev/tools/bolt-python/reference/request/internals.html"
   ],
   "sha256": {
-    "tether/slack_ingress.py": "c7ec7051f7cfa7a37abc7ae0714f1eddae3d7509fa065febf9c95c835f6cc330",
-    "tests/test_slack_ingress.py": "18ad30515ef98f6e8ab75b12d415dc0a3c9b7fcda5c50fe385f16e9ba57bb668",
-    "specs/signed-slack-ingress-v1.md": "97500e450f69a50c6fd423767c9aea26d92015930c861e6e8acfbaa9c0d4aacc"
-  }
+    "tether/slack_ingress.py": "f4be247c5d8ff0d1c7e75ed599a02530cdd4cbf261738806f865ba8ecd80112e",
+    "tests/test_slack_ingress.py": "a4061a00d8931d46bfe1a60d67aee017413a741346b0c328d46c2521d5aa3e71",
+    "specs/signed-slack-ingress-v1.md": "b23d195090f7a50f851b886b29551982f1402f483801e65e1d795b17fab20c5c"
+  },
+  "review_corrections": [
+    "Explicit callback/event/authorization workspace and Enterprise routing fields now fail closed before authority; manual-HMAC negatives observe zero authority/store effects.",
+    "Specification distinguishes fixed signature/shape rejection from unchanged downstream Admission/Sanitizer/SQLite exceptions and cancellation."
+  ]
 }
