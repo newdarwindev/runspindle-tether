@@ -25,9 +25,23 @@ HMAC transport and static synthetic grants exist only in tests. No credentials,
 network listener, runner settings or persistent jobs are created.
 
 Expiry and revocation decisions belong to the resolver on **every** ingress,
-including replays. This layer checks the returned bindings, not cryptographic
-core attestations or dispatch-time expiry/revocation. Never connect these records
-to execution without core #16's trusted admission/dispatch gate.
+including replays. Admission resolves and validates the full grant before waiting
+for a SQLite write transaction and again immediately after acquiring it. Both
+results must match exactly, including policy, host, lease epoch, operation,
+namespace and grant reference. Revocation, an unavailable resolver or a changed
+grant rolls back without a duplicate acknowledgment or durable writes. Invalid
+counter types remain invalid even when Python equality would consider them equal.
+Resolver exceptions expose fixed rejection messages; cancellation propagates
+with the transaction rolled back.
+
+The resolver is trusted, bounded, side-effect-free and non-reentrant application
+code. Its second call runs under the local SQLite write lock; it must not perform
+provider/network work or wait on this admission database. This closes the local
+stale-grant window across lock acquisition, not the interval after the last check
+or a distributed atomic revocation protocol. This layer checks returned bindings,
+not cryptographic core attestations or dispatch-time expiry/revocation. Never
+connect these records to execution without core #16's trusted admission/dispatch
+gate.
 
 ## Durable effects and ordering
 
@@ -68,6 +82,15 @@ An independently read database dump/count observes forbidden effects; network
 connect calls are trapped in the in-process tests. A disposable source mutation
 removes actor/scope comparison and produces one forbidden durable revision,
 showing the zero-effect invariant detects that defect.
+
+`tests/test_admission_authority.py` additionally uses a fresh Python process and
+an independently held SQLite write transaction to revoke or change authority
+while admission waits. Independent complete database dumps verify zero changes
+for creates, edits, deletes and replay; unchanged authority still succeeds.
+A disposable removal of the post-lock recheck causes the regression assertions
+to fail, including independently observed forbidden durable writes. The bounded
+[lock-wait regression evidence](../docs/admission-authority-evidence.json) records
+current checks separately from the original admission and signed-ingress receipts.
 
 Still blocked/not run: production transport signature verification and identity
 mapping; root/core authenticated cross-language integration; dispatch-time

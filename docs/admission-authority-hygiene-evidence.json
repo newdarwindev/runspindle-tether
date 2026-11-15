@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "evidence_class": "local_admission_authority_hygiene_integration",
+  "hygiene_parent": "a0d5a0fdee7b7bdc1c11e109ff4bd67ad9a1db4a",
+  "hygiene_parent_tree": "a8eab85a7583891e8f180730929776505b42ed34",
+  "merged_runtime_main": "2ed76db7298bd3e81870098fa18a24dbdc49e8f3",
+  "source_pr": "https://github.com/newdarwindev/runspindle-tether/pull/25",
+  "source_ci_run": "https://github.com/newdarwindev/runspindle-tether/actions/runs/43696448022",
+  "source_ci_head": "f40f1fe844024408fdb58d7b1efa8b0dc8bcdcf2",
+  "candidate_identity": "The containing commit/tree identifies these bytes. Final clean-source aggregate receipts are separate; no recursive self-hash or future CI qualification is claimed.",
+  "adaptation": "All five source change files are byte-identical to merged main. The existing hygiene import sorting merges cleanly with the already sorted source tests; no additional code or test adaptation was needed.",
+  "source_comparison": {
+    "specs/admission-v1.md": {
+      "main_sha256": "34f2ca7457794bfa782f5befce95e66d4ad11b975adc09cff5657ae4e854147c",
+      "current_sha256": "34f2ca7457794bfa782f5befce95e66d4ad11b975adc09cff5657ae4e854147c",
+      "byte_identical": true
+    },
+    "tests/test_slack_ingress.py": {
+      "main_sha256": "faf943bdb337de3361952b89ef902bde6d51567515b0931c446a2cb85db91e09",
+      "current_sha256": "faf943bdb337de3361952b89ef902bde6d51567515b0931c446a2cb85db91e09",
+      "byte_identical": true
+    },
+    "tether/admission.py": {
+      "main_sha256": "13c4ca51c00e745a5be068183e1f44999c43cf24afb8e4d18fdc41062acfc036",
+      "current_sha256": "13c4ca51c00e745a5be068183e1f44999c43cf24afb8e4d18fdc41062acfc036",
+      "byte_identical": true
+    },
+    "docs/admission-authority-evidence.json": {
+      "main_sha256": "2f84810d304621a9dd53b34d06b00f181a472a29fc6bc046a81d182cc6105c66",
+      "current_sha256": "2f84810d304621a9dd53b34d06b00f181a472a29fc6bc046a81d182cc6105c66",
+      "byte_identical": true
+    },
+    "tests/test_admission_authority.py": {
+      "main_sha256": "d3c2d6ed9dee9e6fe871eadf259335ecdcd4dec2bdf1a3780834d6ef63e188dd",
+      "current_sha256": "d3c2d6ed9dee9e6fe871eadf259335ecdcd4dec2bdf1a3780834d6ef63e188dd",
+      "byte_identical": true
+    }
+  },
+  "verification": {
+    "normal_python": 266,
+    "optimized_python": 266,
+    "skipped": 0,
+    "whole_repository_new_static_diagnostics": 0,
+    "unchanged_static_debt": 108,
+    "changed_file_hygiene_lint_and_format": "passed",
+    "changed_file_strict_mypy_including_imports": "passed",
+    "strict_aggregates": "Recorded separately after committing against the final clean source.",
+    "optimized_aggregate_scope": "Existing aggregate child commands remain normal Python; separate full -O tests and propagated -O fixture subprocesses provide optimized evidence."
+  },
+  "protected_baseline": {
+    "tracked_files": 113,
+    "byte_identical_files": 110,
+    "changed_files": [
+      "specs/admission-v1.md",
+      "tests/test_slack_ingress.py",
+      "tether/admission.py"
+    ],
+    "scope": "Only the already merged admission source/spec/test changes replace prior bytes. Workflows, image/source pins, mandatory inventories, quality pins, baseline, STATUS, AGENTS and all historical evidence receipts remain byte-identical. Two source files plus this integration record are added."
+  },
+  "remaining_limits": [
+    "Independent exact-integration review pending.",
+    "Required image-bound CI remains blocked/unverified. No ci/* ref, workflow dispatch or rerun is part of this integration.",
+    "Issue8 remains open for real Core/provider/runtime integration and dispatch authority.",
+    "Local post-lock grant checking is not a distributed atomic revocation protocol. Trusted bounded non-reentrant resolver assumptions remain unchanged.",
+    "No runtime, native/live provider, installation, credential, service, security, permission, image or deployment action."
+  ],
+  "commands": [
+    "python3 -m unittest discover -s tests -v",
+    "python3 -O -m unittest discover -s tests -v",
+    "python3 tools/static_quality.py",
+    "python3 tools/validate.py",
+    "python3 -O tools/validate.py",
+    "ruff check --isolated --select E4,E7,E9,F,I tether/admission.py tests/test_admission_authority.py tests/test_slack_ingress.py",
+    "ruff format --check tether/admission.py tests/test_admission_authority.py tests/test_slack_ingress.py",
+    "mypy --strict --explicit-package-bases tether/admission.py tests/test_admission_authority.py tests/test_slack_ingress.py"
+  ]
+}

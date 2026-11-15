@@ -172,7 +172,9 @@ class SignedIngressTests(unittest.TestCase):
         raw = wire(callback())
         self.assertNotEqual(raw, canonical(normalized()))
         self.assertEqual(self.app.ingest(raw, headers(raw)), "admitted")
-        self.assertEqual(self.authority_calls, [(ROUTE.identity, grant.event_digest)])
+        self.assertEqual(
+            self.authority_calls, [(ROUTE.identity, grant.event_digest)] * 2
+        )
         with sqlite3.connect(self.path) as db:
             rows = db.execute("SELECT digest, envelope FROM revisions").fetchall()
         self.assertEqual(len(rows), 1)
