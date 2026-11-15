@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "evidence_class": "local_signed_feedback_invalidation_v2_and_explicit_migration",
+  "base_revision": "040b71f2213a34f34e6b6a40124ed1164b93ce30",
+  "validated_source_revision": "4448e351ac599c4179317107ca2e7099cd74eea4",
+  "validated_source_tree": "91a76476366cd8d1df6f618dffaa4f4119e4e8cb",
+  "python": "3.12.14",
+  "sha256": {
+    ".github/workflows/validation.yml": "013dff6b2b309b94a7fcb4fe38b664894f7b002fee2345f00abb42ce8914d9cf",
+    ".gitignore": "4a9d82b07eebb3964ed5179c7ad70e7625171db6cc613530ca136cf1a3497081",
+    "specs/signed-feedback-invalidation-v2.md": "cc7b467f3cff68baa6b59bf34e3e4d4901d447374178c5b77a901010451ed5ab",
+    "tests/test_feedback.py": "4ef585662d83abd006b4994874539b095216adc0215b9c84832c3a1832163fe1",
+    "tests/test_feedback_invalidation.py": "ca119f762f5757de2c2b18d74c3f328c0494ef36c6d9f657d720d722dcf20964",
+    "tests/test_feedback_migration.py": "5fcd48e73843009bdaa22d7c4baf39bd886a3ed1c23bb7b9f48f12fd8835ae7e",
+    "tether/feedback.py": "017f1d2c463282ef4fbd845c0aafe921ea10ea525e4b1cb5adb5331f6512baff",
+    "tether/feedback_schema.py": "d26f76629f4b0cd1e2bcabc589cb215817f209f1279b563b091aa86472e7f03f",
+    "tether/slack_feedback.py": "2a1592bbb3e5c88fa33945d122bc6679123e48a2d20c2f9328ddaf6dace434cf",
+    "tether/slack_ingress.py": "846582ffca135c5e3d39538b592269d55c87000b483d02231c05d94e6becb791",
+    "tools/migrate_feedback_v2.py": "10262c83b1e31b9a02dbdd96ee7db0e1a477b5856807076ac680028793828db9",
+    "requirements-quality.txt": "9cbe1331549216b953f2922f1e8321357ca82bb985e1ea595c87fcee8a8fdc84",
+    "tools/quality-baseline.json": "786840907d57036341f82d37d7d625b0872aaa5b4972ce8dad0b04578049958d"
+  },
+  "commands": [
+    {
+      "command": "RUNSPINDLE_TETHER_V1_SOURCE=/path/to/pinned/v1 python3 -O -m unittest tests.test_feedback_invalidation tests.test_feedback_migration -q",
+      "status": "passed",
+      "tests": 17
+    },
+    {
+      "command": "RUNSPINDLE_TETHER_V1_SOURCE=/path/to/pinned/v1 python3 -m unittest discover -s tests -q",
+      "status": "passed",
+      "tests": 291,
+      "skipped": 0,
+      "independent_review": "passed"
+    },
+    {
+      "command": "RUNSPINDLE_TETHER_V1_SOURCE=/path/to/pinned/v1 python3 -O -m unittest discover -s tests -q",
+      "status": "passed",
+      "tests": 291,
+      "skipped": 0,
+      "independent_review": "passed"
+    },
+    {
+      "command": "RUNSPINDLE_TETHER_V1_SOURCE=/path/to/pinned/v1 python3 tools/validate.py",
+      "environment": "Existing pinned quality tools on PATH; no package install",
+      "status": "passed",
+      "checks": [
+        {
+          "id": "reproducible-inputs",
+          "status": "passed"
+        },
+        {
+          "id": "scaffold",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "static-quality",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "repository-hygiene",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "check-artifacts",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "check-shared-fixtures",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "check-mirroring-audit",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "python-tests",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "distributable-build",
+          "status": "not_applicable"
+        }
+      ]
+    }
+  ],
+  "old_reader": {
+    "exact_source_commit": "040b71f2213a34f34e6b6a40124ed1164b93ce30",
+    "source_repository": "newdarwindev/runspindle-tether",
+    "actual_old_code": "Executed in a separate process with an actual retained signed create and object held open across synthetic migration; no simulated v1 reader",
+    "results": [
+      "Fresh v1 open rejects v2 unchanged",
+      "Already-open supported ingest/evidence APIs fail after head-table rename",
+      "No partial old-reader writes or transaction left open",
+      "Original revision bytes and attribution survive new reader reopen"
+    ]
+  },
+  "invalidation_observations": [
+    "Actual provider-shaped raw HMAC verified before store effects",
+    "Distinct explicit invalidation authority rechecked under writer lock",
+    "Original author/target/revisions preserved; editor/deleter not inferred",
+    "Changed/deleted and pre-create permanent fences, duplicate/reordered observations, event collisions without retargeting",
+    "Bounded ledger exhaustion durably denies entire store; rollback/restart tested; no automatic reset",
+    "Socket and Popen denied during invalidation; task/provider ledgers unchanged",
+    "Deliberate read-fence removal exposes active invalidated evidence, independently observed"
+  ],
+  "migration_observations": [
+    "Exact schema/version/family/SQLite integrity and retained digest/identity/lineage validation preflight and under writer lock",
+    "Incomplete, unknown, corrupt, newer and unversioned inputs reject without repair",
+    "Stale head, missing predecessor, cross-revision binding, deletion chronology and conflict-state corruption reject",
+    "Process interruption rolls back rename, new tables and version atomically"
+  ],
+  "independent_review": {
+    "source_revision": "4448e351ac599c4179317107ca2e7099cd74eea4",
+    "status": "approved",
+    "finding_fixed": "Reviewer reproduced stale-head resurrection of retained delete during migration. Maximal contiguous heads, all-revision binding, terminal deletion, event collision and conflict-state checks added, corruption regressions passed."
+  },
+  "downstream_local_qualification": {
+    "published_consumer_baseline": "https://github.com/newdarwindev/runspindle-refinery/pull/32",
+    "baseline_remote_head": "9c9f163adb58f5a1d42b7f0a0d79bb0b807aa829",
+    "local_candidate_revision": "4220d2ff464e7d4bec03a9239e739a56f233de9c",
+    "candidate_source": "Separate local consumer checkout with only exact Tether pin/12-module closure plus original three-test probe; no collector/use implementation edits. Published consumer32 unchanged.",
+    "probe_artifact": "docs/feedback-v2-refinery-probe.py.txt",
+    "probe_sha256": "270a03e9a234c8747b44b91092167483b6e02f6a3d42c68d416e41da131713dc",
+    "command": "RUNSPINDLE_TETHER_SOURCE=/path/to/exact/v2 python3 -O -m unittest discover -s tests -p test_v2_invalidation_consumption.py -v",
+    "status": "passed",
+    "tests": 3,
+    "results": [
+      "Signed post-import deletion denies RetainedFeedbackUse and reimport; fresh process rejects prior snapshot use",
+      "Pre-create signed change prevents later retention/dataset creation",
+      "Permanent store saturation denies use of already imported snapshot"
+    ],
+    "publication_and_full_consumer_validation": "not_run; local adapted-pin qualification is not already-published integration"
+  },
+  "provenance": "Original v2 schema, explicit migration API/CLI, signed deny-only adapter and synthetic tests. No new runtime packages, imported third-party code, historical evidence rewrites or source-rights changes.",
+  "failed_preliminary_attempts": [
+    "Initial wiring/raw-SQL test adaptation errors corrected before freeze.",
+    "Static typing/import diagnostics corrected with no baseline change.",
+    "Independent review found and reproduced migration history-consistency gap; corrected before final qualification."
+  ],
+  "not_run": [
+    "live Slack/provider freshness",
+    "live-store migration",
+    "rollout or deployment",
+    "distributed quiescence or cached/in-flight snapshot revocation",
+    "remote CI on publication head",
+    "full issue15 acceptance"
+  ],
+  "limits": "Permanent deny-only state, not authored feedback or automatic corrected examples. Requires explicit migration and quiesced clients. Consumers must reopen compatible pinned source and reread at use time. Best-effort provider events cannot guarantee absence of missed changes. Saturation intentionally trades store availability for non-resurrection. Publication/merge subject to dependency disposition and required checks. This evidence-only receipt and inert probe are added after source validation."
+}

@@ -1,0 +1,99 @@
+"""Local composition qualification only: exact v2 source, existing real collector."""
+
+import importlib
+import json
+import socket
+import subprocess
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+from unittest.mock import patch
+
+fixtures = importlib.import_module("test_signed_feedback_collection")
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class V2ConsumptionTests(unittest.TestCase):
+    def setUp(self) -> None:
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.h = fixtures.SignedCollectionFixture(self.root)
+        self.addCleanup(self.h.close)
+        self.h.feedback.store.authorize_invalidation = lambda obs: (
+            obs["namespace"] == self.h.feedback.namespace and obs["target"] == self.h.target
+            and obs["effect_scope"] == "message_fence_or_storewide_saturation")
+        self.calls = list(self.h.provider.requests)
+        self.admissions = self.h.ingress.admission.db.total_changes
+        self.addCleanup(self.no_effects)
+        blocked = patch.object(socket, "socket", side_effect=AssertionError("network forbidden"))
+        observed = blocked.start()
+        self.addCleanup(blocked.stop)
+        self.addCleanup(observed.assert_not_called)
+
+    def no_effects(self) -> None:
+        self.assertEqual(self.h.provider.requests, self.calls)
+        self.assertEqual(self.h.ingress.admission.db.total_changes, self.admissions)
+
+    def invalidate(self, cause: str = "message_deleted") -> str:
+        event = dict(type="message", subtype=cause, hidden=True,
+                     channel=self.h.route.channel_id, ts="1900000000.000099")
+        if cause == "message_deleted":
+            event["deleted_ts"] = fixtures.MESSAGE
+        else:
+            event["message"] = dict(type="message", ts=fixtures.MESSAGE,
+                                   user=self.h.route.actor_id, text="changed synthetic correction")
+        raw = json.dumps(dict(type="event_callback", api_app_id=self.h.route.app_id,
+                              team_id=self.h.route.workspace_id, event_id="EvINVALIDATE",
+                              event=event)).encode()
+        return self.h.feedback.invalidate(raw, fixtures.headers(raw))
+
+    def test_post_import_delete_denies_use_reimport_and_restart(self) -> None:
+        self.h.ingest()
+        snapshot = self.h.collect()
+        self.h.verify_use(snapshot)
+        original = self.h.store.lineage(snapshot)
+        self.assertEqual(self.invalidate(), "invalidated")
+        with self.assertRaisesRegex(ValueError, "no longer current"):
+            self.h.verify_use(snapshot)
+        excluded = self.h.collect()
+        self.assertEqual(len(self.h.store.lineage(excluded)[0].examples), 0)
+        self.assertEqual(self.h.store.lineage(snapshot), original)
+        code = '''
+import sys,json,socket
+from pathlib import Path
+from unittest.mock import patch
+sys.path.insert(0,str(Path.cwd()/'tests'))
+from test_signed_feedback_collection import SignedCollectionFixture
+h=SignedCollectionFixture(Path(sys.argv[1]),False)
+try:
+ with patch.object(socket,'socket',side_effect=AssertionError('network forbidden')):
+  try:h.verify_use(sys.argv[2])
+  except ValueError:pass
+  else:raise RuntimeError('invalidated snapshot used')
+  snapshot=h.collect()
+  print(json.dumps({'rows':len(h.store.lineage(snapshot)[0].examples),'provider_calls':len(h.provider.requests)}))
+finally:h.close()
+'''
+        child = subprocess.run([sys.executable, "-O", "-c", code, str(self.root), snapshot],
+                               cwd=ROOT, capture_output=True, text=True, timeout=20)
+        self.assertEqual(child.returncode, 0, child.stderr)
+        self.assertEqual(json.loads(child.stdout), dict(rows=0, provider_calls=0))
+
+    def test_precreate_change_cannot_be_imported_or_resurrected(self) -> None:
+        self.assertEqual(self.invalidate("message_changed"), "invalidated")
+        with self.assertRaisesRegex(ValueError, "permanently invalidated"):
+            self.h.ingest()
+        with self.assertRaises(ValueError):
+            self.h.collect()
+        self.assertEqual(self.h.store.db.execute("SELECT count(*) FROM objects").fetchone()[0], 0)
+
+    def test_saturation_denies_use_of_already_imported_snapshot(self) -> None:
+        self.h.ingest()
+        snapshot = self.h.collect()
+        with patch.object(self.h.dep.modules["tether.feedback"], "MAX_INVALIDATIONS", 0):
+            self.assertEqual(self.invalidate(), "saturated")
+        with self.assertRaisesRegex(ValueError, "no longer current"):
+            self.h.verify_use(snapshot)
+        self.assertEqual(len(self.h.store.lineage(self.h.collect())[0].examples), 0)

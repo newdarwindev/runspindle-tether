@@ -114,7 +114,7 @@ def _routing_fields(value: dict[str, Any], workspace_id: str) -> None:
         raise Rejected("unsupported Slack enterprise routing")
 
 
-def _normalize(value: dict[str, Any], route: Route) -> bytes:
+def _callback(value: dict[str, Any], route: Route) -> tuple[str, dict[str, Any]]:
     if value.get("type") != "event_callback":
         raise Rejected("unsupported Slack callback")
     if (
@@ -142,6 +142,11 @@ def _normalize(value: dict[str, Any], route: Route) -> bytes:
     event = value.get("event")
     if type(event) is not dict or event.get("type") != "message":
         raise Rejected("unsupported Slack event")
+    return event_id, event
+
+
+def _normalize(value: dict[str, Any], route: Route) -> bytes:
+    event_id, event = _callback(value, route)
     # Do not reinterpret edits, deletions, bot output, structured content or
     # historical/replayed message objects as an ordinary new user request.
     forbidden = {
@@ -217,8 +222,10 @@ class SlackMessageVerifier:
         self._clock = clock
         self._max_skew = max_skew_seconds
 
-    def verify(self, raw: bytes, headers: tuple[tuple[str, str], ...]) -> bytes:
-        """Return canonical ordinary message bytes only after signature and routing."""
+    def verify_callback(
+        self, raw: bytes, headers: tuple[tuple[str, str], ...]
+    ) -> dict[str, Any]:
+        """Verify raw signature and installation before returning a callback."""
         if type(raw) is not bytes or not 1 <= len(raw) <= MAX_BYTES:
             raise Rejected("Slack body bounds")
         fields = _headers(headers, len(raw))
@@ -242,10 +249,22 @@ class SlackMessageVerifier:
         )
         if not hmac.compare_digest(expected, fields["x-slack-signature"]):
             raise Rejected("Slack signature mismatch")
-        # No JSON parser or authority callback is invoked before verification.
+        value = None
+        try:
+            value = _json(raw)
+            _callback(value, self._route)
+        except ValueError:
+            value = None
+        if value is None:
+            raise Rejected("unsupported Slack event")
+        return value
+
+    def verify(self, raw: bytes, headers: tuple[tuple[str, str], ...]) -> bytes:
+        """Return a verified ordinary message; mutations remain a separate API."""
+        value = self.verify_callback(raw, headers)
         normalized = None
         try:
-            normalized = _normalize(_json(raw), self._route)
+            normalized = _normalize(value, self._route)
         except ValueError:
             pass
         if normalized is None:

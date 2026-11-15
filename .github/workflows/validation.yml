@@ -34,8 +34,17 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
+      - name: Checkout pinned v1 compatibility source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: newdarwindev/runspindle-tether
+          ref: 040b71f2213a34f34e6b6a40124ed1164b93ce30
+          path: .feedback-v1
+          persist-credentials: false
       - id: partition
         name: Run component partition
+        env:
+          RUNSPINDLE_TETHER_V1_SOURCE: ${{ github.workspace }}/.feedback-v1
         run: python3 tools/partition_validation.py component --output "$GITHUB_OUTPUT"
   rust:
     name: validation / rust
