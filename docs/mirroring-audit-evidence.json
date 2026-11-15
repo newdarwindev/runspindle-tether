@@ -74,7 +74,7 @@
   },
   "reviewed_commit_record": "The containing commit identifies these exact bytes; final commit/tree and manifest hash are retained in the publication receipt and private mapping. No recursive self-hash is claimed.",
   "sha256": {
-    "STATUS.json": "09f6a46b7472183732fa78e7b370f2b535ac2b313b882aeefaae7f7d9f6e437d",
+    "STATUS.json": "6f705425c91bdcf899fd1309ec8911a0e28908a81b204c5c5f308f587abb3815",
     "docs/LICENSE-SRC-014.txt": "6633fb2316603acd45898cbcd7497f18e045449547eddf137b1919358b57fe2e",
     "docs/MIRRORING_ACCEPTANCE.md": "c4853930f2257426ac72c107a926f1617b48a60369d5fb079ca464c487261d40",
     "docs/MIRRORING_COVERAGE.md": "17415f72ffc1feefdbdf47e80cb6d22a3f2f4e59a23ebfd262313d0958f11350",
@@ -172,6 +172,13 @@
       "STATUS.json": "7d19209ab8d70c4ddd46557d1afcb91b1d8b694b4663db358286563981619293",
       "specs/README.md": "4ee75114ab9f3bc6666319c949ffa3a76464ce1be5eeaef8075c02f0c0070755"
     },
+    "live_acceptance": "not_run"
+  },
+  "slack_tls_follow_up": {
+    "base_revision": "10c48664e782ff069cc90aef211075e54610edda",
+    "scope": "Refresh current STATUS hash for separately documented synthetic loopback TLS tests. Earlier validation records remain historical; no production transport code changed.",
+    "previous_status_sha256": "09f6a46b7472183732fa78e7b370f2b535ac2b313b882aeefaae7f7d9f6e437d",
+    "evidence": "specs/slack-loopback-tls.md",
     "live_acceptance": "not_run"
   }
 }
