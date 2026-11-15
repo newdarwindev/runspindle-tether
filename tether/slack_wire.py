@@ -4,11 +4,11 @@ No network implementation, credentials, retry, durable send orchestration, or
 ProviderJournal receipt conversion. All observations are unqualified wire facts.
 """
 
-from collections.abc import Callable
-from dataclasses import dataclass, field
 import hashlib
 import json
 import re
+from collections.abc import Callable
+from dataclasses import dataclass, field
 from typing import Any, Protocol, cast
 from urllib.parse import unquote, urlencode, urlsplit
 
@@ -262,12 +262,22 @@ class ContentFacts:
 
 
 @dataclass(frozen=True)
+class ContentConflict:
+    """Multiple exact shares observed, never evidence of successful delivery."""
+
+    messages: tuple[MessageFacts, ...]
+    file: FileFacts
+    downloaded_sha256: str
+    downloaded_size: int
+
+
+@dataclass(frozen=True)
 class Result:
     """State is a parsing/comparison result, never an acceptance receipt."""
 
     state: str = "unknown"
-    facts: Ticket | ContentFacts | tuple[str, ...] | bytes | None = field(
-        default=None, repr=False
+    facts: Ticket | ContentFacts | ContentConflict | tuple[str, ...] | bytes | None = (
+        field(default=None, repr=False)
     )
     retry_after: int | None = None
     evidence_class: str = field(default="unqualified_wire_observation", init=False)
@@ -654,19 +664,24 @@ class WireClient:
             matches = [
                 message for message in messages if binding.file_id in message.file_ids
             ]
-            if len(matches) != 1:
+            if not matches:
                 return Result()
-            message = matches[0]
-            expected_share = Share(
-                binding.scope.workspace_id,
-                binding.scope.channel_id,
-                binding.scope.thread_ts,
-                message.message_ts,
-            )
+            expected_shares = {
+                Share(
+                    binding.scope.workspace_id,
+                    binding.scope.channel_id,
+                    binding.scope.thread_ts,
+                    message.message_ts,
+                )
+                for message in matches
+            }
             if (
-                message.file_ids != (binding.file_id,)
-                or message.text != intent.text
-                or facts.shares != (expected_share,)
+                any(
+                    message.file_ids != (binding.file_id,)
+                    or message.text != intent.text
+                    for message in matches
+                )
+                or set(facts.shares) != expected_shares
             ):
                 return Result()
             request = download_request(binding, facts)
@@ -675,10 +690,20 @@ class WireClient:
                 return result
             if response.body != intent.content:
                 return Result()
+            if len(matches) > 1:
+                return Result(
+                    "content_conflict",
+                    ContentConflict(
+                        tuple(matches),
+                        facts,
+                        hashlib.sha256(response.body).hexdigest(),
+                        len(response.body),
+                    ),
+                )
             return Result(
                 "content_match",
                 ContentFacts(
-                    message,
+                    matches[0],
                     facts,
                     hashlib.sha256(response.body).hexdigest(),
                     len(response.body),

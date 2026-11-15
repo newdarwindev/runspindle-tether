@@ -36,6 +36,11 @@ implementation and evidence limits above remain unchanged.
 wraps the existing wire client with SQLite substep fences and exact independent
 readback. [Current local evidence](docs/durable-slack-upload-evidence.json) records
 synthetic HTTP tests, interruption/race checks and remaining gaps. Earlier
-STATUS/audit records are byte-preserved historical component coverage; the bare
+STATUS records and earlier test counts remain historical component coverage; the bare
 wire client still has no durability by itself. Core/ProviderJournal composition,
 authenticated transport, partial-upload resume and live acceptance remain blocked.
+
+[Contradictory exact readback](docs/upload-conflict-evidence.json) now retains a
+sticky SQLite conflict when the same file has multiple independently matching
+message identities, including recovery after restart. Missing or malformed
+observations remain unknown; this adds no send retries or delivery qualification.

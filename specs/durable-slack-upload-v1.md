@@ -59,6 +59,18 @@ retained file ID, exact scope and resupplied digest-matching content. A later ex
 match with a different message timestamp permanently fences the operation as a
 conflict. The historical match is not returned as current success after failure.
 
+Two distinct exact message/share identities observed together also permanently
+fence the operation, even if no single match was retained earlier. The wire
+client reports `content_conflict` only after complete bounded pagination, unique
+message timestamps, exact file/text and workspace/channel/thread share-set
+agreement, and an independent exact byte download. This is unqualified conflict
+evidence, never success. Duplicate pagination entries, malformed/incomplete
+observations, mismatched content and transport failures stay generic unknown and
+cannot themselves create a conflict. The upload API still returns only unknown
+or content_match. It stores only the existing conflict flag and prior timestamp,
+not the additional message, payload or URLs. Later disappearance of a duplicate
+does not clear the fence, including after process restart.
+
 Authorization is checked before each request, including every readback request,
 and after readback both before and after acquiring the observation write lock.
 There are no network calls under SQLite locks. These checks are synchronous
@@ -102,5 +114,9 @@ are cleaned up on success, failure and timeout; no live provider cleanup is impl
 Still blocked/not run: the Core admission/reservation/authority/receipt bridge,
 authenticated account-bound transport, actual Slack response qualification, partial
 upload recovery/cleanup authority, production sanitization, full multi-attachment
-behavior, native/runtime integration, deployment and live acceptance. Existing
-wire/parser/readback, ProviderJournal, admission and feedback code is unchanged.
+behavior, native/runtime integration, deployment and live acceptance.
+ProviderJournal, admission and feedback code remains unchanged.
+
+The [conflict-retention follow-up](../docs/upload-conflict-evidence.json) extends
+the existing wire readback and upload observer only; the other integration gaps
+above remain unchanged. Earlier evidence and test counts remain historical.

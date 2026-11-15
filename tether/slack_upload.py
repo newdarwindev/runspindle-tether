@@ -13,9 +13,11 @@ from tether.admission import canonical
 from tether.sanitization import Sanitizer
 from tether.schema import open_store
 from tether.slack_wire import (
+    ContentConflict,
     ContentFacts,
     FileBinding,
     FileIntent,
+    MessageFacts,
     Request,
     Result,
     Scope,
@@ -200,14 +202,30 @@ class UploadJournal:
         self.sanitizer.require_clean(file.file_id)
         result = self.client.readback(file, intent)
         self._record_delay(scope, "readback", result)
-        if result.state != "content_match" or type(result.facts) is not ContentFacts:
+        if not (
+            (result.state == "content_match" and type(result.facts) is ContentFacts)
+            or (
+                result.state == "content_conflict"
+                and type(result.facts) is ContentConflict
+            )
+        ):
             return self._unknown(scope, binding)
         facts = result.facts
+        # Both branches contain independently compared bytes and exact shares.
+        # Missing/incomplete/malformed responses never become conflict evidence.
+        messages: tuple[MessageFacts, ...]
+        if type(facts) is ContentFacts:
+            messages = (facts.message,)
+        elif type(facts) is ContentConflict:
+            messages = facts.messages
+        else:
+            return self._unknown(scope, binding)
         self.sanitizer.require_clean(
             [
-                facts.message.message_ts,
-                facts.message.thread_ts,
-                facts.message.text,
+                [
+                    [message.message_ts, message.thread_ts, message.text]
+                    for message in messages
+                ],
                 facts.file.file_id,
                 facts.file.filename,
                 facts.file.download_url,
@@ -225,11 +243,15 @@ class UploadJournal:
             if row is None or not self._allowed(check):
                 self.db.rollback()
                 return self._unknown(scope, binding)
-            conflict = bool(row[4]) or row[3] not in (None, facts.message.message_ts)
+            conflict = (
+                bool(row[4])
+                or type(facts) is ContentConflict
+                or row[3] not in (None, messages[0].message_ts)
+            )
             self.db.execute(
                 "UPDATE uploads SET observed=?,conflict=? WHERE operation=?",
                 (
-                    row[3] if conflict else facts.message.message_ts,
+                    row[3] if conflict else messages[0].message_ts,
                     int(conflict),
                     scope.operation_id,
                 ),
@@ -240,6 +262,4 @@ class UploadJournal:
             raise
         if conflict:
             return self._unknown(scope, binding)
-        return UploadObservation(
-            "content_match", file.file_id, facts.message.message_ts
-        )
+        return UploadObservation("content_match", file.file_id, messages[0].message_ts)

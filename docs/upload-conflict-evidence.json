@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "base_revision": "56ab8be54981b1c0f8bb002871dda6c7ecda58dd",
+  "base_tree": "c6cf995c2af69db7fb72b76fd01390233db15c86",
+  "related_issue": "https://github.com/newdarwindev/runspindle-tether/issues/9",
+  "issue_status": "remains_open",
+  "evidence_class": "local_sqlite_component_with_independent_synthetic_http_store",
+  "entrypoints": [
+    "tether.slack_wire.WireClient.readback",
+    "tether.slack_upload.UploadJournal.lookup"
+  ],
+  "regression": {
+    "baseline": "Two distinct exact simultaneous message/share observations returned generic unknown without a retained conflict. After one share disappeared, a subsequent lookup could report content_match again.",
+    "reproducer": "tests/test_upload_conflicts.py#test_conflict_survives_disappearance_without_any_later_provider_call",
+    "baseline_observation": "Retained SQLite row was [1700000001.000002, 0] instead of the required sticky conflict; fresh-process provider-call prohibition also failed.",
+    "fix": "Require independently downloaded exact bytes and complete unique same-scope message/share agreement; retain content_conflict using the existing irreversible conflict flag after the existing authority checks.",
+    "unknown_distinction": "Missing, duplicate-pagination, malformed, incomplete, inexact, cancelled or transport-failed observations do not alone establish a conflict."
+  },
+  "passed": {
+    "normal_tests": 203,
+    "optimized_tests": 203,
+    "focused_tests": 13,
+    "skips": 0,
+    "normal_aggregate": true,
+    "scaffold_and_artifact_integrity": true,
+    "ruff_E4_E7_E9_F_I": true,
+    "ruff_format": true,
+    "strict_mypy_source_and_tests_including_imports": true,
+    "fresh_process_no_provider_calls": true,
+    "retained_conflict_without_prior_success": true,
+    "exact_multiple_page_conflict": true,
+    "sanitizer_and_sqlite_content_scans": true,
+    "pre_and_post_lock_authority_rechecks": true,
+    "cancellation_and_429_unknown": true,
+    "independent_mutations": [
+      "remove sticky conflict retention: assertion failure",
+      "remove independent downloaded-byte comparison: assertion failure"
+    ],
+    "optimized_children": "Restart and mutation child interpreters inherit -O; mutation oracles use unittest assertions."
+  },
+  "real_boundaries": [
+    "Existing SQLite transaction and sticky trigger",
+    "Actual separate disposable SQLite effect rows and independent SQL reads",
+    "Existing bounded wire request/response parsing and byte equality"
+  ],
+  "fake_boundaries": [
+    "Injected HTTP response fixture, never Slack",
+    "Synthetic destination/account/content identities",
+    "Injected boolean authorizers, not Core or owner authority"
+  ],
+  "toolchain": {
+    "python": "3.12.14",
+    "sqlite": "3.53.1",
+    "ruff": "0.14.5",
+    "mypy": "1.18.2",
+    "dependencies_added": false,
+    "installation_performed": false
+  },
+  "commands": [
+    "python3 tools/validate.py",
+    "python3 -O -m unittest discover -s tests -v",
+    "python3 -m unittest discover -s tests -p test_upload_conflicts.py -v",
+    "ruff check --select E4,E7,E9,F,I tether/slack_wire.py tether/slack_upload.py tests/test_upload_conflicts.py",
+    "ruff format --check tether/slack_wire.py tether/slack_upload.py tests/test_upload_conflicts.py",
+    "mypy --strict tether/slack_wire.py tether/slack_upload.py tests/test_upload_conflicts.py"
+  ],
+  "initial_failures_resolved": [
+    "Pre-fix regression tests failed as intended on current main.",
+    "Strict typing/import formatting corrected before final checks.",
+    "Initial aggregate rejected stale current wire hash. Only that hash and enclosing evidence-manifest digest were refreshed, with historical validation records preserved."
+  ],
+  "protected_scope": "No schema, ProviderJournal, Core, admission, feedback, STATUS, provenance, workflow, gate, pin, static baseline, credential or permission change. Original wire/upload evidence files are byte-preserved historical records. Current mirroring audit refreshes exactly one source hash and adds a follow-up; its enclosing manifest digest follows those bytes.",
+  "blocked": [
+    "Real Core authority/reservation/receipt composition",
+    "Authenticated provider transport and real Slack response qualification",
+    "Partial-upload resume/recovery/cleanup authority",
+    "Production sanitization and general multi-attachment behavior"
+  ],
+  "not_run": [
+    "Independent review of frozen commit",
+    "Remote exact-head CI",
+    "Native/runtime/live provider acceptance",
+    "Deployment"
+  ],
+  "limits": [
+    "All wire observations remain unqualified_wire_observation, never accepted/delivered/mirrored.",
+    "Readback is sequential, not an atomic provider snapshot.",
+    "Multiple exact shares establish a conservative local identity conflict, not its cause or authority to repair it.",
+    "No additional message identities, content or URLs are persisted; the existing conflict flag remains irreversible through this API.",
+    "Injected authorizers/transports and privileged database mutation remain outside the qualified boundary.",
+    "No retry, duplicate-send, cleanup or new delivery authority is introduced."
+  ],
+  "source_sha256": {
+    "README.md": "23960883767fad25950c1c223510b1f329e5320f46bb71dc436b29de5b4350fb",
+    "specs/durable-slack-upload-v1.md": "6201d4618e1c09dcd8f8ae3451482caf6f4256cbd999296c2d89e485ac7fc555",
+    "tether/slack_wire.py": "3ad814a732c96db223ada95f41e9954919cdbdf8775bdc744e11816c9facb5ad",
+    "tether/slack_upload.py": "9d5ea1d023a4450e5088993d6d24fcaca8ec5f544526df8fb20378494e90b49c",
+    "tests/test_upload_conflicts.py": "41d05d46561d323e817d7d9947f9c9f71ba552401716058bee4f6cfad6fedb40",
+    "docs/mirroring-audit-evidence.json": "4526b7c416bb871d96a7c56cf7b64daba97d78c233fa3ea6fb173d8d84e210a3",
+    "docs/evidence-artifacts.json": "e8de9f15b46e16e234dadac9e66dd8314d09b13bd7c814c7d8de70d2dbb2d43b"
+  }
+}
