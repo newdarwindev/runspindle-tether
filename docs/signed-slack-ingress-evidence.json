@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "base_revision": "a444b21e53edbaa86d1cf9fab08f52a0d347dbbb",
+  "related_issue": "https://github.com/newdarwindev/runspindle-tether/issues/8",
+  "issue_status": "remains_open",
+  "evidence_class": "local_component_real_hmac_existing_sqlite_synthetic_secret_and_authority",
+  "source_provenance": {
+    "implementation": "original_standard_library_adapter_and_tests",
+    "upstream_code_copied": false,
+    "legacy_code_imported": false,
+    "dependencies_added": false
+  },
+  "toolchain": {
+    "python": "3.12.14",
+    "sqlite": "3.53.1",
+    "ruff": "0.14.5",
+    "mypy": "1.18.2",
+    "scope": "existing tool installation; no installation or native action"
+  },
+  "entrypoint": "tether.slack_ingress.SignedSlackIngress.ingest",
+  "supported_scope": "one explicitly configured app/workspace/actor/channel/thread; ordinary text-only message create",
+  "real_boundaries": [
+    "raw-body HMAC-SHA256 and constant-time comparison",
+    "bounded verified JSON normalization",
+    "existing Admission authorization gate and SQLite transactions",
+    "fresh-process SQLite deduplication and mirror suppression"
+  ],
+  "fake_boundaries": [
+    "synthetic signing secret and independent signer",
+    "synthetic exact digest/identity grants",
+    "injected integer clock",
+    "invented Slack identities and payloads"
+  ],
+  "validation": {
+    "focused_tests": 20,
+    "normal_tests": 171,
+    "optimized_tests": 171,
+    "skips": 0,
+    "scaffold": "passed",
+    "aggregate": "passed",
+    "optimized_aggregate_driver": "passed",
+    "aggregate_interpreter_scope": "existing child commands retain normal Python; separate full -O suite verifies optimized execution",
+    "ruff": "passed",
+    "ruff_format": "passed",
+    "strict_mypy": "passed",
+    "unexpected_socket_calls": 0,
+    "independent_review": "pending",
+    "remote_exact_head_ci": "not_run"
+  },
+  "commands": [
+    "python3 -m unittest tests.test_slack_ingress -v",
+    "python3 -m unittest discover -s tests -v",
+    "python3 -O -m unittest discover -s tests -v",
+    "python3 tools/validate.py",
+    "python3 -O tools/validate.py",
+    "ruff check tether/slack_ingress.py tests/test_slack_ingress.py",
+    "ruff format --check tether/slack_ingress.py tests/test_slack_ingress.py",
+    "mypy --strict tether/slack_ingress.py tests/test_slack_ingress.py"
+  ],
+  "mutations": {
+    "signature_check_removed": "detected_by_actual_regression_assertion",
+    "actor_channel_binding_removed": "detected_by_actual_regression_assertion",
+    "freshness_check_removed": "detected_by_actual_regression_assertion",
+    "historical_thread_only_mutation": "remained_rejected_by_independent_downstream_identity_binding; replaced rather than counted as detected"
+  },
+  "limits": [
+    "no HTTP listener, deployment, subscriptions or acknowledgment",
+    "no URL challenge handler",
+    "no edit/delete revision mapping or structured/rich-text messages",
+    "no cross-workspace/Enterprise routing",
+    "no real Core authorization integration",
+    "no provider/live/native compatibility acceptance",
+    "no atomic post-lock revocation guarantee beyond existing Admission",
+    "no hostile in-process code or debugger/frame-local secrecy guarantee"
+  ],
+  "protected_scope": "all preexisting tracked files, STATUS, provenance, existing receipts, workflows, image gates and pins unchanged",
+  "primary_documentation_checked_utc": "2026-11-15",
+  "references": [
+    "https://docs.slack.dev/authentication/verifying-requests-from-slack/",
+    "https://docs.slack.dev/apis/events-api/",
+    "https://docs.slack.dev/reference/events/message/"
+  ],
+  "sha256": {
+    "tether/slack_ingress.py": "c7ec7051f7cfa7a37abc7ae0714f1eddae3d7509fa065febf9c95c835f6cc330",
+    "tests/test_slack_ingress.py": "18ad30515ef98f6e8ab75b12d415dc0a3c9b7fcda5c50fe385f16e9ba57bb668",
+    "specs/signed-slack-ingress-v1.md": "f5e514a617c831a25fb0c8761bfd26d72ebb179ead47c085042589489b057206"
+  }
+}
