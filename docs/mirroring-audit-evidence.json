@@ -85,7 +85,7 @@
     "tether/journal.py": "be3b2c6331e100fdb33a627c3fd902eb4466f9b9c1f2d833bc6645e6fc734734",
     "tether/native_testing.py": "499613371e979d82f4c927ce0f41ec970a66c85c177d72a2e2b6775a9df70d04",
     "tether/sanitization.py": "2077bcd548db09bcb80140d1c5453af437eed94659cec9924d7206f492912987",
-    "tether/slack_wire.py": "7f442d8f64b56a69ceb65c1be4d13d7c38bbdaa8e3c9e91cc4b9402ebbe4507d",
+    "tether/slack_wire.py": "3ad814a732c96db223ada95f41e9954919cdbdf8775bdc744e11816c9facb5ad",
     "tether/testing.py": "2b84de229c6aff62ec48b52c6decb8dd369e20bade2b0b3d16003ed14ff046c9",
     "tools/check_mirroring_audit.py": "e58377c92e0d73939a1afe049887f9588d7927882edc173abd2f9e0e02c0a886",
     "tools/validate.py": "f5d7c28964a928abbf636edd31178cd9cf94c2edf0894e0f38e1f21c33cb1f90"
@@ -111,6 +111,20 @@
       "tether/slack_wire.py"
     ],
     "validation_status": "passed",
+    "runtime_issues_remaining_open": [
+      1,
+      3,
+      8,
+      9,
+      10
+    ],
+    "live_receipts": "not_run"
+  },
+  "upload_conflict_follow_up": {
+    "base_revision": "56ab8be54981b1c0f8bb002871dda6c7ecda58dd",
+    "preceding_evidence_sha256": "61cc931b9f7aec98a77fa5a5d1378434763e3af6575e3f27b10058303bbd84c4",
+    "scope": "Refresh only current wire source hash after durable exact-conflict retention; original artifact validation_results and previous follow-up remain historical.",
+    "evidence": "docs/upload-conflict-evidence.json",
     "runtime_issues_remaining_open": [
       1,
       3,
