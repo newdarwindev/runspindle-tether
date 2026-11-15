@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "evidence_class": "local_durable_upload_hygiene_integration",
+  "hygiene_parent": "1f7ede18795906529a903c077bc0a026ee9cd982",
+  "hygiene_parent_tree": "8b1e57d9649eda221c6070d7c7f7885635b0259b",
+  "merged_runtime_main": "56ab8be54981b1c0f8bb002871dda6c7ecda58dd",
+  "source_pr": "https://github.com/newdarwindev/runspindle-tether/pull/23",
+  "source_ci_run": "https://github.com/newdarwindev/runspindle-tether/actions/runs/43690381766",
+  "source_ci_head": "69497364b6e7b861c211f3610664a52086bc1445",
+  "candidate_identity": "The containing commit/tree identifies these bytes. Final clean-source aggregate receipts are retained separately; no recursive self-hash or future qualification is claimed.",
+  "adaptation": "None. The merged runtime source/tests/specification/evidence and README are byte-identical to main. Existing signed-ingress import ordering and all preexisting hygiene adaptations remain unchanged.",
+  "source_comparison": {
+    "README.md": {
+      "main_sha256": "ddd531286de49c43d715a9bdb4a7de09b53d724012bb674827175b91418f249d",
+      "current_sha256": "ddd531286de49c43d715a9bdb4a7de09b53d724012bb674827175b91418f249d",
+      "byte_identical": true
+    },
+    "tether/slack_upload.py": {
+      "main_sha256": "bab5c69ee4c982e3002543f8a3e5756a22565b5ca50d3c6d5f428aead5e17091",
+      "current_sha256": "bab5c69ee4c982e3002543f8a3e5756a22565b5ca50d3c6d5f428aead5e17091",
+      "byte_identical": true
+    },
+    "tests/test_slack_upload.py": {
+      "main_sha256": "7b4dc136c4960486e92390190dd996b4e6324550c63c07a89a14fa07bcfa996a",
+      "current_sha256": "7b4dc136c4960486e92390190dd996b4e6324550c63c07a89a14fa07bcfa996a",
+      "byte_identical": true
+    },
+    "specs/durable-slack-upload-v1.md": {
+      "main_sha256": "5937dbdd7052b34a6c0a26fd3f7e1d85cbba5bec577168c73d6fef9145cc89bc",
+      "current_sha256": "5937dbdd7052b34a6c0a26fd3f7e1d85cbba5bec577168c73d6fef9145cc89bc",
+      "byte_identical": true
+    },
+    "docs/durable-slack-upload-evidence.json": {
+      "main_sha256": "c707fd921aaccba848cea2339c40fefa5a44845dbedc7b832ba6e5212fcbef83",
+      "current_sha256": "c707fd921aaccba848cea2339c40fefa5a44845dbedc7b832ba6e5212fcbef83",
+      "byte_identical": true
+    }
+  },
+  "verification": {
+    "normal_python": 247,
+    "optimized_python": 247,
+    "skipped": 0,
+    "whole_repository_new_static_diagnostics": 0,
+    "unchanged_static_debt": 108,
+    "changed_file_hygiene_lint_and_format": "passed",
+    "changed_file_strict_mypy_including_imports": "passed",
+    "strict_aggregates": "Recorded separately after committing against the final clean source.",
+    "optimized_aggregate_scope": "Existing aggregate child commands remain normal Python. The separate full -O suite and propagated -O upload test subprocesses provide optimized evidence."
+  },
+  "protected_baseline": {
+    "tracked_files": 103,
+    "byte_identical_files": 102,
+    "only_existing_file_changed": "README.md appended with merged source documentation; identical to current main",
+    "gates_pins_baselines_status_workflows_inventory_and_historical_receipts": "all unchanged"
+  },
+  "historical_records": "All prior evidence and source hashes retain their original scope and identity. PR23 source validation does not qualify this separate image-bound hygiene head.",
+  "remaining_limits": [
+    "Independent exact-integration review pending.",
+    "Required image-bound CI remains blocked/unverified; no CI branch, workflow dispatch or retry is part of this integration.",
+    "Issue9 and parent1 remain open for real Core/ProviderJournal authority and receipt composition, authenticated transport, partial upload recovery/cleanup, production sanitization and live qualification.",
+    "No live provider, new credentials, runtime activation, service, image, deployment or security changes."
+  ],
+  "commands": [
+    "python3 -m unittest discover -s tests -v",
+    "python3 -O -m unittest discover -s tests -v",
+    "python3 tools/static_quality.py",
+    "python3 tools/validate.py",
+    "python3 -O tools/validate.py",
+    "ruff check --isolated --select E4,E7,E9,F,I tether/slack_upload.py tests/test_slack_upload.py",
+    "ruff format --check tether/slack_upload.py tests/test_slack_upload.py",
+    "mypy --strict tether/slack_upload.py tests/test_slack_upload.py"
+  ]
+}
