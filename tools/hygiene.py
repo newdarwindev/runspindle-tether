@@ -10,9 +10,10 @@ import os
 import platform
 import re
 import resource
+import selectors
 import shutil
+import signal
 import subprocess
-import threading
 import time
 from pathlib import Path
 from typing import Any
@@ -44,6 +45,10 @@ KNOWN_FAILURE_REASONS = frozenset(
         "required_tool_missing",
         "timeout",
         "process_start_failed",
+        "process_ownership_unavailable",
+        "output_incomplete",
+        "output_read_failed",
+        "output_close_failed",
         "declared_artifact_missing",
         "unsafe_artifact_path",
         "lockfile_changed_during_verification",
@@ -270,6 +275,147 @@ def diagnostic_summary(entry: dict[str, Any]) -> str:
     return f"reported={category} (unverified)"
 
 
+# The wrapper is the sole waiter for its children. Concurrent waitpid calls or
+# SIGCHLD policy changes are unsupported: an unreaped leader reserves its PID,
+# but a reaped (or auto-reaped) leader no longer owns a safe group identifier.
+PROCESS_CLEANUP_SECONDS = 2.0
+PROCESS_POLL_SECONDS = 0.05
+
+
+def cleanup_error_code(error: OSError) -> str:
+    """Finite OS error vocabulary; never copy exception text into receipts."""
+    if isinstance(error, ProcessLookupError):
+        return "not_found"
+    if isinstance(error, PermissionError):
+        return "permission_denied"
+    if isinstance(error, ChildProcessError):
+        return "not_child"
+    if isinstance(error, InterruptedError):
+        return "interrupted"
+    return "os_error"
+
+
+def stop_owned_process(process: subprocess.Popen[bytes]) -> dict[str, str]:
+    """Attempt one bounded stop before reaping; report uncertain cleanup."""
+    if process.returncode is not None:
+        return {}  # Never signal a group after its leader has been reaped.
+    if signal.getsignal(signal.SIGCHLD) != signal.SIG_DFL:
+        return {"cleanup": "unknown", "signal_error": "ownership_unavailable"}
+    result: dict[str, str] = {}
+    try:
+        os.killpg(process.pid, signal.SIGKILL)
+    except OSError as error:
+        result.update(cleanup="unknown", signal_error=cleanup_error_code(error))
+    try:
+        process.wait(timeout=PROCESS_CLEANUP_SECONDS)
+    except subprocess.TimeoutExpired:
+        result.update(cleanup="unknown", reap_error="timeout")
+    except OSError as error:
+        result.update(cleanup="unknown", reap_error=cleanup_error_code(error))
+    return result
+
+
+def collect_process(
+    process: subprocess.Popen[bytes], timeout: float
+) -> tuple[dict[str, Any], str]:
+    """Collect a bounded tail without blocking reads or a competing reader thread.
+
+    Normal leader exit ends group ownership. A still-open pipe then fails closed;
+    we do not attempt late group cleanup or claim containment of descendants.
+    """
+    result: dict[str, Any] = {}
+    tail = bytearray()
+    eof = False
+    stop_attempted = False
+    primary_exception: BaseException | None = None
+    deadline = time.monotonic() + timeout
+    drain_deadline: float | None = None
+    stream = process.stdout
+    try:
+        if stream is None:
+            raise OSError("missing output pipe")
+        os.set_blocking(stream.fileno(), False)
+        with selectors.DefaultSelector() as selector:
+            selector.register(stream, selectors.EVENT_READ)
+            while True:
+                if signal.getsignal(signal.SIGCHLD) != signal.SIG_DFL:
+                    result.setdefault("reason", "process_ownership_unavailable")
+                    result["cleanup"] = "unknown"
+                    break
+                code = process.poll()
+                now = time.monotonic()
+                if code is None and drain_deadline is None and now >= deadline:
+                    result["reason"] = "timeout"
+                    stop_attempted = True
+                    result.update(stop_owned_process(process))
+                    code = process.returncode
+                    drain_deadline = time.monotonic() + PROCESS_CLEANUP_SECONDS
+                if code is not None and drain_deadline is None:
+                    drain_deadline = now + PROCESS_CLEANUP_SECONDS
+                if drain_deadline is not None:
+                    if eof:
+                        break
+                    if now >= drain_deadline:
+                        break
+                remaining = (drain_deadline or deadline) - time.monotonic()
+                delay = min(PROCESS_POLL_SECONDS, max(0.0, remaining))
+                if eof:
+                    time.sleep(delay)
+                elif selector.select(delay):
+                    try:
+                        chunk = os.read(stream.fileno(), 8192)
+                    except BlockingIOError:
+                        continue
+                    if chunk:
+                        tail.extend(chunk)
+                        if len(tail) > 65536:
+                            del tail[:-65536]
+                    else:
+                        eof = True
+                        selector.unregister(stream)
+    except OSError as error:
+        result.setdefault("reason", "output_read_failed")
+        result["output_read_error"] = cleanup_error_code(error)
+    except BaseException as error:
+        primary_exception = error
+        raise
+    finally:
+        # This also runs on cancellation. Preserve the original exception, avoid
+        # retrying a stop with an uncertain outcome, and never wait indefinitely.
+        cleanup_exception: BaseException | None = None
+        try:
+            if process.returncode is None and not stop_attempted:
+                result.update(stop_owned_process(process))
+        except BaseException as error:
+            cleanup_exception = error
+            if primary_exception is None:
+                raise
+        finally:
+            preserve_exception = (
+                primary_exception is not None or cleanup_exception is not None
+            )
+            if stream is not None:
+                try:
+                    stream.close()  # Unbuffered, same-thread pipe: no reader lock.
+                except OSError as error:
+                    result.setdefault("reason", "output_close_failed")
+                    result["output_close_error"] = cleanup_error_code(error)
+                    result["cleanup"] = "unknown"
+                except BaseException:
+                    if not preserve_exception:
+                        raise
+    if not eof:
+        result.setdefault("reason", "output_incomplete")
+        result["cleanup"] = "unknown"
+    result["output_complete"] = eof
+    if process.returncode is not None and result.get("reason") != "timeout":
+        result["exit_code"] = process.returncode
+    result["status"] = (
+        "passed" if process.returncode == 0 and "reason" not in result else "failed"
+    )
+    return result, bytes(tail).decode("utf-8", errors="replace")
+
+
 def run_entry(root: Path, entry: dict[str, Any]) -> dict[str, Any]:
     receipt: dict[str, Any] = {"id": entry["id"]}
     if "not_applicable" in entry:
@@ -310,6 +456,12 @@ def run_entry(root: Path, entry: dict[str, Any]) -> dict[str, Any]:
         }
     started = time.monotonic()
     before = resource.getrusage(resource.RUSAGE_CHILDREN)
+    if signal.getsignal(signal.SIGCHLD) != signal.SIG_DFL:
+        return {
+            **receipt,
+            "status": "failed",
+            "reason": "process_ownership_unavailable",
+        }
     try:
         process = subprocess.Popen(
             entry["command"],
@@ -317,42 +469,14 @@ def run_entry(root: Path, entry: dict[str, Any]) -> dict[str, Any]:
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             start_new_session=True,
+            bufsize=0,
         )
-        # Drain without persisting logs or allowing unbounded captured output.
-        tail = bytearray()
-
-        def drain() -> None:
-            assert process.stdout is not None
-            while True:
-                chunk = process.stdout.read(8192)
-                if not chunk:
-                    break
-                tail.extend(chunk)
-                if len(tail) > 65536:
-                    del tail[:-65536]
-
-        reader = threading.Thread(target=drain, daemon=True)
-        reader.start()
-        code: int | None = None
-        try:
-            code = process.wait(timeout=entry.get("timeout_seconds", 300))
-            receipt.update(status="passed" if code == 0 else "failed", exit_code=code)
-        except subprocess.TimeoutExpired:
-            import signal
-
-            os.killpg(process.pid, signal.SIGKILL)
-            process.wait()
-            receipt.update(status="failed", reason="timeout")
-        reader.join(timeout=2)
-        if reader.is_alive():
-            import signal
-
-            try:
-                os.killpg(process.pid, signal.SIGKILL)
-            except ProcessLookupError:
-                pass
-            reader.join(timeout=2)
-        output = bytes(tail).decode("utf-8", errors="replace")
+    except OSError:
+        receipt.update(status="failed", reason="process_start_failed")
+    else:
+        outcome, output = collect_process(process, entry.get("timeout_seconds", 300))
+        receipt.update(outcome)
+        code = receipt.get("exit_code")
         if receipt["status"] == "failed":
             receipt["reported_diagnostic"] = reported_failure(output)
         if entry["id"] == "static-quality" and code is not None and code != 0:
@@ -376,12 +500,7 @@ def run_entry(root: Path, entry: dict[str, Any]) -> dict[str, Any]:
                 receipt["test_summary"] = "node_trailing_summary"
             else:
                 receipt["test_summary"] = "unavailable"
-        tail.clear()
         del output
-        if process.stdout is not None:
-            process.stdout.close()
-    except OSError:
-        receipt.update(status="failed", reason="process_start_failed")
     after = resource.getrusage(resource.RUSAGE_CHILDREN)
     receipt.update(
         wall_seconds=round(time.monotonic() - started, 6),

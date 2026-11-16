@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "evidence_class": "local_component_and_independent_synthetic_validation",
+  "base_revision": "789380df2a8fd0da5a9757e5312d66daa07bef2d",
+  "tested_revision": "0d0674ee3f0fac3d4e8688625978f7daf5a92c5b",
+  "tested_tree": "0fa0a515a907d57a8b3d616cadb26ddae80503cc",
+  "scope": "Partial issue #10 and parent #2 correction for hex-case variants of configured-secret URL-quoted forms; no broader acceptance closure.",
+  "source_sha256": {
+    "tether/sanitization.py": "7c0b5e6fae5eb0e00e43667a447213d8268007588cd42d5fb56e6449a2eb064d",
+    "tests/test_percent_case.py": "82f15f111a1c6d9bce60ecb96007684b72d0a16f5c60b73413ab48b5fd456c34",
+    "specs/sanitization-percent-case.md": "a60b2b83cae4e9ae8f99e820ad292e474b0ba32e98c481e0d0fe2187703a9483",
+    "docs/mirroring-audit-evidence.json": "e5d90d24b7e403fecfb6addfacc6d0c27a7b84f3d42d04944e95e1c3a801ae7d",
+    "docs/evidence-artifacts.json": "a9c74c2bd4cefcb57e6d87dbd93184c91e4209fdad779b5238218d7dc6ca26e3"
+  },
+  "validation": {
+    "aggregate": {
+      "command": "python3 tools/validate.py",
+      "status": "passed",
+      "tests_run": 274,
+      "tests_skipped": 0,
+      "source_worktree_clean": true,
+      "checks": [
+        {
+          "id": "reproducible-inputs",
+          "status": "passed"
+        },
+        {
+          "id": "scaffold",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "static-quality",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "repository-hygiene",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "check-artifacts",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "check-shared-fixtures",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "check-mirroring-audit",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "python-tests",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "distributable-build",
+          "status": "not_applicable"
+        }
+      ]
+    },
+    "optimized": {
+      "command": "python3 -O -m unittest discover -s tests -v",
+      "status": "passed",
+      "tests_run": 274,
+      "tests_skipped": 0,
+      "exit_code": 0
+    },
+    "focused": {
+      "command": "python3 -m unittest discover -s tests -p test_percent_case.py -v",
+      "normal_tests_passed": 8,
+      "optimized_tests_passed": 8
+    },
+    "toolchain": {
+      "python": "3.12.14",
+      "system": "Linux",
+      "machine": "x86_64",
+      "runner_image_sha256": "unavailable",
+      "lock_sha256": {
+        "requirements-quality.txt": "9cbe1331549216b953f2922f1e8321357ca82bb985e1ea595c87fcee8a8fdc84",
+        "tools/quality-baseline.json": "786840907d57036341f82d37d7d625b0872aaa5b4972ce8dad0b04578049958d"
+      }
+    }
+  },
+  "independent_review": {
+    "reviewed_revision": "0d0674ee3f0fac3d4e8688625978f7daf5a92c5b",
+    "verdict": "approved_for_documented_component_scope",
+    "normal_focused_tests_passed": 8,
+    "optimized_focused_tests_passed": 8,
+    "generated_unicode_and_regex_variants": 1070,
+    "additional_checks": [
+      "ordinary character case sensitivity",
+      "overlapping configured-secret forms",
+      "scaffold checks"
+    ],
+    "source": "Independent reviewer findings supplied by the implementation coordinator; separate from the local aggregate receipt."
+  },
+  "negative_evidence": [
+    "Independent SQLite rows and database-byte scans plus a fresh-process database read show no configured encoded canaries.",
+    "UploadJournal rejects immutable dirty artifact bytes before reservation or provider calls; bytes are not rewritten.",
+    "An isolated mutation restoring case-sensitive matching is detected by projection and artifact assertions.",
+    "Socket connections are denied during focused tests."
+  ],
+  "limitations": [
+    "Known configured secrets only; no universal secret discovery.",
+    "Only hex digits inside generated percent escapes are case-flexible; ordinary secret letters remain case-sensitive.",
+    "No arbitrary or recursive decoding, implicit double-encoding support or binary-format inspection.",
+    "No real Slack/provider/Core integration, live acceptance, production qualification or deployment.",
+    "Local checks do not establish CI runner-image qualification or remote required-check completion.",
+    "This receipt is an evidence-only addition after the tested revision. Test/source hashes above remain unchanged; it does not claim a full rerun on its containing commit."
+  ]
+}
