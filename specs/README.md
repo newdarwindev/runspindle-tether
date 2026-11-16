@@ -78,3 +78,7 @@ It is not universal secret discovery or full production qualification.
 [SRC-014 coverage and evidence](../docs/MIRRORING_COVERAGE.md) completes the selected
 audit's disposition and adapter matrix. This is artifact-scope completion only;
 the runtime and live acceptance gates above remain unchanged.
+
+- [Single-shot Slack HTTP](slack-http-v1.md): actual bounded socket/process transport,
+  tested only against synthetic loopback servers; real TLS/Slack/Core acceptance
+  and a production credential helper remain unqualified.

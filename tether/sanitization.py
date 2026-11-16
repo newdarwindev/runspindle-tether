@@ -63,6 +63,22 @@ FIELDS = frozenset(
 )
 
 
+def _quoted_expression(value: str) -> str:
+    """Match hex case only inside generated URL escapes, never ordinary letters.
+
+    Character classes avoid enumerating exponentially many mixed-case spellings.
+    The input is a bounded, escaped configured-secret variant, never caller regex.
+    """
+
+    def escape(match: re.Match[str]) -> str:
+        return "%" + "".join(
+            "[" + char.lower() + char.upper() + "]" if char.isalpha() else char
+            for char in match.group(0)[1:]
+        )
+
+    return re.sub(r"%[0-9A-F]{2}", escape, re.escape(value))
+
+
 class Sanitizer:
     def __init__(
         self, secrets: tuple[str, ...] = (), limits: Limits = Limits()
@@ -87,6 +103,7 @@ class Sanitizer:
         ):
             raise UnsafeProjection("sanitization limits exceed implementation bounds")
         variants: set[str] = set()
+        quoted: set[str] = set()
         for secret in secrets:
             if type(secret) is not str or not secret or len(secret) > 4096:
                 raise UnsafeProjection("invalid redaction configuration")
@@ -100,6 +117,7 @@ class Sanitizer:
             # Accepted artifact bytes are immutable: retain the exact configured
             # spelling as well as its normalized projection representation.
             for value in {secret, unicodedata.normalize("NFC", secret)}:
+                quoted.update({quote(value, safe=""), quote_plus(value)})
                 variants.update(
                     {
                         value,
@@ -111,8 +129,21 @@ class Sanitizer:
                 )
         self._secrets = tuple(sorted(variants, key=len, reverse=True))
         self._pattern = (
-            re.compile("|".join(re.escape(value) for value in self._secrets))
+            re.compile(
+                "|".join(
+                    _quoted_expression(value) if value in quoted else re.escape(value)
+                    for value in self._secrets
+                )
+            )
             if self._secrets
+            else None
+        )
+        # UTF-8 literal patterns and ASCII percent-escape classes share exact
+        # semantics with text projection. Immutable artifact bytes are rejected,
+        # never decoded/replaced or rebound to a different accepted digest.
+        self._byte_pattern = (
+            re.compile(self._pattern.pattern.encode("utf-8"))
+            if self._pattern is not None
             else None
         )
         self.limits = limits
@@ -240,7 +271,7 @@ class Sanitizer:
 
     def _scan(self, value: object) -> None:
         serialized = json.dumps(value, ensure_ascii=False, allow_nan=False)
-        if any(secret in serialized for secret in self._secrets):
+        if self._pattern is not None and self._pattern.search(serialized):
             raise UnsafeProjection("residual sensitive value")
 
     def normalize(self, value: object) -> Any:
@@ -268,7 +299,9 @@ class Sanitizer:
             }
         )
         for attachment in payload.attachments:
-            if any(secret.encode() in attachment.content for secret in self._secrets):
+            if self._byte_pattern is not None and self._byte_pattern.search(
+                attachment.content
+            ):
                 raise UnsafeProjection("artifact requires prior sanitization")
 
     def project(self, value: object) -> dict[str, Any]:
@@ -362,6 +395,6 @@ class Sanitizer:
             )
             + "</pre>"
         )
-        if any(secret in rendered for secret in self._secrets):
+        if self._pattern is not None and self._pattern.search(rendered):
             raise UnsafeProjection("residual rendered sensitive value")
         return rendered

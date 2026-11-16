@@ -138,6 +138,13 @@ class NativeSource:
     def emit(self, event: Event, sink: Callable[[Event], object]) -> Observation:
         if self._busy:
             raise ValueError("reentrant emission")
+        self._busy = True
+        try:
+            return self._emit(event, sink)
+        finally:
+            self._busy = False
+
+    def _emit(self, event: Event, sink: Callable[[Event], object]) -> Observation:
         if len(self._observations) >= self._capacity:
             raise ValueError("synthetic observation capacity")
         if type(event) is not Event or type(event.binding) is not Binding:
@@ -177,13 +184,10 @@ class NativeSource:
         result = Observation(event.sequence, "unknown")
         self._observations.append(result)
         index = len(self._observations) - 1
-        self._busy = True
         try:
             sink(event)
             result = Observation(event.sequence, "submitted")
             self._observations[index] = result
         except Exception:
             pass  # Fixed outcome only; never expose callback messages/canaries.
-        finally:
-            self._busy = False
         return result

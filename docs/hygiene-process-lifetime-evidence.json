@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "repository": "newdarwindev/runspindle-tether",
+  "scope": "PR32 offline source verification and test-only typing/format correction; no issue closure",
+  "source_head_before_correction": "1942b75e060a4fa2fe4dcb1e56102e99feb1be63",
+  "source_tree_before_correction": "24a58228c1213d7ade8f5e0550793136cf02be51",
+  "base_revision": "789380df2a8fd0da5a9757e5312d66daa07bef2d",
+  "source_identity": "All 118 source snapshot files matched the public Git blob hashes; original index tree matched the public tree. Corrected bytes are identified below, not presented as a checked-out public HEAD. No original commit identity is invented.",
+  "source_sha256": {
+    "tools/hygiene.py": "12033cda4366e7fe9e935bc5dab28643d8405dfa57b848b551cd2e4526f708cf",
+    "tests/test_hygiene_process_lifetime.py": "142d62f9e3ab3c9797bffc5f6674379d7f69e3609ac875fed2266aeeb6414959",
+    "docs/HYGIENE_PROCESS_LIFETIME.md": "a35deabeeb5a8a44153a6412e22f9f4c37c56f820c69769eeb281bd483e9db00"
+  },
+  "changes": "Explicit list[bytes | BaseException] cast/import and removal of an extra blank line in the synthetic test. Runtime unchanged.",
+  "toolchain": {
+    "python": "3.12.16",
+    "system": "Linux",
+    "machine": "x86_64",
+    "quality_pins": "requirements-quality.txt; existing local closure, no installation",
+    "runner_image": "not_qualified",
+    "receipt_generator_python": "3.14.8"
+  },
+  "checks": {
+    "full_normal": {
+      "status": "passed",
+      "tests": 286,
+      "skipped": 0,
+      "seconds": 12.162,
+      "command": "python3 -B -m unittest discover -s tests -q",
+      "outer_timeout_seconds": 600
+    },
+    "full_optimized": {
+      "status": "passed",
+      "tests": 286,
+      "skipped": 0,
+      "seconds": 25.242,
+      "command": "python3 -B -O -m unittest discover -s tests -q",
+      "outer_timeout_seconds": 600
+    },
+    "pinned_static": {
+      "status": "passed",
+      "command": "python3 -B tools/static_quality.py",
+      "new_diagnostics": 0,
+      "existing_debt": 108,
+      "python_files": 44,
+      "yaml_files": 4,
+      "baseline": "unchanged"
+    },
+    "structural": {
+      "status": "passed",
+      "commands": [
+        "python3 -B tools/check_scaffold.py",
+        "python3 -B tools/check_repo_hygiene.py",
+        "python3 -B tools/check_shared_fixtures.py",
+        "python3 -B tools/check_mirroring_audit.py",
+        "git diff --check"
+      ]
+    },
+    "independent_review": {
+      "status": "passed",
+      "focused_tests_each_mode": 20,
+      "scope": "Exact unchanged runtime and corrected test reviewed; pinned targeted Ruff lint/format and mypy passed; focused synthetic tests repeated in both modes."
+    },
+    "aggregate": {
+      "status": "not_run",
+      "reason": "Authentic local commit metadata unavailable. Complete direct checks above are source-snapshot receipts, not an aggregate source-identity receipt."
+    },
+    "remote_CI": {
+      "status": "not_run",
+      "reason": "Not awaited; no CI pass claimed."
+    }
+  },
+  "log_sha256": {
+    "tests-normal.log": "b44034e230f0b5456f62a341364b8c7e8ff4b42b461c4b1a81934677337d7f2d",
+    "tests-optimized.log": "b2ce2c7f500e56895871f28d0921ff541e28468a97bddf9a1a5d633b796ea5a3",
+    "static-initial.log": "d593574d389cafeea24a0b025a9033800afddb54ddef14a5a829bdc79d9ebf37",
+    "structural.log": "c1d63722fbb9bc053e5c897fbcacd8ddff6e6655823ebffdade6550cee3a885e"
+  },
+  "boundaries": {
+    "focused": "Mock process, selectors, clock, reads and signals; no actual signal/process operations in the 20 focused cases.",
+    "full_suite": "Audited synthetic HTTP plus ordinary bounded local subprocess, disposable SQLite and Git fixtures; no actual HTTP/TLS transport tests or external network.",
+    "not_qualified": [
+      "three root real-process lifetime cases",
+      "PID reuse or descendant containment",
+      "live provider/native/runtime operation",
+      "production authority",
+      "deployment",
+      "runner image"
+    ]
+  }
+}

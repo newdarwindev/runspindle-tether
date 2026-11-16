@@ -5,6 +5,7 @@ import itertools
 import socket
 import sys
 import tempfile
+import types
 import unittest
 from dataclasses import replace
 from pathlib import Path
@@ -189,6 +190,129 @@ class NativeSourceTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 NativeSource(BINDING, Mode.EVENTS, lambda: 100, **kwargs)
         self.assertEqual(len(self.slack.requests), 0)
+
+    def test_clock_reentrancy_is_rejected_before_history_or_sink_effects(self) -> None:
+        nested_errors: list[str] = []
+        calls = 0
+
+        def clock() -> int:
+            nonlocal calls
+            calls += 1
+            # Bounded even under the deliberate late-guard mutation.
+            if calls == 1:
+                try:
+                    source.emit(event(), self.send)
+                except ValueError as error:
+                    nested_errors.append(str(error))
+            return 100
+
+        source = NativeSource(BINDING, Mode.EVENTS, clock, capacity=1)
+        result = source.emit(event(), self.send)
+        self.assertEqual(nested_errors, ["reentrant emission"])
+        self.assertEqual(calls, 1)
+        self.assertEqual(result.outcome, "submitted")
+        self.assertEqual(len(source.observations), 1)
+        self.assertEqual(len(self.slack.requests), 1)
+        self.assertEqual(len(self.slack.records), 1)
+        with self.assertRaisesRegex(ValueError, "synthetic observation capacity"):
+            source.emit(event(2), self.send)
+        self.assertEqual(calls, 1)
+        self.assertEqual(len(source.observations), 1)
+        self.assertEqual(len(self.slack.requests), 1)
+
+    def test_clock_exception_and_cancellation_release_guard_without_consumption(
+        self,
+    ) -> None:
+        for error_type in (ValueError, RuntimeError, KeyboardInterrupt):
+            with self.subTest(error=error_type.__name__):
+                failed = False
+                sink = Mock()
+
+                def clock() -> int:
+                    nonlocal failed
+                    if not failed:
+                        failed = True
+                        raise error_type("synthetic clock failure")
+                    return 100
+
+                source = NativeSource(BINDING, Mode.EVENTS, clock, capacity=1)
+                with self.assertRaises(error_type):
+                    source.emit(event(), sink)
+                self.assertEqual(source.observations, ())
+                sink.assert_not_called()
+                self.assertEqual(source.emit(event(), sink).outcome, "submitted")
+                self.assertEqual(len(source.observations), 1)
+                sink.assert_called_once_with(event())
+
+    def test_invalid_input_and_rejection_release_guard(self) -> None:
+        source = NativeSource(BINDING, Mode.EVENTS, lambda: 100)
+        sink = Mock()
+        with self.assertRaises(ValueError):
+            source.emit(replace(event(), sequence=True), sink)
+        self.assertEqual(source.observations, ())
+        self.assertEqual(source.emit(event(2), sink).outcome, "gap")
+        sink.assert_not_called()
+        self.assertEqual(source.emit(event(), sink).outcome, "submitted")
+        sink.assert_called_once_with(event())
+
+    def test_sink_cancellation_releases_guard_but_consumes_attempt(self) -> None:
+        source = NativeSource(BINDING, Mode.EVENTS, lambda: 100)
+
+        def cancel_after_effect(item: Event) -> None:
+            self.send(item)
+            raise KeyboardInterrupt()
+
+        with self.assertRaises(KeyboardInterrupt):
+            source.emit(event(), cancel_after_effect)
+        self.assertEqual(source.observations[0].outcome, "unknown")
+        self.assertEqual(source.emit(event(), self.send).outcome, "duplicate")
+        self.assertEqual(source.emit(event(2), self.send).outcome, "submitted")
+        self.assertEqual(len(self.slack.requests), 2)
+        self.assertEqual(len(self.slack.records), 2)
+
+    def test_late_guard_mutation_breaks_clock_reentrancy_and_capacity(self) -> None:
+        original = Path(__file__).resolve().parents[1] / "tether/native_testing.py"
+        source = original.read_text()
+        early = (
+            "        self._busy = True\n        try:\n"
+            "            return self._emit(event, sink)"
+        )
+        late = "        try:\n            sink(event)"
+        self.assertEqual(source.count(early), 1)
+        self.assertEqual(source.count(late), 1)
+        mutant = source.replace(
+            early, "        try:\n            return self._emit(event, sink)"
+        ).replace(late, "        self._busy = True\n" + late)
+        # In-memory original-source mutation: no subprocess, store or provider.
+        module = types.ModuleType("native_clock_mutant")
+        sys.modules[module.__name__] = module
+        try:
+            exec(compile(mutant, "<native-clock-mutant>", "exec"), module.__dict__)
+            binding = module.Binding(
+                "task-1", "host-1", "session-1", BINDING.destination
+            )
+            item = module.Event(binding, "event-1", 1, 100, "final", PAYLOAD)
+            calls = 0
+
+            def clock() -> int:
+                nonlocal calls
+                calls += 1
+                if calls == 1:
+                    fixture.emit(item, self.send)
+                return 100
+
+            fixture = module.NativeSource(
+                binding, module.Mode.EVENTS, clock, capacity=1
+            )
+            fixture.emit(item, self.send)
+            self.assertEqual(calls, 2)
+            self.assertEqual(len(fixture.observations), 2)
+            self.assertEqual(len(self.slack.requests), 1)
+            self.assertEqual(len(self.slack.records), 1)
+            with self.assertRaises(AssertionError):
+                self.assertLessEqual(len(fixture.observations), 1)
+        finally:
+            sys.modules.pop(module.__name__, None)
 
     def test_removed_availability_guard_causes_independently_observed_forbidden_effect(
         self,
