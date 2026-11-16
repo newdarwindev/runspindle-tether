@@ -4,6 +4,7 @@ No network implementation, credentials, retry, durable send orchestration, or
 ProviderJournal receipt conversion. All observations are unqualified wire facts.
 """
 
+import asyncio
 import hashlib
 import json
 import re
@@ -194,6 +195,72 @@ class Request:
     @property
     def body_sha256(self) -> str:
         return hashlib.sha256(self.body).hexdigest()
+
+
+def request_binding(request: Request) -> tuple[bytes, bytes]:
+    """Detached exact request/scope snapshot, not callback authentication."""
+    if type(request) is not Request or type(request.scope) is not Scope:
+        raise WireRejected("request binding type")
+    scope = {
+        name: getattr(request.scope, name)
+        for name in (
+            "account_id",
+            "workspace_id",
+            "channel_id",
+            "thread_ts",
+            "operation_id",
+            "payload_sha256",
+            "history_scope",
+        )
+    }
+    for value in scope.values():
+        _string(value)
+    request.scope.validate()
+    fields: dict[str, Any] = {"scope": scope}
+    for name in ("action", "method", "url", "content_type"):
+        fields[name] = _string(getattr(request, name))
+    if request.required_scope is not None:
+        _string(request.required_scope)
+    fields["required_scope"] = request.required_scope
+    fields["max_response_bytes"] = _integer(request.max_response_bytes)
+    if type(request.body) is not bytes or len(request.body) > MAX_BYTES:
+        raise WireRejected("request body type or limit")
+    return canonical(fields), request.body
+
+
+def authorize_request(
+    request: Request, authorize: Callable[[Request], bool] | None
+) -> bool:
+    before = request_binding(request)
+    allowed, cancelled = False, ""
+    try:
+        allowed = authorize is not None and authorize(request) is True
+    except Exception:
+        pass
+    except asyncio.CancelledError:
+        cancelled = "async"
+    except GeneratorExit:
+        cancelled = "generator"
+    except KeyboardInterrupt:
+        cancelled = "interrupt"
+    except SystemExit:
+        cancelled = "exit"
+    except BaseException:
+        cancelled = "other"
+    # Outside exception handlers: never expose callback text through a chain.
+    if cancelled == "async":
+        raise asyncio.CancelledError("authorization cancelled; outcome unknown")
+    if cancelled == "generator":
+        raise GeneratorExit("authorization cancelled; outcome unknown")
+    if cancelled == "interrupt":
+        raise KeyboardInterrupt("authorization cancelled; outcome unknown")
+    if cancelled == "exit":
+        raise SystemExit("authorization cancelled; outcome unknown")
+    if cancelled:
+        raise BaseException("authorization cancelled; outcome unknown")
+    if request_binding(request) != before:
+        raise WireRejected("request changed during authorization")
+    return allowed
 
 
 @dataclass(frozen=True)
@@ -565,7 +632,7 @@ class WireClient:
 
     def _call(self, request: Request) -> tuple[Response, dict[str, str], Result | None]:
         # Every call, including each readback page, requires a fresh exact decision.
-        if self.authorize is None or self.authorize(request) is not True:
+        if not authorize_request(request, self.authorize):
             raise WireRejected("request scope not authorized")
         response = self.transport.exchange(request)
         headers, result = _response(response, request)

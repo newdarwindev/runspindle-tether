@@ -83,5 +83,12 @@
     "specification": "specs/slack-wire-v1.md",
     "upstream_implementation_copied": false,
     "primary_documentation_checked_utc": "2026-11-14"
+  },
+  "upload_authority_binding": {
+    "classification": "original_bounded_callback_checks_and_synthetic_tests",
+    "source_import": "none",
+    "specification": "specs/upload-authority-binding.md",
+    "live_transport": "not_run",
+    "production_authority": "unqualified"
   }
 }

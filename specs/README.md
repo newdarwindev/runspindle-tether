@@ -82,3 +82,6 @@ the runtime and live acceptance gates above remain unchanged.
 - [Single-shot Slack HTTP](slack-http-v1.md): actual bounded socket/process transport,
   tested only against synthetic loopback servers; real TLS/Slack/Core acceptance
   and a production credential helper remain unqualified.
+
+- [Upload authority binding](upload-authority-binding.md): exact request/scope
+  callback checks before effects; synthetic component evidence only.

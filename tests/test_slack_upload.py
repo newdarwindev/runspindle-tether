@@ -560,10 +560,10 @@ class UploadTests(unittest.TestCase):
         self,
     ) -> None:
         source = (ROOT / "tether/slack_upload.py").read_text()
-        old = "completed = self.client.complete(ticket, intent)"
+        old = "completed = client.complete(ticket, intent)"
         self.assertEqual(source.count(old), 1)
         changed = source.replace(
-            old, old + "\n        self.client.complete(ticket, intent)"
+            old, old + "\n        client.complete(ticket, intent)"
         )
         code = (
             "import tether.slack_upload as module\nexec(compile("
@@ -587,11 +587,11 @@ class UploadTests(unittest.TestCase):
 
     def test_mutation_upload_before_durable_substep_is_detected(self) -> None:
         source = (ROOT / "tether/slack_upload.py").read_text()
-        old = "uploaded = self.client.upload(ticket, intent)"
+        old = "uploaded = client.upload(ticket, intent)"
         self.assertEqual(source.count(old), 1)
         changed = source.replace(old, "uploaded = premature_upload").replace(
             '        self.db.execute(\n            "UPDATE uploads SET file_id=',
-            '        premature_upload = self.client.upload(ticket, intent)\n        self.db.execute(\n            "UPDATE uploads SET file_id=',
+            '        premature_upload = client.upload(ticket, intent)\n        self.db.execute(\n            "UPDATE uploads SET file_id=',
             1,
         )
         code = (

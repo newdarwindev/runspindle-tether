@@ -1,0 +1,108 @@
+{
+  "classification": "synthetic_component_exact_authority_binding",
+  "base_commit": "c3fbfb9ff5ed0483e522c93268ced9e40a6cb79d",
+  "issues": [
+    9,
+    10
+  ],
+  "python": "3.12.14",
+  "sha256": {
+    "tether/slack_wire.py": "0de192e858962cce3110d28682fe03329649d5341fcad06e6d75cac0797515b8",
+    "tether/slack_upload.py": "aa3cec3161db4509a0adc9eefae494f54cfb731d300733c579f84ccac80169c5",
+    "tests/test_upload_authority_binding.py": "94652ae0aa7ccfdefc858634f91d662d248c749680680c4adc875dab25d64c89",
+    "tests/test_slack_upload.py": "9ec7372e13a1c0a4dc4ecba6362c999f6594244bb2311d3503a97db31a254ee7"
+  },
+  "baseline_reproduction": {
+    "first_authority_channel": "C100",
+    "provider_completed_channel": "C200",
+    "provider_calls": [
+      "allocate",
+      "upload",
+      "complete"
+    ],
+    "eventual_error": "upload operation binding conflict"
+  },
+  "focused_normal": {
+    "tests": 8,
+    "seconds": 0.428,
+    "status": "passed"
+  },
+  "focused_optimized": {
+    "tests": 8,
+    "seconds": 0.523,
+    "status": "passed"
+  },
+  "existing_upload_tests": {
+    "tests": 18,
+    "seconds": 2.051,
+    "status": "passed"
+  },
+  "full_normal": {
+    "tests": 376,
+    "seconds": 34.861,
+    "status": "passed",
+    "command": "RUNSPINDLE_TETHER_V1_SOURCE=<exact-040b71f-source> python3 -m unittest discover -s tests -v"
+  },
+  "full_optimized": {
+    "tests": 376,
+    "seconds": 60.059,
+    "status": "passed",
+    "command": "RUNSPINDLE_TETHER_V1_SOURCE=<exact-040b71f-source> python3 -O -m unittest discover -s tests -v"
+  },
+  "new_mutation": "removed_request_guard_detected",
+  "existing_mutation_compatibility": "source anchors renamed self.client to invocation-local client; duplicate completion and premature upload faults/assertions retained",
+  "effects": {
+    "early_provider_calls": 0,
+    "early_upload_rows": 0,
+    "early_provider_file_rows": 0,
+    "late_mutation_allocate_calls": 1,
+    "late_mutation_upload_calls": 1,
+    "late_mutation_complete_calls": 0,
+    "fresh_process_cross_channel_shares": 0,
+    "network_calls": 0
+  },
+  "pinned_static": {
+    "status": "blocked",
+    "reason": "No package metadata was found for ruff"
+  },
+  "limitations": [
+    "Trusted callbacks/transport/host, not hostile in-process sandbox or authenticated identity",
+    "Detects persistent mutation at observed boundaries; no restore of caller objects",
+    "No live Slack, real provider or Core outbox integration qualification",
+    "No credentials, deployment, migration, access changes, jobs, installations or backups",
+    "Remote CI not run"
+  ],
+  "initial_full_attempt": {
+    "status": "failed",
+    "tests_per_mode": 376,
+    "failures_per_mode": 2,
+    "errors_per_mode": 2,
+    "causes": [
+      "Missing exact v1 source environment variable",
+      "Current mirroring evidence hashes stale after reviewed source changes"
+    ],
+    "resolution": "Exact v1 source materialized; current evidence and manifest hashes refreshed; historical evidence unchanged; full reruns passed"
+  },
+  "independent_focused_normal": {
+    "tests": 8,
+    "seconds": 0.459,
+    "status": "passed"
+  },
+  "independent_focused_optimized": {
+    "tests": 8,
+    "seconds": 0.484,
+    "status": "passed"
+  },
+  "existing_wire_tests": {
+    "tests": 22,
+    "seconds": 0.408,
+    "status": "passed"
+  },
+  "checks": {
+    "scaffold": "passed",
+    "repo_hygiene": "passed",
+    "diff_whitespace": "passed",
+    "mirroring_audit": "passed_19_disposition_units"
+  },
+  "old_source_commit": "040b71f2213a34f34e6b6a40124ed1164b93ce30"
+}
