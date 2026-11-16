@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "evidence_class": "synthetic_signed_provider_component_with_real_sqlite",
+  "base_revision": "789380df2a8fd0da5a9757e5312d66daa07bef2d",
+  "validated_source_revision": "2f0955a2b3aeb7dca35a5f9c55490479f9f49b59",
+  "validated_source_tree": "78a9fb42f78d27f4ca811f1bc95ab9f5185a0979",
+  "python": "3.12.14",
+  "sha256": {
+    "tether/slack_ingress.py": "96e247c66a0a84ad97e5b23258d310827f80c049fd5e0a655c89c1e5b394ffd4",
+    "tether/slack_feedback.py": "23e21a3129d357b57cf5ee469c1710fac3daf61d45b335c253f81d4677360b1d",
+    "tests/test_slack_feedback.py": "75be111e1c2e2726bb36116d693822b38d4c4c7c2cdb02e310f46c9b38c1d2f0",
+    "specs/signed-slack-feedback-v1.md": "8dc9926874a2a0a248640fea968d562e459c5c48ee1a790f43e5ec44bee970c8",
+    "tests/test_slack_ingress.py": "faf943bdb337de3361952b89ef902bde6d51567515b0931c446a2cb85db91e09",
+    "requirements-quality.txt": "9cbe1331549216b953f2922f1e8321357ca82bb985e1ea595c87fcee8a8fdc84",
+    "tools/quality-baseline.json": "786840907d57036341f82d37d7d625b0872aaa5b4972ce8dad0b04578049958d"
+  },
+  "provenance": "Original adapter, specification and synthetic tests; existing signature verifier and retained store reused; no source import or new dependencies.",
+  "commands": [
+    {
+      "command": "python3 -m unittest tests.test_slack_feedback tests.test_slack_ingress -q",
+      "status": "passed",
+      "tests": 29
+    },
+    {
+      "command": "python3 -O -m unittest tests.test_slack_feedback tests.test_slack_ingress -q",
+      "status": "passed",
+      "tests": 29
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -q",
+      "status": "passed",
+      "tests": 274,
+      "independent_review": "passed on validated_source_revision"
+    },
+    {
+      "command": "python3 -O -m unittest discover -s tests -q",
+      "status": "passed",
+      "tests": 274
+    },
+    {
+      "command": "python3 tools/validate.py",
+      "environment": "Existing pinned quality tools available on PATH; no implicit install",
+      "status": "passed",
+      "checks": [
+        {
+          "id": "reproducible-inputs",
+          "status": "passed"
+        },
+        {
+          "id": "scaffold",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "static-quality",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "repository-hygiene",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "check-artifacts",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "check-shared-fixtures",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "check-mirroring-audit",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "python-tests",
+          "status": "passed",
+          "exit_code": 0
+        },
+        {
+          "id": "distributable-build",
+          "status": "not_applicable"
+        }
+      ]
+    }
+  ],
+  "independent_review": {
+    "source_revision": "2f0955a2b3aeb7dca35a5f9c55490479f9f49b59",
+    "status": "approved_no_blocking_findings",
+    "observations": "274 full tests, 29 focused tests, independent correction/event-ID/target-ID/grant-reference sanitizer probes rejected with zero retained rows and clean errors"
+  },
+  "observed_boundaries": {
+    "real": [
+      "HMAC signature verification",
+      "configured actor and destination verification",
+      "SQLite retained delivery and feedback journals",
+      "fresh-process replay and conflict quarantine"
+    ],
+    "synthetic": [
+      "provider-shaped callback producer and signing key",
+      "Slack delivery/readback provider",
+      "Core target and retention authority"
+    ],
+    "forbidden_effects": "socket creation and Popen denied during feedback ingestion; provider request ledger and admission total_changes unchanged",
+    "mutation": "Removing shared signature guard makes actual forgery regression fail; accepted mutant writes independently visible in store"
+  },
+  "earlier_failed_attempts": [
+    "Uncommitted STATUS/provenance/README edits invalidated historical mirroring hash inventory. All three edits reverted, audit and full suite passed.",
+    "One aggregate rejected a commit made during verification via source-stability. Final aggregate rerun on frozen source passed."
+  ],
+  "not_run": [
+    "live Slack",
+    "HTTP listener/TLS deployment",
+    "signing-key custody qualification",
+    "Refinery pinned cross-component collection",
+    "remote CI on publication head",
+    "full-system acceptance"
+  ],
+  "not_implemented": [
+    "provider message edits/deletes and current-message freshness"
+  ],
+  "acceptance_limits": "Historical create evidence only. No automatic collection/training, no execution authority, no issue closure. Existing Refinery dependency pin unchanged. CI runner/image qualification separate. This supplemental evidence-only file does not retroactively change the validated source identity."
+}

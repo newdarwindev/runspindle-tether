@@ -1,0 +1,121 @@
+{
+  "base_revision": "789380df2a8fd0da5a9757e5312d66daa07bef2d",
+  "baseline_reproduction": {
+    "method": "Exact main modules loaded in memory; clock reentered once with capacity one",
+    "observed": {
+      "history_entries": 2,
+      "nested_outcome": "submitted",
+      "outer_outcome": "duplicate",
+      "sink_effects": 1
+    },
+    "status": "observed"
+  },
+  "boundaries": {
+    "fake": "Injected clock and process-local FakeSlack sink; independent request and record counters",
+    "not_exercised": [
+      "SQLite stores",
+      "network",
+      "native adapters",
+      "providers",
+      "durable delivery",
+      "production authority",
+      "process containment",
+      "deployment"
+    ],
+    "real": "Python execution, existing disposable temporary-file source mutation"
+  },
+  "entrypoint": "tether.native_testing.NativeSource.emit",
+  "fixtures": {
+    "capacity": 1,
+    "clock": 100,
+    "identities": "Invented deterministic task/host/session/workspace/channel/thread/event identifiers",
+    "randomness": "none"
+  },
+  "remaining_limits": [
+    "Synchronous process-local fixture only; no thread/process concurrency guarantee",
+    "Injected callbacks remain trusted test code",
+    "No production authentication, authority, provider or delivery qualification",
+    "No broader issue closure or aggregate gate qualification"
+  ],
+  "repository": "newdarwindev/runspindle-tether",
+  "reproduction": "Run the two focused commands above from the repository root with Python 3.12.14 and disposable temporary-directory access. No network, provider or actual store is used. Existing temporary mutation directories are cleaned by context managers; in-memory mutation modules are removed in finally blocks.",
+  "schema_version": 1,
+  "scope": "Partial Tether #1/#10 synthetic NativeSource clock reentrancy fixture correctness; no issue closure or merge-readiness claim.",
+  "source_sha256": {
+    "specs/synthetic-native-events-v1.md": "c63f1002a0accc34745f77a7afe4b47851eeb2646b68a7c36a57bda073bbc6f6",
+    "tests/test_native_source.py": "bbaa4f8b30de7401ac5298931c61794c7af994199daa1811e01e8418ec6f6457",
+    "tether/__init__.py": "8c7f563517f58350d1bd45b95b8ea03f5cadbdd98df399c9f9b17b176075d11e",
+    "tether/admission.py": "13c4ca51c00e745a5be068183e1f44999c43cf24afb8e4d18fdc41062acfc036",
+    "tether/native_testing.py": "d92efe289d54fe66c5157ccb2d2ea2fd3bf15a2470e8ff35ffe154a1f07ca755",
+    "tether/sanitization.py": "2077bcd548db09bcb80140d1c5453af437eed94659cec9924d7206f492912987",
+    "tether/schema.py": "ebd7544018096f02394c637d70dd1570baab66ea844232a1963c8318d0a3d3a1",
+    "tether/testing.py": "2b84de229c6aff62ec48b52c6decb8dd369e20bade2b0b3d16003ed14ff046c9"
+  },
+  "toolchain": {
+    "dependencies": "Python standard library only; no package installation",
+    "python": "CPython 3.12.14"
+  },
+  "verification": [
+    {
+      "check": "focused normal",
+      "command": "python3 -B -m unittest discover -s tests -p test_native_source.py -v",
+      "status": "passed",
+      "tests": 16
+    },
+    {
+      "check": "focused optimized",
+      "command": "python3 -B -O -m unittest discover -s tests -p test_native_source.py -v",
+      "status": "passed",
+      "tests": 16
+    },
+    {
+      "check": "syntax and trailing whitespace; changed Python line length <= 88",
+      "status": "passed"
+    },
+    {
+      "check": "independent no-write focused review",
+      "excluded": "Existing temporary-file availability mutation",
+      "modes": [
+        "normal",
+        "optimized"
+      ],
+      "status": "passed",
+      "tests_each_mode": 15
+    },
+    {
+      "cases": [
+        "Repeated caught nested emits preserve outer guard",
+        "Uncaught nested rejection releases guard without consumption",
+        "Invalid clock return releases guard",
+        "Clock-set disconnection is honored",
+        "SystemExit clock cancellation propagates and releases guard"
+      ],
+      "check": "independent pure adversarial probes",
+      "probes": 5,
+      "status": "passed"
+    },
+    {
+      "check": "late-guard mutation",
+      "expected": "Moving guard after the clock makes the capacity-one oracle fail",
+      "observed": "Two history entries and one independent fake sink effect",
+      "status": "passed"
+    },
+    {
+      "check": "initial restricted focused run",
+      "errors": 1,
+      "passed_tests": 15,
+      "reason": "Existing availability mutation could not create its disposable temporary directory; optimized stage was not run in that chained attempt. Later permitted temporary-file runs passed both complete focused suites.",
+      "status": "failed"
+    },
+    {
+      "check": "full discovery, scaffold, aggregate and pinned static-quality gates",
+      "reason": "Source-only bounded workspace and task scope; full checkout and pinned quality toolchain were not established. Focused checks do not substitute for these gates.",
+      "status": "not_run"
+    },
+    {
+      "check": "remote CI and published-head verification",
+      "reason": "No publication at receipt generation",
+      "status": "not_run"
+    }
+  ]
+}

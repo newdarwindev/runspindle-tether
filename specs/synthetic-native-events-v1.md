@@ -52,7 +52,11 @@ ordering, not a shared protocol, replay service or durable outbox.
 An accepted attempt is consumed and recorded unknown **before** the sink is called.
 A normal callback return becomes submitted, never delivered or confirmed. An
 exception remains unknown; its text is not retained. Cancellation propagates while
-preserving unknown. Reentrant emission is rejected. No automatic retry, readback,
+preserving unknown. Reentrant emission from either the injected clock or the sink
+is rejected before another clock invocation, history entry or sink effect. The
+emission guard is released on every exit. A clock error or cancellation happens
+before attempt consumption; a sink cancellation retains the consumed unknown
+attempt. No automatic retry, readback,
 provider cancellation or network call exists. This prevents the fixture itself
 from repeating a possibly accepted effect but is not real recovery orchestration.
 
@@ -67,10 +71,20 @@ Run `python3 tools/validate.py` and
 `python3 -O -m unittest discover -s tests -v`. The focused suite is
 `python3 -m unittest tests.test_native_source -v`. Fixed clock starts at 100;
 message/event IDs are deterministic counters. Socket connections are forbidden
-in the tests. Mutation source exists only in a disposable temporary directory.
+in the tests. Mutation source exists only in memory or a disposable temporary directory.
 
 Still blocked/not run: root #43/core #16 production contract and authority
 integration; real native/host capability discovery; whole-envelope production
 sanitization; core-owned durable outbox/reconciliation; concurrency and restart
 recovery; provider receipts; UI qualification, live acceptance and deployment.
 No runner policy, source-import scope, credentials or service settings change.
+
+## Clock callback reentrancy follow-up
+
+The focused suite includes clock-triggered reentrancy with capacity one, independent
+fake sink request/record counts, clock errors/cancellation followed by a valid call,
+and sink cancellation followed by replay and a new sequence. A bounded in-memory
+mutation moves the guard back behind the clock and proves the history-capacity
+oracle detects the regression. These remain process-local synthetic fixture tests,
+not native adapter, authority, durable delivery or live-provider qualification.
+See [the bounded evidence receipt](../docs/native-clock-reentrancy-evidence.json).
