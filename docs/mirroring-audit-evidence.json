@@ -95,7 +95,7 @@
     "tests/test_slack_wire.py": "f24c1a33dca2f91c0c9280fbf715310bc500f6b17e4f8ba1db12154069466d9c",
     "tether/journal.py": "c98eeac8d818d6f51eac13bb378dfa9fb93cb1424281479f3224a9ba096ad426",
     "tether/native_testing.py": "499613371e979d82f4c927ce0f41ec970a66c85c177d72a2e2b6775a9df70d04",
-    "tether/sanitization.py": "2077bcd548db09bcb80140d1c5453af437eed94659cec9924d7206f492912987",
+    "tether/sanitization.py": "7c0b5e6fae5eb0e00e43667a447213d8268007588cd42d5fb56e6449a2eb064d",
     "tether/slack_wire.py": "3ad814a732c96db223ada95f41e9954919cdbdf8775bdc744e11816c9facb5ad",
     "tether/testing.py": "2b84de229c6aff62ec48b52c6decb8dd369e20bade2b0b3d16003ed14ff046c9",
     "tools/check_mirroring_audit.py": "f1cefe07f3374185f9e9b393294daa99f599ce1c18832693d8de019b13062fff",
@@ -163,6 +163,12 @@
         "sha256": "4526b7c416bb871d96a7c56cf7b64daba97d78c233fa3ea6fb173d8d84e210a3"
       }
     ],
+    "live_acceptance": "not_run"
+  },
+  "percent_case_follow_up": {
+    "base_revision": "789380df2a8fd0da5a9757e5312d66daa07bef2d",
+    "scope": "Refresh current sanitizer hash for bounded URL-escape hex-case matching. Prior validation records remain historical; separate evidence is specs/sanitization-percent-case.md.",
+    "previous_sanitizer_sha256": "2077bcd548db09bcb80140d1c5453af437eed94659cec9924d7206f492912987",
     "live_acceptance": "not_run"
   }
 }
