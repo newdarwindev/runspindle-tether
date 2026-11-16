@@ -186,7 +186,7 @@ def _normalize(value: dict[str, Any], route: Route) -> bytes:
     )
 
 
-class SignedSlackIngress:
+class SlackMessageVerifier:
     """Raw-body authentication followed by mandatory independent authority.
 
     Clock returns integer Unix seconds; no wall-clock fallback exists. The
@@ -195,12 +195,9 @@ class SignedSlackIngress:
 
     def __init__(
         self,
-        path: str,
         signing_secret: bytes,
         route: Route,
         clock: Callable[[], int],
-        authorize: Callable[[Identity, str], Grant | None] | None = None,
-        sanitizer: Sanitizer | None = None,
         max_skew_seconds: int = MAX_SKEW_SECONDS,
     ) -> None:
         if type(signing_secret) is not bytes or not 1 <= len(signing_secret) <= 4096:
@@ -219,22 +216,9 @@ class SignedSlackIngress:
         self._route = route
         self._clock = clock
         self._max_skew = max_skew_seconds
-        self._owner = object()
-        self.admission = Admission(path, self._authenticate, authorize, sanitizer)
 
-    def close(self) -> None:
-        self.admission.close()
-
-    def _authenticate(self, raw: bytes, proof: object) -> Identity | None:
-        if (
-            type(proof) is _Proof
-            and proof.owner is self._owner
-            and (proof.normalized_sha256 == hashlib.sha256(raw).hexdigest())
-        ):
-            return proof.identity
-        return None
-
-    def ingest(self, raw: bytes, headers: tuple[tuple[str, str], ...]) -> str:
+    def verify(self, raw: bytes, headers: tuple[tuple[str, str], ...]) -> bytes:
+        """Return canonical ordinary message bytes only after signature and routing."""
         if type(raw) is not bytes or not 1 <= len(raw) <= MAX_BYTES:
             raise Rejected("Slack body bounds")
         fields = _headers(headers, len(raw))
@@ -266,6 +250,40 @@ class SignedSlackIngress:
             pass
         if normalized is None:
             raise Rejected("unsupported Slack event")
+        return normalized
+
+
+class SignedSlackIngress(SlackMessageVerifier):
+    """Verified ordinary Slack requests with separate durable task authority."""
+
+    def __init__(
+        self,
+        path: str,
+        signing_secret: bytes,
+        route: Route,
+        clock: Callable[[], int],
+        authorize: Callable[[Identity, str], Grant | None] | None = None,
+        sanitizer: Sanitizer | None = None,
+        max_skew_seconds: int = MAX_SKEW_SECONDS,
+    ) -> None:
+        super().__init__(signing_secret, route, clock, max_skew_seconds)
+        self._owner = object()
+        self.admission = Admission(path, self._authenticate, authorize, sanitizer)
+
+    def close(self) -> None:
+        self.admission.close()
+
+    def _authenticate(self, raw: bytes, proof: object) -> Identity | None:
+        if (
+            type(proof) is _Proof
+            and proof.owner is self._owner
+            and (proof.normalized_sha256 == hashlib.sha256(raw).hexdigest())
+        ):
+            return proof.identity
+        return None
+
+    def ingest(self, raw: bytes, headers: tuple[tuple[str, str], ...]) -> str:
+        normalized = self.verify(raw, headers)
         proof = _Proof(
             self._owner, hashlib.sha256(normalized).hexdigest(), self._route.identity
         )
