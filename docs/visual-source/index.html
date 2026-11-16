@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; font-src file:; img-src file:; base-uri 'none'; form-action 'none'">
+<title>Tether · Progress reference candidates</title>
+<style>@font-face{font-family:FixtureSans;src:url('file:///usr/share/fonts/truetype/dejavu/DejaVuSans.ttf')}@font-face{font-family:FixtureMono;src:url('file:///usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf')}
+*{box-sizing:border-box}html{font-family:FixtureSans,'DejaVu Sans',sans-serif;color:#172b42;background:#eef2f6;line-height:1.5;font-size:16px}body{margin:0}main{max-width:1200px;margin:auto;padding:28px 24px 48px}.eyebrow{font-size:.72rem;letter-spacing:.14em;font-weight:bold;color:#38516b}.notice{background:#172b42;color:#fff;padding:14px 18px;border-radius:10px;margin:14px 0 24px}.notice strong{display:block;font-size:.8rem;letter-spacing:.05em}h1{font-size:2rem;letter-spacing:-.04em;margin:8px 0}h2{font-size:1.12rem;line-height:1.35;margin:0}p{margin:10px 0}.intro{max-width:760px;color:#38516b}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{background:#fff;border:1px solid #c6d1dd;border-radius:12px;padding:20px;min-width:0;box-shadow:0 3px 8px #172b4208}.card header{display:flex;gap:12px;align-items:flex-start;justify-content:space-between}.number{color:#52657a;font-size:.75rem;font-family:FixtureMono,monospace}.badge{display:inline-block;border:1px solid currentColor;border-radius:5px;padding:3px 7px;font-size:.7rem;font-weight:bold;white-space:normal;flex-shrink:0;max-width:48%}.neutral{color:#38516b;background:#eef2f6}.attention{color:#714b00;background:#fff5d6}.negative{color:#9a2534;background:#fff0f1}.positive{color:#155f45;background:#eaf8f0}.message{font-size:.95rem}.meta{display:grid;grid-template-columns:auto minmax(0,1fr);gap:3px 12px;margin:14px 0;font-size:.72rem;color:#38516b}.meta dt{font-weight:bold}.meta dd{margin:0;font-family:FixtureMono,monospace}.card,.meta dd,code,pre,summary{overflow-wrap:anywhere;word-break:normal}code{font-family:FixtureMono,monospace;font-size:.74rem}.artifact{border:1px solid #c6d1dd;background:#f7f9fc;border-radius:7px;padding:12px;font-size:.8rem}.artifact strong{display:block}.artifact p{margin:5px 0}.label{font-weight:bold;color:#172b42}.boundary{font-size:.75rem;color:#38516b;border-top:1px solid #dde4ec;padding-top:10px;margin-top:14px}.url{display:block;padding:8px;background:#eef2f6;border-radius:5px}summary,a{color:#124e82}summary{cursor:pointer;padding:8px 2px;font-size:.8rem}a:focus-visible,summary:focus-visible{outline:3px solid #125d9c;outline-offset:3px;background:#fff5d6}pre{white-space:pre-wrap;font-family:FixtureMono,monospace;font-size:.7rem;padding:10px;background:#eef2f6}footer{margin-top:24px;color:#38516b;font-size:.8rem}a{font-weight:bold}*{animation:none!important;transition:none!important;caret-color:transparent!important}@media(max-width:700px){main{padding:18px 14px 32px}.grid{grid-template-columns:minmax(0,1fr)}.card{padding:16px}h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<main>
+<div class="eyebrow">TETHER / OUTPUT CONTRACT STUDIES</div>
+<h1>Progress, without overclaiming.</h1>
+<p class="intro">Synthetic message and attachment reference cards. Every state keeps identity, freshness and delivery uncertainty visible.</p>
+<aside class="notice">
+<strong>LOCAL RENDER APPROXIMATION</strong>Not a Slack screenshot. Candidate references, not approved baselines. Actual Slack rendering: NOT RUN.</aside>
+<p>
+<a href="#fallback">Open accessible text reference</a>
+</p>
+<section class="grid" aria-label="Synthetic progress scenarios"><article class="card" id="admitted" aria-labelledby="heading-admitted">
+<header>
+<div>
+<div class="number">01 / SYNTHETIC</div>
+<h2 id="heading-admitted">Admitted</h2>
+</div>
+<span class="badge neutral">Not sent</span>
+</header>
+<p class="message">The request is recorded. Execution has not started.</p>
+<dl class="meta">
+<dt>Task</dt>
+<dd>synthetic-task-007 · r1</dd>
+<dt>Thread</dt>
+<dd>1700000000.000001</dd>
+<dt>Message</dt>
+<dd>synthetic-message-001</dd>
+<dt>Observed</dt>
+<dd>2026-11-16T12:00:00Z</dd>
+</dl>
+<p class="boundary">Delivery: Not sent. Acceptance is not delivery; task completion is not delivery.</p>
+<details>
+<summary aria-label="Admitted plain-text version">Plain-text version</summary>
+<pre>Admitted
+The request is recorded. Execution has not started.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-001
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Not sent
+Untrusted text: &lt;script&gt;alert(&quot;not executed&quot;)&lt;/script&gt;
+Inert reference: https://example.invalid/reference</pre>
+</details>
+<code class="url" aria-label="Inert untrusted reference">https://example.invalid/reference</code>
+</article><article class="card" id="running" aria-labelledby="heading-running">
+<header>
+<div>
+<div class="number">02 / SYNTHETIC</div>
+<h2 id="heading-running">Running</h2>
+</div>
+<span class="badge neutral">Not sent</span>
+</header>
+<p class="message">Preparing the requested summary from permitted inputs. This is a public progress summary, not internal reasoning.</p>
+<dl class="meta">
+<dt>Task</dt>
+<dd>synthetic-task-007 · r1</dd>
+<dt>Thread</dt>
+<dd>1700000000.000001</dd>
+<dt>Message</dt>
+<dd>synthetic-message-002</dd>
+<dt>Observed</dt>
+<dd>2026-11-16T12:00:00Z</dd>
+</dl>
+<p class="boundary">Delivery: Not sent. Acceptance is not delivery; task completion is not delivery.</p>
+<details>
+<summary aria-label="Running plain-text version">Plain-text version</summary>
+<pre>Running
+Preparing the requested summary from permitted inputs. This is a public progress summary, not internal reasoning.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-002
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Not sent
+Untrusted text: &lt;script&gt;alert(&quot;not executed&quot;)&lt;/script&gt;
+Inert reference: https://example.invalid/reference</pre>
+</details>
+<code class="url" aria-label="Inert untrusted reference">https://example.invalid/reference</code>
+</article><article class="card" id="blocked" aria-labelledby="heading-blocked">
+<header>
+<div>
+<div class="number">03 / SYNTHETIC</div>
+<h2 id="heading-blocked">Blocked</h2>
+</div>
+<span class="badge attention">Not sent</span>
+</header>
+<p class="message">Waiting for the required approval. No further action is being taken.</p>
+<dl class="meta">
+<dt>Task</dt>
+<dd>synthetic-task-007 · r1</dd>
+<dt>Thread</dt>
+<dd>1700000000.000001</dd>
+<dt>Message</dt>
+<dd>synthetic-message-003</dd>
+<dt>Observed</dt>
+<dd>2026-11-16T12:00:00Z</dd>
+</dl>
+<p class="boundary">Delivery: Not sent. Acceptance is not delivery; task completion is not delivery.</p>
+<details>
+<summary aria-label="Blocked plain-text version">Plain-text version</summary>
+<pre>Blocked
+Waiting for the required approval. No further action is being taken.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-003
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Not sent
+Untrusted text: &lt;script&gt;alert(&quot;not executed&quot;)&lt;/script&gt;
+Inert reference: https://example.invalid/reference</pre>
+</details>
+<code class="url" aria-label="Inert untrusted reference">https://example.invalid/reference</code>
+</article><article class="card" id="cancel-requested" aria-labelledby="heading-cancel-requested">
+<header>
+<div>
+<div class="number">04 / SYNTHETIC</div>
+<h2 id="heading-cancel-requested">Cancellation requested</h2>
+</div>
+<span class="badge attention">Unknown</span>
+</header>
+<p class="message">Cancellation was requested. Work may still be stopping; completion is not confirmed.</p>
+<dl class="meta">
+<dt>Task</dt>
+<dd>synthetic-task-007 · r1</dd>
+<dt>Thread</dt>
+<dd>1700000000.000001</dd>
+<dt>Message</dt>
+<dd>synthetic-message-004</dd>
+<dt>Observed</dt>
+<dd>2026-11-16T12:00:00Z</dd>
+</dl>
+<p class="boundary">Delivery: Unknown. Acceptance is not delivery; task completion is not delivery.</p>
+<details>
+<summary aria-label="Cancellation requested plain-text version">Plain-text version</summary>
+<pre>Cancellation requested
+Cancellation was requested. Work may still be stopping; completion is not confirmed.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-004
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Unknown
+Untrusted text: &lt;script&gt;alert(&quot;not executed&quot;)&lt;/script&gt;
+Inert reference: https://example.invalid/reference</pre>
+</details>
+<code class="url" aria-label="Inert untrusted reference">https://example.invalid/reference</code>
+</article><article class="card" id="terminal" aria-labelledby="heading-terminal">
+<header>
+<div>
+<div class="number">05 / SYNTHETIC</div>
+<h2 id="heading-terminal">Completed</h2>
+</div>
+<span class="badge positive">Accepted</span>
+</header>
+<p class="message">The bounded task finished. Delivery is tracked separately below.</p>
+<dl class="meta">
+<dt>Task</dt>
+<dd>synthetic-task-007 · r1</dd>
+<dt>Thread</dt>
+<dd>1700000000.000001</dd>
+<dt>Message</dt>
+<dd>synthetic-message-005</dd>
+<dt>Observed</dt>
+<dd>2026-11-16T12:00:00Z</dd>
+</dl>
+<section class="artifact" aria-label="Accepted artifact metadata">
+<strong>synthetic-summary.txt</strong>
+<p>Exact synthetic accepted bytes · 67 bytes</p>
+<p>
+<span class="label">SHA-256</span>
+<br>
+<code>fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134</code>
+</p>
+<p>Preview unavailable. A preview would not prove exact-byte delivery.</p>
+<a href="accepted-artifact.txt" download aria-label="Completed exact synthetic artifact">Download exact synthetic artifact</a>
+</section><p class="boundary">Delivery: Accepted. Acceptance is not delivery; task completion is not delivery.</p>
+<details>
+<summary aria-label="Completed plain-text version">Plain-text version</summary>
+<pre>Completed
+The bounded task finished. Delivery is tracked separately below.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-005
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Accepted
+Untrusted text: &lt;script&gt;alert(&quot;not executed&quot;)&lt;/script&gt;
+Inert reference: https://example.invalid/reference
+Artifact: synthetic-summary.txt
+SHA-256: fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134</pre>
+</details>
+<code class="url" aria-label="Inert untrusted reference">https://example.invalid/reference</code>
+</article><article class="card" id="unknown" aria-labelledby="heading-unknown">
+<header>
+<div>
+<div class="number">06 / SYNTHETIC</div>
+<h2 id="heading-unknown">Outcome unknown</h2>
+</div>
+<span class="badge attention">Unknown</span>
+</header>
+<p class="message">The send may have taken effect, but acknowledgment was lost. Check the exact destination before retrying.</p>
+<dl class="meta">
+<dt>Task</dt>
+<dd>synthetic-task-007 · r1</dd>
+<dt>Thread</dt>
+<dd>1700000000.000001</dd>
+<dt>Message</dt>
+<dd>synthetic-message-006</dd>
+<dt>Observed</dt>
+<dd>2026-11-16T12:00:00Z</dd>
+</dl>
+<section class="artifact" aria-label="Accepted artifact metadata">
+<strong>synthetic-summary.txt</strong>
+<p>Exact synthetic accepted bytes · 67 bytes</p>
+<p>
+<span class="label">SHA-256</span>
+<br>
+<code>fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134</code>
+</p>
+<p>Preview unavailable. A preview would not prove exact-byte delivery.</p>
+<a href="accepted-artifact.txt" download aria-label="Outcome unknown exact synthetic artifact">Download exact synthetic artifact</a>
+</section><p class="boundary">Delivery: Unknown. Acceptance is not delivery; task completion is not delivery.</p>
+<details>
+<summary aria-label="Outcome unknown plain-text version">Plain-text version</summary>
+<pre>Outcome unknown
+The send may have taken effect, but acknowledgment was lost. Check the exact destination before retrying.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-006
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Unknown
+Untrusted text: &lt;script&gt;alert(&quot;not executed&quot;)&lt;/script&gt;
+Inert reference: https://example.invalid/reference
+Artifact: synthetic-summary.txt
+SHA-256: fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134</pre>
+</details>
+<code class="url" aria-label="Inert untrusted reference">https://example.invalid/reference</code>
+</article><article class="card" id="unsupported" aria-labelledby="heading-unsupported">
+<header>
+<div>
+<div class="number">07 / SYNTHETIC</div>
+<h2 id="heading-unsupported">Unsupported event</h2>
+</div>
+<span class="badge neutral">Not sent</span>
+</header>
+<p class="message">This source exposes final output only. Live tool progress is not available.</p>
+<dl class="meta">
+<dt>Task</dt>
+<dd>synthetic-task-007 · r1</dd>
+<dt>Thread</dt>
+<dd>1700000000.000001</dd>
+<dt>Message</dt>
+<dd>synthetic-message-007</dd>
+<dt>Observed</dt>
+<dd>2026-11-16T12:00:00Z</dd>
+</dl>
+<p class="boundary">Delivery: Not sent. Acceptance is not delivery; task completion is not delivery.</p>
+<details>
+<summary aria-label="Unsupported event plain-text version">Plain-text version</summary>
+<pre>Unsupported event
+This source exposes final output only. Live tool progress is not available.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-007
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Not sent
+Untrusted text: &lt;script&gt;alert(&quot;not executed&quot;)&lt;/script&gt;
+Inert reference: https://example.invalid/reference</pre>
+</details>
+<code class="url" aria-label="Inert untrusted reference">https://example.invalid/reference</code>
+</article><article class="card" id="stale" aria-labelledby="heading-stale">
+<header>
+<div>
+<div class="number">08 / SYNTHETIC</div>
+<h2 id="heading-stale">Stale update</h2>
+</div>
+<span class="badge attention">Unknown</span>
+</header>
+<p class="message">This is the last observed snapshot. The source is disconnected; it is not a live view.</p>
+<dl class="meta">
+<dt>Task</dt>
+<dd>synthetic-task-007 · r1</dd>
+<dt>Thread</dt>
+<dd>1700000000.000001</dd>
+<dt>Message</dt>
+<dd>synthetic-message-008</dd>
+<dt>Observed</dt>
+<dd>2026-11-16T12:00:00Z</dd>
+</dl>
+<p class="boundary">Delivery: Unknown. Acceptance is not delivery; task completion is not delivery.</p>
+<details>
+<summary aria-label="Stale update plain-text version">Plain-text version</summary>
+<pre>Stale update
+This is the last observed snapshot. The source is disconnected; it is not a live view.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-008
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Unknown
+Untrusted text: &lt;script&gt;alert(&quot;not executed&quot;)&lt;/script&gt;
+Inert reference: https://example.invalid/reference</pre>
+</details>
+<code class="url" aria-label="Inert untrusted reference">https://example.invalid/reference</code>
+</article><article class="card" id="edited" aria-labelledby="heading-edited">
+<header>
+<div>
+<div class="number">09 / SYNTHETIC</div>
+<h2 id="heading-edited">Request edited · revision 2</h2>
+</div>
+<span class="badge neutral">Not sent</span>
+</header>
+<p class="message">Revision 1 is superseded. This card identifies revision 2 without implying that earlier work was automatically retargeted.</p>
+<dl class="meta">
+<dt>Task</dt>
+<dd>synthetic-task-007 · r2</dd>
+<dt>Thread</dt>
+<dd>1700000000.000001</dd>
+<dt>Message</dt>
+<dd>synthetic-message-009</dd>
+<dt>Observed</dt>
+<dd>2026-11-16T12:00:00Z</dd>
+</dl>
+<p class="boundary">Delivery: Not sent. Acceptance is not delivery; task completion is not delivery.</p>
+<details>
+<summary aria-label="Request edited · revision 2 plain-text version">Plain-text version</summary>
+<pre>Request edited · revision 2
+Revision 1 is superseded. This card identifies revision 2 without implying that earlier work was automatically retargeted.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-009
+Revision: 2
+Observed: 2026-11-16T12:00:00Z
+Delivery: Not sent
+Untrusted text: &lt;script&gt;alert(&quot;not executed&quot;)&lt;/script&gt;
+Inert reference: https://example.invalid/reference</pre>
+</details>
+<code class="url" aria-label="Inert untrusted reference">https://example.invalid/reference</code>
+</article><article class="card" id="delivered" aria-labelledby="heading-delivered">
+<header>
+<div>
+<div class="number">10 / SYNTHETIC</div>
+<h2 id="heading-delivered">Delivered · independently observed</h2>
+</div>
+<span class="badge positive">Delivered</span>
+</header>
+<p class="message">Exact synthetic content and destination were observed by the fixture. This illustration is not a real Slack receipt.</p>
+<dl class="meta">
+<dt>Task</dt>
+<dd>synthetic-task-007 · r1</dd>
+<dt>Thread</dt>
+<dd>1700000000.000001</dd>
+<dt>Message</dt>
+<dd>synthetic-message-010</dd>
+<dt>Observed</dt>
+<dd>2026-11-16T12:00:00Z</dd>
+</dl>
+<section class="artifact" aria-label="Accepted artifact metadata">
+<strong>synthetic-summary.txt</strong>
+<p>Exact synthetic accepted bytes · 67 bytes</p>
+<p>
+<span class="label">SHA-256</span>
+<br>
+<code>fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134</code>
+</p>
+<p>Preview unavailable. A preview would not prove exact-byte delivery.</p>
+<a href="accepted-artifact.txt" download aria-label="Delivered · independently observed exact synthetic artifact">Download exact synthetic artifact</a>
+</section><p class="boundary">Delivery: Delivered. Acceptance is not delivery; task completion is not delivery.</p>
+<details>
+<summary aria-label="Delivered · independently observed plain-text version">Plain-text version</summary>
+<pre>Delivered · independently observed
+Exact synthetic content and destination were observed by the fixture. This illustration is not a real Slack receipt.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-010
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Delivered
+Untrusted text: &lt;script&gt;alert(&quot;not executed&quot;)&lt;/script&gt;
+Inert reference: https://example.invalid/reference
+Artifact: synthetic-summary.txt
+SHA-256: fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134</pre>
+</details>
+<code class="url" aria-label="Inert untrusted reference">https://example.invalid/reference</code>
+</article><article class="card" id="failed" aria-labelledby="heading-failed">
+<header>
+<div>
+<div class="number">11 / SYNTHETIC</div>
+<h2 id="heading-failed">Send failed</h2>
+</div>
+<span class="badge negative">Failed</span>
+</header>
+<p class="message">The synthetic send was definitively rejected. The accepted artifact still exists; no delivery is claimed.</p>
+<dl class="meta">
+<dt>Task</dt>
+<dd>synthetic-task-007 · r1</dd>
+<dt>Thread</dt>
+<dd>1700000000.000001</dd>
+<dt>Message</dt>
+<dd>synthetic-message-011</dd>
+<dt>Observed</dt>
+<dd>2026-11-16T12:00:00Z</dd>
+</dl>
+<section class="artifact" aria-label="Accepted artifact metadata">
+<strong>synthetic-summary.txt</strong>
+<p>Exact synthetic accepted bytes · 67 bytes</p>
+<p>
+<span class="label">SHA-256</span>
+<br>
+<code>fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134</code>
+</p>
+<p>Preview unavailable. A preview would not prove exact-byte delivery.</p>
+<a href="accepted-artifact.txt" download aria-label="Send failed exact synthetic artifact">Download exact synthetic artifact</a>
+</section><p class="boundary">Delivery: Failed. Acceptance is not delivery; task completion is not delivery.</p>
+<details>
+<summary aria-label="Send failed plain-text version">Plain-text version</summary>
+<pre>Send failed
+The synthetic send was definitively rejected. The accepted artifact still exists; no delivery is claimed.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-011
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Failed
+Untrusted text: &lt;script&gt;alert(&quot;not executed&quot;)&lt;/script&gt;
+Inert reference: https://example.invalid/reference
+Artifact: synthetic-summary.txt
+SHA-256: fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134</pre>
+</details>
+<code class="url" aria-label="Inert untrusted reference">https://example.invalid/reference</code>
+</article><article class="card" id="long-content" aria-labelledby="heading-long-content">
+<header>
+<div>
+<div class="number">12 / SYNTHETIC</div>
+<h2 id="heading-long-content">Long content · preview unavailable</h2>
+</div>
+<span class="badge neutral">Unknown</span>
+</header>
+<p class="message">A deliberately long public summary explains an interrupted workflow without exposing hidden reasoning. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. </p>
+<dl class="meta">
+<dt>Task</dt>
+<dd>synthetic-task-007 · r1</dd>
+<dt>Thread</dt>
+<dd>1700000000.000001</dd>
+<dt>Message</dt>
+<dd>synthetic-message-012</dd>
+<dt>Observed</dt>
+<dd>2026-11-16T12:00:00Z</dd>
+</dl>
+<section class="artifact" aria-label="Accepted artifact metadata">
+<strong>synthetic-accepted-summary-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-revision-2.txt</strong>
+<p>Exact synthetic accepted bytes · 67 bytes</p>
+<p>
+<span class="label">SHA-256</span>
+<br>
+<code>fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134</code>
+</p>
+<p>Preview unavailable. A preview would not prove exact-byte delivery.</p>
+<a href="accepted-artifact.txt" download aria-label="Long content · preview unavailable exact synthetic artifact">Download exact synthetic artifact</a>
+</section><p class="boundary">Delivery: Unknown. Acceptance is not delivery; task completion is not delivery.</p>
+<details>
+<summary aria-label="Long content · preview unavailable plain-text version">Plain-text version</summary>
+<pre>Long content · preview unavailable
+A deliberately long public summary explains an interrupted workflow without exposing hidden reasoning. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. 
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-012
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Unknown
+Untrusted text: &lt;script&gt;alert(&quot;not executed&quot;)&lt;/script&gt;
+Inert reference: https://example.invalid/reference
+Artifact: synthetic-accepted-summary-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-revision-2.txt
+SHA-256: fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134</pre>
+</details>
+<code class="url" aria-label="Inert untrusted reference">https://example.invalid/reference</code>
+</article></section>
+<section id="fallback">
+<h2>Accessible text reference</h2>
+<p>Each card has an expandable plain-text equivalent. The same text is also supplied in plain-text.txt.</p>
+</section>
+<footer>Fixed synthetic observation · 16 November 2026, 12:00 UTC. No live provider, authorization, durability or delivery claim.</footer>
+</main>
+</body>
+</html>

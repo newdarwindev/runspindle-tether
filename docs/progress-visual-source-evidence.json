@@ -1,0 +1,115 @@
+{
+  "classification": "partial_source_only_visual_fixture_candidate",
+  "base_commit": "c95675ec524339f191b6e2d3b208d6536d40da05",
+  "issue": 6,
+  "sha256": {
+    "tools/render_progress_fixtures.py": "74b91b296247c581a4fed1cd1fafafb76ef4b782316777f79be53d0f6f47461a",
+    "tests/test_progress_visual_source.py": "9157831a80b43c584642d76fb1f729dde3b82e53603ae7abfc31c90addc9276f",
+    "visual/progress.css": "16267ac6881a4b10b10a08c7e9a3d2606f4daa2d5b189b0c22c2c0b020f57e23",
+    "visual/scenarios.json": "c3aacc3c49259d0ee891ee2c3e63fdb035a68761be7743552041d7f0b8fd3522",
+    "docs/visual-source/accepted-artifact.txt": "fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134",
+    "docs/visual-source/field-map.json": "4dfdbd43685a78b74bc35795dfd3d0e327335dab7378dad0982a43e585499bfb",
+    "docs/visual-source/index.html": "1842583432acf503cd59e8793ebcc49d94445b273720f4398b5ff984037fabbd",
+    "docs/visual-source/plain-text.txt": "8813a1b267c37415612702008d6f4fabce88731e77654988d24c377eb9a955d3"
+  },
+  "scenarios": 12,
+  "source_tests": {
+    "normal": {
+      "tests": 5,
+      "seconds": 0.981,
+      "status": "passed"
+    },
+    "optimized": {
+      "tests": 5,
+      "seconds": 0.938,
+      "status": "passed"
+    }
+  },
+  "full_tests": {
+    "normal": {
+      "tests": 381,
+      "seconds": 34.927,
+      "status": "passed"
+    },
+    "optimized": {
+      "tests": 381,
+      "seconds": 59.874,
+      "status": "passed"
+    },
+    "execution": "sequential on merged c95675e base",
+    "dependency": "RUNSPINDLE_TETHER_V1_SOURCE exact040b71f2213a34f34e6b6a40124ed1164b93ce30"
+  },
+  "rendering": {
+    "status": "blocked_before_page_open",
+    "chromium_error": "process_singleton_posix socket() failed: Operation not permitted",
+    "bounded_escalation_retry": "same_socket_EPERM",
+    "supported_browser_fallback": "file:// rejected; only HTTP/HTTPS allowed",
+    "reference_pngs": "not_generated",
+    "contact_sheet": "not_generated",
+    "dom_accessibility_keyboard": "not_run",
+    "missing_label_and_clipping_mutants": "not_run",
+    "repeat_render_hash_comparison": "not_run",
+    "manual_visual_review": "not_run",
+    "actual_slack": "not_run",
+    "baseline_approval": "not_approved"
+  },
+  "declared_renderer_environment": {
+    "chromium": "Chromium 156.0.8078.79 built on Debian GNU/Linux 13 (trixie)",
+    "python": "3.12.14",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "playwright": "1.62.0",
+    "pillow": "13.0.0",
+    "fonts": {
+      "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf": "57f73e11f51999432bf7ab22ce55b6f945d5eca1bf824404cfa9ec2e3718c84e",
+      "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf": "54bf827eb99404e8f430c330ad30f063334f637eba0109b6a18d4f566a8e9dd8"
+    },
+    "locale": "en-US",
+    "timezone": "UTC",
+    "device_pixel_ratio": 1,
+    "fixed_clock": "2026-11-16T12:00:00Z",
+    "viewports": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "text_reflow": "390px / 200% root font sizing, not actual browser zoom",
+    "chromium_sandbox": "enabled; no further rendering attempted"
+  },
+  "static_quality": {
+    "status": "blocked",
+    "reason": "No package metadata was found for ruff"
+  },
+  "limits": [
+    "Source contrast pairs do not establish rendered contrast or accessibility",
+    "No network/provider/live Slack/deployment/access/settings/jobs/backups",
+    "Generator behavior unqualified until successful authorized rendering",
+    "Full existing suite is not a visual acceptance test"
+  ],
+  "checks": {
+    "scaffold": "passed",
+    "hygiene": "passed",
+    "mirroring_audit": "passed_19_disposition_units",
+    "diff_whitespace": "passed"
+  },
+  "source_only_cli": {
+    "status": "tested",
+    "browser_import_or_launch": "none",
+    "network_attempts": 0,
+    "overwrite": "refused",
+    "emitted_bytes": "exact_build_outputs"
+  },
+  "earlier_base_validation": {
+    "base": "c3fbfb9ff5ed0483e522c93268ced9e40a6cb79d",
+    "full_normal_serial": "373 passed33.262s",
+    "full_optimized": "373 passed62.037s",
+    "intermittent_failure": "Concurrent normal run failed existing test_schema.test_concurrent_process_adoption with child SchemaRejected; isolated1 test and serial full rerun passed; runtime unchanged and failure not waived"
+  },
+  "independent_source_review": {
+    "tests": 5,
+    "seconds": 0.991,
+    "status": "passed",
+    "retained_artifacts": "all_four_match_build_outputs",
+    "visual_assertions": "not_performed"
+  }
+}

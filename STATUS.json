@@ -85,5 +85,12 @@
   "upload_authority_binding": {
     "status": "exact_callback_binding_component_candidate",
     "evidence": "docs/upload-authority-binding-evidence.json"
+  },
+  "progress_visual_sources": {
+    "status": "partial_source_only_render_blocked",
+    "evidence": "docs/progress-visual-source-evidence.json",
+    "reference_pngs": "not_generated",
+    "actual_slack": "not_run",
+    "baseline_approval": "not_approved"
   }
 }
