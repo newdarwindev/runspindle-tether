@@ -26,6 +26,7 @@ from tether.slack_wire import (
     WireClient,
     WireRejected,
     allocate_request,
+    authorize_request,
     complete_request,
     info_request,
     upload_request,
@@ -91,14 +92,20 @@ class UploadJournal:
         self.db.close()
 
     def _allowed(self, request: Request) -> bool:
-        # Detach callback exceptions: private provider/configuration content must
-        # not escape in an exception chain. Cancellation still propagates.
-        allowed = False
-        try:
-            allowed = self.authorize is not None and self.authorize(request) is True
-        except Exception:
-            pass
-        return allowed
+        return authorize_request(request, self.authorize)
+
+    def _bound_client(
+        self, scope: Scope, intent: FileIntent, binding: bytes
+    ) -> tuple[WireClient, Callable[[Request], bool]]:
+        def allowed(request: Request) -> bool:
+            if self._context(scope, intent) != binding:
+                raise WireRejected("upload context changed")
+            result = self._allowed(request)
+            if self._context(scope, intent) != binding:
+                raise WireRejected("upload context changed")
+            return result
+
+        return WireClient(self.client.transport, allowed), allowed
 
     def _context(self, scope: Scope, intent: FileIntent) -> bytes:
         if type(scope) is not Scope or type(intent) is not FileIntent:
@@ -133,14 +140,17 @@ class UploadJournal:
 
     def send(self, scope: Scope, intent: FileIntent) -> UploadObservation:
         binding = self._context(scope, intent)
+        client, allowed = self._bound_client(scope, intent, binding)
         # Existing operations need only read authority, never new send authority.
         if self._row(scope, binding) is not None:
             return self.lookup(scope, intent)
         first = allocate_request(scope, intent)
-        if not self._allowed(first):
+        if not allowed(first):
             raise WireRejected("upload request not authorized")
         self.db.execute("BEGIN IMMEDIATE")
         try:
+            if self._context(scope, intent) != binding:
+                raise WireRejected("upload context changed")
             existing = self._row(scope, binding) is not None
             if not existing:
                 self.db.execute(
@@ -155,7 +165,7 @@ class UploadJournal:
             return self.lookup(scope, intent)
         # Only the invocation which committed the reservation advances. A process
         # death even before the first request conservatively consumes the attempt.
-        allocated = self.client.allocate(scope, intent)
+        allocated = client.allocate(scope, intent)
         self._record_delay(scope, "allocate", allocated)
         if allocated.state != "parsed" or type(allocated.facts) is not Ticket:
             return self._unknown(scope, binding)
@@ -163,23 +173,23 @@ class UploadJournal:
         # Validate and authorize before persisting any provider-derived identity.
         self.sanitizer.require_clean([ticket.file_id, ticket.upload_url])
         request = upload_request(ticket, intent)
-        if not self._allowed(request):
+        if not allowed(request):
             return self._unknown(scope, binding)
         self.db.execute(
             "UPDATE uploads SET file_id=?,phase='uploading' WHERE operation=?",
             (ticket.file_id, scope.operation_id),
         )
-        uploaded = self.client.upload(ticket, intent)
+        uploaded = client.upload(ticket, intent)
         self._record_delay(scope, "upload", uploaded)
         if uploaded.state != "upload_response":
             return self._unknown(scope, binding)
-        if not self._allowed(complete_request(ticket, intent)):
+        if not allowed(complete_request(ticket, intent)):
             return self._unknown(scope, binding)
         self.db.execute(
             "UPDATE uploads SET phase='completing' WHERE operation=?",
             (scope.operation_id,),
         )
-        completed = self.client.complete(ticket, intent)
+        completed = client.complete(ticket, intent)
         self._record_delay(scope, "complete", completed)
         # Completion acknowledgement is not delivery, including a parsed success.
         # An uncertain completion is reconciled, never completed a second time.
@@ -195,12 +205,13 @@ class UploadJournal:
 
     def lookup(self, scope: Scope, intent: FileIntent) -> UploadObservation:
         binding = self._context(scope, intent)
+        client, allowed = self._bound_client(scope, intent, binding)
         row = self._row(scope, binding)
         if row is None or row[2] is None or row[4]:
             return self._unknown(scope, binding)
         file = FileBinding(scope, row[2])
         self.sanitizer.require_clean(file.file_id)
-        result = self.client.readback(file, intent)
+        result = client.readback(file, intent)
         self._record_delay(scope, "readback", result)
         if not (
             (result.state == "content_match" and type(result.facts) is ContentFacts)
@@ -235,12 +246,12 @@ class UploadJournal:
         # No network under a SQLite lock. Recheck authority after observation and
         # after waiting for the lock before retaining a successful observation.
         check = info_request(file)
-        if not self._allowed(check):
+        if not allowed(check):
             return self._unknown(scope, binding)
         self.db.execute("BEGIN IMMEDIATE")
         try:
             row = self._row(scope, binding)
-            if row is None or not self._allowed(check):
+            if row is None or not allowed(check):
                 self.db.rollback()
                 return self._unknown(scope, binding)
             conflict = (
