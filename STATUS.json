@@ -74,10 +74,12 @@
     "status": "single_shot_http_component_loopback_tests_passed",
     "specification": "specs/slack-http-v1.md",
     "tests": "tests/test_slack_http.py",
-    "real_tls": "not_run",
+    "real_tls": "synthetic_loopback_handshakes_only",
     "live_slack": "not_run",
     "production_credential_helper": "not_implemented",
     "core_integration": "blocked",
-    "automatic_retry": "not_implemented"
+    "automatic_retry": "not_implemented",
+    "tls_tests": "tests/test_slack_tls.py",
+    "tls_evidence": "specs/slack-loopback-tls.md"
   }
 }
