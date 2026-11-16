@@ -74,7 +74,7 @@
   },
   "reviewed_commit_record": "The containing commit identifies these exact bytes; final commit/tree and manifest hash are retained in the publication receipt and private mapping. No recursive self-hash is claimed.",
   "sha256": {
-    "STATUS.json": "7d19209ab8d70c4ddd46557d1afcb91b1d8b694b4663db358286563981619293",
+    "STATUS.json": "09f6a46b7472183732fa78e7b370f2b535ac2b313b882aeefaae7f7d9f6e437d",
     "docs/LICENSE-SRC-014.txt": "6633fb2316603acd45898cbcd7497f18e045449547eddf137b1919358b57fe2e",
     "docs/MIRRORING_ACCEPTANCE.md": "c4853930f2257426ac72c107a926f1617b48a60369d5fb079ca464c487261d40",
     "docs/MIRRORING_COVERAGE.md": "17415f72ffc1feefdbdf47e80cb6d22a3f2f4e59a23ebfd262313d0958f11350",
@@ -85,16 +85,16 @@
     "hygiene.json": "20afbbf219ee10b19406b2f46d2ed9af58868c9d5a546aff5259f137e38af8e7",
     "provenance.json": "d6781eb06b86b63b6a705153727c7f616a8d3188a270dba685fa2d3b575f7c56",
     "requirements-quality.txt": "9cbe1331549216b953f2922f1e8321357ca82bb985e1ea595c87fcee8a8fdc84",
-    "specs/README.md": "4ee75114ab9f3bc6666319c949ffa3a76464ce1be5eeaef8075c02f0c0070755",
+    "specs/README.md": "86566480ae915a858490d25a3c7e6e9c37299043b291765c22f59850acc4beac",
     "specs/slack-wire-v1.md": "cb4a86d5309b8ede8a475f2c53eb505bfcc50ce2fdbc95150d711baf8ae2319f",
     "tests/test_fake_transport.py": "d440c3217dba6072ebca9abb4770ee132f391d8b288b176a4f80e8dfc427d730",
     "tests/test_mirroring_audit.py": "98b17a648b56a082aec2bfcf234b6ac73091d5b42a0472844db9109f4ad33b49",
-    "tests/test_native_source.py": "49548be20c4e07aee3a09e43c08338926226f89ef62f1e9217893e4d17524e0e",
+    "tests/test_native_source.py": "bbaa4f8b30de7401ac5298931c61794c7af994199daa1811e01e8418ec6f6457",
     "tests/test_provider_journal.py": "95fa30affeedcb7d33d27ea4a795611c5a0131d543bbf50b64698fd50143c04f",
     "tests/test_sanitization.py": "4710f0ce95fb22cdb2be585bf0b93e9d586886ae889153f531d22711ca59e805",
     "tests/test_slack_wire.py": "f24c1a33dca2f91c0c9280fbf715310bc500f6b17e4f8ba1db12154069466d9c",
     "tether/journal.py": "c98eeac8d818d6f51eac13bb378dfa9fb93cb1424281479f3224a9ba096ad426",
-    "tether/native_testing.py": "499613371e979d82f4c927ce0f41ec970a66c85c177d72a2e2b6775a9df70d04",
+    "tether/native_testing.py": "d92efe289d54fe66c5157ccb2d2ea2fd3bf15a2470e8ff35ffe154a1f07ca755",
     "tether/sanitization.py": "7c0b5e6fae5eb0e00e43667a447213d8268007588cd42d5fb56e6449a2eb064d",
     "tether/slack_wire.py": "3ad814a732c96db223ada95f41e9954919cdbdf8775bdc744e11816c9facb5ad",
     "tether/testing.py": "2b84de229c6aff62ec48b52c6decb8dd369e20bade2b0b3d16003ed14ff046c9",
@@ -165,10 +165,23 @@
     ],
     "live_acceptance": "not_run"
   },
+  "slack_http_follow_up": {
+    "base_revision": "789380df2a8fd0da5a9757e5312d66daa07bef2d",
+    "scope": "Refresh current metadata inventory for separate bounded HTTP component. Previous validation results remain historical; new component evidence is specs/slack-http-v1.md and tests/test_slack_http.py. No existing wire or audit runtime behavior changed.",
+    "previous_metadata_hashes": {
+      "STATUS.json": "7d19209ab8d70c4ddd46557d1afcb91b1d8b694b4663db358286563981619293",
+      "specs/README.md": "4ee75114ab9f3bc6666319c949ffa3a76464ce1be5eeaef8075c02f0c0070755"
+    },
+    "live_acceptance": "not_run"
+  },
   "percent_case_follow_up": {
     "base_revision": "789380df2a8fd0da5a9757e5312d66daa07bef2d",
     "scope": "Refresh current sanitizer hash for bounded URL-escape hex-case matching. Prior validation records remain historical; separate evidence is specs/sanitization-percent-case.md.",
     "previous_sanitizer_sha256": "2077bcd548db09bcb80140d1c5453af437eed94659cec9924d7206f492912987",
+    "live_acceptance": "not_run"
+  },
+  "merge_reconciliation": {
+    "scope": "Current inventory refreshed after combining reviewed HTTP, sanitizer, native-clock and hygiene changes; earlier validation remains historical.",
     "live_acceptance": "not_run"
   }
 }
