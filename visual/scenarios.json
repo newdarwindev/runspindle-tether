@@ -1,0 +1,297 @@
+{
+  "schema": "tether.visual-fixtures.v1",
+  "classification": "LOCAL RENDER APPROXIMATION",
+  "review_status": "candidate_not_approved_baseline",
+  "actual_slack": "not_run",
+  "fixed_clock": "2026-11-16T12:00:00Z",
+  "scenarios": [
+    {
+      "id": "admitted",
+      "title": "Admitted",
+      "tone": "neutral",
+      "outcome": "Not sent",
+      "criterion": "issue6.progress",
+      "task_id": "synthetic-task-007",
+      "thread_id": "1700000000.000001",
+      "message_id": "synthetic-message-001",
+      "revision": 1,
+      "timestamp": "2026-11-16T12:00:00Z",
+      "payload": {
+        "version": "runspindle.projection.v1",
+        "kind": "public_summary",
+        "message": "The request is recorded. Execution has not started.",
+        "url": "https://example.invalid/reference?token=SYNTHETIC_SECRET_CANARY#private",
+        "arguments": {
+          "api_key": "SYNTHETIC_SECRET_CANARY",
+          "untrusted": "<script>alert(\"not executed\")</script>"
+        }
+      },
+      "artifact": false,
+      "filename": "synthetic-summary.txt"
+    },
+    {
+      "id": "running",
+      "title": "Running",
+      "tone": "neutral",
+      "outcome": "Not sent",
+      "criterion": "issue6.progress",
+      "task_id": "synthetic-task-007",
+      "thread_id": "1700000000.000001",
+      "message_id": "synthetic-message-002",
+      "revision": 1,
+      "timestamp": "2026-11-16T12:00:00Z",
+      "payload": {
+        "version": "runspindle.projection.v1",
+        "kind": "public_summary",
+        "message": "Preparing the requested summary from permitted inputs. This is a public progress summary, not internal reasoning.",
+        "url": "https://example.invalid/reference?token=SYNTHETIC_SECRET_CANARY#private",
+        "arguments": {
+          "api_key": "SYNTHETIC_SECRET_CANARY",
+          "untrusted": "<script>alert(\"not executed\")</script>"
+        }
+      },
+      "artifact": false,
+      "filename": "synthetic-summary.txt"
+    },
+    {
+      "id": "blocked",
+      "title": "Blocked",
+      "tone": "attention",
+      "outcome": "Not sent",
+      "criterion": "issue6.progress",
+      "task_id": "synthetic-task-007",
+      "thread_id": "1700000000.000001",
+      "message_id": "synthetic-message-003",
+      "revision": 1,
+      "timestamp": "2026-11-16T12:00:00Z",
+      "payload": {
+        "version": "runspindle.projection.v1",
+        "kind": "public_summary",
+        "message": "Waiting for the required approval. No further action is being taken.",
+        "url": "https://example.invalid/reference?token=SYNTHETIC_SECRET_CANARY#private",
+        "arguments": {
+          "api_key": "SYNTHETIC_SECRET_CANARY",
+          "untrusted": "<script>alert(\"not executed\")</script>"
+        }
+      },
+      "artifact": false,
+      "filename": "synthetic-summary.txt"
+    },
+    {
+      "id": "cancel-requested",
+      "title": "Cancellation requested",
+      "tone": "attention",
+      "outcome": "Unknown",
+      "criterion": "issue6.progress",
+      "task_id": "synthetic-task-007",
+      "thread_id": "1700000000.000001",
+      "message_id": "synthetic-message-004",
+      "revision": 1,
+      "timestamp": "2026-11-16T12:00:00Z",
+      "payload": {
+        "version": "runspindle.projection.v1",
+        "kind": "public_summary",
+        "message": "Cancellation was requested. Work may still be stopping; completion is not confirmed.",
+        "url": "https://example.invalid/reference?token=SYNTHETIC_SECRET_CANARY#private",
+        "arguments": {
+          "api_key": "SYNTHETIC_SECRET_CANARY",
+          "untrusted": "<script>alert(\"not executed\")</script>"
+        }
+      },
+      "artifact": false,
+      "filename": "synthetic-summary.txt"
+    },
+    {
+      "id": "terminal",
+      "title": "Completed",
+      "tone": "positive",
+      "outcome": "Accepted",
+      "criterion": "issue6.progress",
+      "task_id": "synthetic-task-007",
+      "thread_id": "1700000000.000001",
+      "message_id": "synthetic-message-005",
+      "revision": 1,
+      "timestamp": "2026-11-16T12:00:00Z",
+      "payload": {
+        "version": "runspindle.projection.v1",
+        "kind": "final",
+        "message": "The bounded task finished. Delivery is tracked separately below.",
+        "url": "https://example.invalid/reference?token=SYNTHETIC_SECRET_CANARY#private",
+        "arguments": {
+          "api_key": "SYNTHETIC_SECRET_CANARY",
+          "untrusted": "<script>alert(\"not executed\")</script>"
+        }
+      },
+      "artifact": true,
+      "filename": "synthetic-summary.txt"
+    },
+    {
+      "id": "unknown",
+      "title": "Outcome unknown",
+      "tone": "attention",
+      "outcome": "Unknown",
+      "criterion": "issue6.progress",
+      "task_id": "synthetic-task-007",
+      "thread_id": "1700000000.000001",
+      "message_id": "synthetic-message-006",
+      "revision": 1,
+      "timestamp": "2026-11-16T12:00:00Z",
+      "payload": {
+        "version": "runspindle.projection.v1",
+        "kind": "public_summary",
+        "message": "The send may have taken effect, but acknowledgment was lost. Check the exact destination before retrying.",
+        "url": "https://example.invalid/reference?token=SYNTHETIC_SECRET_CANARY#private",
+        "arguments": {
+          "api_key": "SYNTHETIC_SECRET_CANARY",
+          "untrusted": "<script>alert(\"not executed\")</script>"
+        }
+      },
+      "artifact": true,
+      "filename": "synthetic-summary.txt"
+    },
+    {
+      "id": "unsupported",
+      "title": "Unsupported event",
+      "tone": "neutral",
+      "outcome": "Not sent",
+      "criterion": "issue6.progress",
+      "task_id": "synthetic-task-007",
+      "thread_id": "1700000000.000001",
+      "message_id": "synthetic-message-007",
+      "revision": 1,
+      "timestamp": "2026-11-16T12:00:00Z",
+      "payload": {
+        "version": "runspindle.projection.v1",
+        "kind": "public_summary",
+        "message": "This source exposes final output only. Live tool progress is not available.",
+        "url": "https://example.invalid/reference?token=SYNTHETIC_SECRET_CANARY#private",
+        "arguments": {
+          "api_key": "SYNTHETIC_SECRET_CANARY",
+          "untrusted": "<script>alert(\"not executed\")</script>"
+        }
+      },
+      "artifact": false,
+      "filename": "synthetic-summary.txt"
+    },
+    {
+      "id": "stale",
+      "title": "Stale update",
+      "tone": "attention",
+      "outcome": "Unknown",
+      "criterion": "issue6.progress",
+      "task_id": "synthetic-task-007",
+      "thread_id": "1700000000.000001",
+      "message_id": "synthetic-message-008",
+      "revision": 1,
+      "timestamp": "2026-11-16T12:00:00Z",
+      "payload": {
+        "version": "runspindle.projection.v1",
+        "kind": "public_summary",
+        "message": "This is the last observed snapshot. The source is disconnected; it is not a live view.",
+        "url": "https://example.invalid/reference?token=SYNTHETIC_SECRET_CANARY#private",
+        "arguments": {
+          "api_key": "SYNTHETIC_SECRET_CANARY",
+          "untrusted": "<script>alert(\"not executed\")</script>"
+        }
+      },
+      "artifact": false,
+      "filename": "synthetic-summary.txt"
+    },
+    {
+      "id": "edited",
+      "title": "Request edited \u00b7 revision 2",
+      "tone": "neutral",
+      "outcome": "Not sent",
+      "criterion": "issue6.progress",
+      "task_id": "synthetic-task-007",
+      "thread_id": "1700000000.000001",
+      "message_id": "synthetic-message-009",
+      "revision": 2,
+      "timestamp": "2026-11-16T12:00:00Z",
+      "payload": {
+        "version": "runspindle.projection.v1",
+        "kind": "public_summary",
+        "message": "Revision 1 is superseded. This card identifies revision 2 without implying that earlier work was automatically retargeted.",
+        "url": "https://example.invalid/reference?token=SYNTHETIC_SECRET_CANARY#private",
+        "arguments": {
+          "api_key": "SYNTHETIC_SECRET_CANARY",
+          "untrusted": "<script>alert(\"not executed\")</script>"
+        }
+      },
+      "artifact": false,
+      "filename": "synthetic-summary.txt"
+    },
+    {
+      "id": "delivered",
+      "title": "Delivered \u00b7 independently observed",
+      "tone": "positive",
+      "outcome": "Delivered",
+      "criterion": "issue6.artifact-delivery",
+      "task_id": "synthetic-task-007",
+      "thread_id": "1700000000.000001",
+      "message_id": "synthetic-message-010",
+      "revision": 1,
+      "timestamp": "2026-11-16T12:00:00Z",
+      "payload": {
+        "version": "runspindle.projection.v1",
+        "kind": "final",
+        "message": "Exact synthetic content and destination were observed by the fixture. This illustration is not a real Slack receipt.",
+        "url": "https://example.invalid/reference?token=SYNTHETIC_SECRET_CANARY#private",
+        "arguments": {
+          "api_key": "SYNTHETIC_SECRET_CANARY",
+          "untrusted": "<script>alert(\"not executed\")</script>"
+        }
+      },
+      "artifact": true,
+      "filename": "synthetic-summary.txt"
+    },
+    {
+      "id": "failed",
+      "title": "Send failed",
+      "tone": "negative",
+      "outcome": "Failed",
+      "criterion": "issue6.artifact-delivery",
+      "task_id": "synthetic-task-007",
+      "thread_id": "1700000000.000001",
+      "message_id": "synthetic-message-011",
+      "revision": 1,
+      "timestamp": "2026-11-16T12:00:00Z",
+      "payload": {
+        "version": "runspindle.projection.v1",
+        "kind": "public_summary",
+        "message": "The synthetic send was definitively rejected. The accepted artifact still exists; no delivery is claimed.",
+        "url": "https://example.invalid/reference?token=SYNTHETIC_SECRET_CANARY#private",
+        "arguments": {
+          "api_key": "SYNTHETIC_SECRET_CANARY",
+          "untrusted": "<script>alert(\"not executed\")</script>"
+        }
+      },
+      "artifact": true,
+      "filename": "synthetic-summary.txt"
+    },
+    {
+      "id": "long-content",
+      "title": "Long content \u00b7 preview unavailable",
+      "tone": "neutral",
+      "outcome": "Unknown",
+      "criterion": "issue6.artifact-delivery",
+      "task_id": "synthetic-task-007",
+      "thread_id": "1700000000.000001",
+      "message_id": "synthetic-message-012",
+      "revision": 1,
+      "timestamp": "2026-11-16T12:00:00Z",
+      "payload": {
+        "version": "runspindle.projection.v1",
+        "kind": "public_summary",
+        "message": "A deliberately long public summary explains an interrupted workflow without exposing hidden reasoning. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. ",
+        "url": "https://example.invalid/reference?token=SYNTHETIC_SECRET_CANARY#private",
+        "arguments": {
+          "api_key": "SYNTHETIC_SECRET_CANARY",
+          "untrusted": "<script>alert(\"not executed\")</script>"
+        }
+      },
+      "artifact": true,
+      "filename": "synthetic-accepted-summary-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-revision-2.txt"
+    }
+  ]
+}

@@ -90,5 +90,12 @@
     "specification": "specs/upload-authority-binding.md",
     "live_transport": "not_run",
     "production_authority": "unqualified"
+  },
+  "progress_visual_sources": {
+    "classification": "original_synthetic_fixture_sources_no_raster_generation",
+    "specification": "specs/progress-visual-fixtures.md",
+    "source_import": "none",
+    "fonts": "installed DejaVu Sans/Mono referenced, not copied",
+    "live_rendering": "not_run"
   }
 }

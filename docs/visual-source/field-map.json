@@ -1,0 +1,173 @@
+{
+  "scenarios": [
+    {
+      "id": "admitted",
+      "criterion": "issue6.progress",
+      "expected_visible": [
+        "Admitted",
+        "synthetic-task-007",
+        "1700000000.000001",
+        "synthetic-message-001",
+        "2026-11-16T12:00:00Z",
+        "Not sent"
+      ],
+      "accessible_heading": "Admitted",
+      "plain_text_label": "Admitted plain-text version"
+    },
+    {
+      "id": "running",
+      "criterion": "issue6.progress",
+      "expected_visible": [
+        "Running",
+        "synthetic-task-007",
+        "1700000000.000001",
+        "synthetic-message-002",
+        "2026-11-16T12:00:00Z",
+        "Not sent"
+      ],
+      "accessible_heading": "Running",
+      "plain_text_label": "Running plain-text version"
+    },
+    {
+      "id": "blocked",
+      "criterion": "issue6.progress",
+      "expected_visible": [
+        "Blocked",
+        "synthetic-task-007",
+        "1700000000.000001",
+        "synthetic-message-003",
+        "2026-11-16T12:00:00Z",
+        "Not sent"
+      ],
+      "accessible_heading": "Blocked",
+      "plain_text_label": "Blocked plain-text version"
+    },
+    {
+      "id": "cancel-requested",
+      "criterion": "issue6.progress",
+      "expected_visible": [
+        "Cancellation requested",
+        "synthetic-task-007",
+        "1700000000.000001",
+        "synthetic-message-004",
+        "2026-11-16T12:00:00Z",
+        "Unknown"
+      ],
+      "accessible_heading": "Cancellation requested",
+      "plain_text_label": "Cancellation requested plain-text version"
+    },
+    {
+      "id": "terminal",
+      "criterion": "issue6.progress",
+      "expected_visible": [
+        "Completed",
+        "synthetic-task-007",
+        "1700000000.000001",
+        "synthetic-message-005",
+        "2026-11-16T12:00:00Z",
+        "Accepted"
+      ],
+      "accessible_heading": "Completed",
+      "plain_text_label": "Completed plain-text version"
+    },
+    {
+      "id": "unknown",
+      "criterion": "issue6.progress",
+      "expected_visible": [
+        "Outcome unknown",
+        "synthetic-task-007",
+        "1700000000.000001",
+        "synthetic-message-006",
+        "2026-11-16T12:00:00Z",
+        "Unknown"
+      ],
+      "accessible_heading": "Outcome unknown",
+      "plain_text_label": "Outcome unknown plain-text version"
+    },
+    {
+      "id": "unsupported",
+      "criterion": "issue6.progress",
+      "expected_visible": [
+        "Unsupported event",
+        "synthetic-task-007",
+        "1700000000.000001",
+        "synthetic-message-007",
+        "2026-11-16T12:00:00Z",
+        "Not sent"
+      ],
+      "accessible_heading": "Unsupported event",
+      "plain_text_label": "Unsupported event plain-text version"
+    },
+    {
+      "id": "stale",
+      "criterion": "issue6.progress",
+      "expected_visible": [
+        "Stale update",
+        "synthetic-task-007",
+        "1700000000.000001",
+        "synthetic-message-008",
+        "2026-11-16T12:00:00Z",
+        "Unknown"
+      ],
+      "accessible_heading": "Stale update",
+      "plain_text_label": "Stale update plain-text version"
+    },
+    {
+      "id": "edited",
+      "criterion": "issue6.progress",
+      "expected_visible": [
+        "Request edited \u00b7 revision 2",
+        "synthetic-task-007",
+        "1700000000.000001",
+        "synthetic-message-009",
+        "2026-11-16T12:00:00Z",
+        "Not sent"
+      ],
+      "accessible_heading": "Request edited \u00b7 revision 2",
+      "plain_text_label": "Request edited \u00b7 revision 2 plain-text version"
+    },
+    {
+      "id": "delivered",
+      "criterion": "issue6.artifact-delivery",
+      "expected_visible": [
+        "Delivered \u00b7 independently observed",
+        "synthetic-task-007",
+        "1700000000.000001",
+        "synthetic-message-010",
+        "2026-11-16T12:00:00Z",
+        "Delivered"
+      ],
+      "accessible_heading": "Delivered \u00b7 independently observed",
+      "plain_text_label": "Delivered \u00b7 independently observed plain-text version"
+    },
+    {
+      "id": "failed",
+      "criterion": "issue6.artifact-delivery",
+      "expected_visible": [
+        "Send failed",
+        "synthetic-task-007",
+        "1700000000.000001",
+        "synthetic-message-011",
+        "2026-11-16T12:00:00Z",
+        "Failed"
+      ],
+      "accessible_heading": "Send failed",
+      "plain_text_label": "Send failed plain-text version"
+    },
+    {
+      "id": "long-content",
+      "criterion": "issue6.artifact-delivery",
+      "expected_visible": [
+        "Long content \u00b7 preview unavailable",
+        "synthetic-task-007",
+        "1700000000.000001",
+        "synthetic-message-012",
+        "2026-11-16T12:00:00Z",
+        "Unknown"
+      ],
+      "accessible_heading": "Long content \u00b7 preview unavailable",
+      "plain_text_label": "Long content \u00b7 preview unavailable plain-text version"
+    }
+  ],
+  "artifact_sha256": "fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134"
+}
