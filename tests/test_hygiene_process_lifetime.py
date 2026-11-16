@@ -8,7 +8,7 @@ import signal
 import subprocess
 import unittest
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 from unittest.mock import MagicMock, Mock, patch
 
 SPEC = importlib.util.spec_from_file_location(
@@ -268,7 +268,9 @@ class OwnershipTests(unittest.TestCase):
         self.assertLessEqual(self.now, 2.2)
 
     def test_synthetic_output_tail_is_bounded(self) -> None:
-        self.reads = [b"x" * 8192] * 10 + [b"FINAL_MARKER", b""]
+        self.reads = cast(
+            list[bytes | BaseException], [b"x" * 8192] * 10 + [b"FINAL_MARKER", b""]
+        )
         receipt, output = hygiene.collect_process(self.process, 0.1)
         self.assertEqual(receipt["status"], "passed")
         self.assertTrue(receipt["output_complete"])
@@ -296,7 +298,6 @@ class OwnershipTests(unittest.TestCase):
         self.process.returncode = 0
         self.assertEqual(hygiene.stop_owned_process(self.process), {})
         self.assertEqual(self.events, [])
-
 
 
 if __name__ == "__main__":

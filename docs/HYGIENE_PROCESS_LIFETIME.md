@@ -67,9 +67,22 @@ Repository-wide aggregate and isolated-runner qualification remain separate gate
 
 ## Verification scope for this port
 
-20 synthetic tests pass normally and with optimized Python. This subset retains
+At initial publication, 20 synthetic tests passed normally and with optimized Python. This subset retains
 all 19 root ownership tests and adds bounded-tail coverage; it excludes the three
 real-process tests and is not full root regression parity. Full checkout, scaffold,
-full discovery and pinned static checks remain unavailable after execution
-workspace replacement. No aggregate, native/browser/provider/framework or
+full discovery and pinned static checks were unavailable for that initial receipt. No aggregate, native/browser/provider/framework or
 descendant-containment qualification is claimed. Existing gates remain unchanged.
+
+## Offline verification follow-up
+
+The source-hash-verified complete Tether snapshot now passes 286 tests normally
+and with optimized Python, complete pinned static checks (zero new diagnostics;
+108 existing), scaffold/artifact and mirroring checks. The only code correction
+is an explicit test-list cast and formatting; the runtime is unchanged.
+The full suite includes ordinary bounded local subprocess and disposable SQLite/Git
+fixtures, separate from the 20 synthetic lifetime tests. No network/TLS or live
+transport is exercised. See [the exact receipt](hygiene-process-lifetime-evidence.json).
+
+This is a source snapshot receipt, not a checkout of the public commit identity.
+Aggregate Git-identity verification, exact runner-image/CI qualification and the
+three excluded root real-process lifetime cases remain unrun.
