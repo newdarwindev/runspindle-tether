@@ -213,7 +213,8 @@ with patch.object(socket,'socket',side_effect=AssertionError('network')):
                 replace(PAYLOAD, text="different"),
             )
         self.assertEqual(
-            self.app.db.execute("SELECT count(*) FROM feedback_heads").fetchone()[0], 0
+            self.app.db.execute("SELECT count(*) FROM feedback_heads_v2").fetchone()[0],
+            0,
         )
 
     def test_callback_errors_are_sanitized_and_revocation_rechecked(self) -> None:
@@ -237,7 +238,8 @@ with patch.object(socket,'socket',side_effect=AssertionError('network')):
             self.ingest(self.raw())
         self.assertEqual(calls, 2)
         self.assertEqual(
-            self.app.db.execute("SELECT count(*) FROM feedback_heads").fetchone()[0], 0
+            self.app.db.execute("SELECT count(*) FROM feedback_heads_v2").fetchone()[0],
+            0,
         )
         self.assertNotIn("SECRET_CANARY", str(list(self.app.db.iterdump())))
 
@@ -368,7 +370,8 @@ with patch.object(socket,'socket',side_effect=AssertionError('network')):
         with self.assertRaises(Rejected):
             self.ingest(raw)
         self.assertEqual(
-            self.app.db.execute("SELECT count(*) FROM feedback_heads").fetchone()[0], 0
+            self.app.db.execute("SELECT count(*) FROM feedback_heads_v2").fetchone()[0],
+            0,
         )
 
     def test_ephemeral_or_uri_database_names_rejected_before_connect(self) -> None:

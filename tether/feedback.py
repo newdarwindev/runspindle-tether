@@ -9,12 +9,14 @@ from dataclasses import dataclass
 from typing import Any, cast
 
 from tether.admission import Identity, Rejected, canonical, counter, identifier, pairs
+from tether.feedback_schema import SCHEMA as SCHEMA
+from tether.feedback_schema import open_feedback_store, state
 from tether.journal import ProviderJournal
 from tether.sanitization import Sanitizer
-from tether.schema import open_store
 from tether.testing import Payload
 
 MAX_EVENTS = 1000
+MAX_INVALIDATIONS = 1000
 MAX_BYTES = 262144
 TARGET_FIELDS = {
     "task_id",
@@ -47,25 +49,6 @@ FIELDS = {
 }
 
 
-SCHEMA = """
-            CREATE TABLE IF NOT EXISTS feedback_revisions (
-                identity TEXT, revision TEXT, digest TEXT NOT NULL, body BLOB NOT NULL,
-                grant_ref TEXT NOT NULL, policy_revision TEXT NOT NULL,
-                PRIMARY KEY(identity,revision));
-            CREATE TABLE IF NOT EXISTS feedback_deliveries (
-                namespace TEXT,event TEXT,identity TEXT NOT NULL,digest TEXT NOT NULL,
-                PRIMARY KEY(namespace,event));
-            CREATE TABLE IF NOT EXISTS feedback_heads (
-                identity TEXT PRIMARY KEY,revision TEXT NOT NULL,binding BLOB NOT NULL,
-                deleted INTEGER NOT NULL,conflict INTEGER NOT NULL DEFAULT 0,
-                conflict_digest TEXT);
-            CREATE TRIGGER IF NOT EXISTS feedback_immutable_update BEFORE UPDATE ON feedback_revisions
-                BEGIN SELECT RAISE(ABORT,'immutable feedback revision'); END;
-            CREATE TRIGGER IF NOT EXISTS feedback_immutable_delete BEFORE DELETE ON feedback_revisions
-                BEGIN SELECT RAISE(ABORT,'retain feedback revision'); END;
-        """
-
-
 @dataclass(frozen=True)
 class FeedbackGrant:
     """Trusted callback result permitting retention only, not wire credentials."""
@@ -75,6 +58,19 @@ class FeedbackGrant:
     target_sha256: str
     policy_revision: str
     grant_ref: str
+
+
+def validate_target(target: Any) -> None:
+    if type(target) is not dict or set(target) != TARGET_FIELDS:
+        raise Rejected("target fields")
+    for key, item in target.items():
+        if key in {"task_revision", "artifact_revision"}:
+            counter(item)
+        elif key.endswith("sha256"):
+            if type(item) is not str or re.fullmatch("[0-9a-f]{64}", item) is None:
+                raise Rejected("target digest")
+        else:
+            identifier(item)
 
 
 def decode(raw: bytes) -> dict[str, Any]:
@@ -120,16 +116,7 @@ def decode(raw: bytes) -> dict[str, Any]:
         elif value["correction"] is not None:
             raise Rejected("unexpected correction")
         target = value["target"]
-        if type(target) is not dict or set(target) != TARGET_FIELDS:
-            raise Rejected("target fields")
-        for key, item in target.items():
-            if key in {"task_revision", "artifact_revision"}:
-                counter(item)
-            elif key.endswith("sha256"):
-                if type(item) is not str or re.fullmatch("[0-9a-f]{64}", item) is None:
-                    raise Rejected("target digest")
-            else:
-                identifier(item)
+        validate_target(target)
         if any(
             value[k] != target[k] for k in ("workspace_id", "channel_id", "thread_id")
         ):
@@ -142,6 +129,73 @@ def decode(raw: bytes) -> dict[str, Any]:
     raise Rejected("invalid feedback")
 
 
+def decode_invalidation(raw: bytes) -> dict[str, Any]:
+    if type(raw) is not bytes or not 1 <= len(raw) <= MAX_BYTES:
+        raise Rejected("invalidation bounds")
+    try:
+        v = json.loads(raw, object_pairs_hook=pairs)
+        fields = {
+            "version",
+            "namespace",
+            "app_id",
+            "workspace_id",
+            "channel_id",
+            "feedback_id",
+            "event_id",
+            "body_sha256",
+            "cause",
+            "author_hint",
+            "thread_hint",
+            "target",
+        }
+        if (
+            type(v) is not dict
+            or set(v) != fields
+            or v["version"] != "runspindle.tether.provider-invalidation.v1"
+        ):
+            raise ValueError()
+        for name in (
+            "namespace",
+            "app_id",
+            "workspace_id",
+            "channel_id",
+            "feedback_id",
+            "event_id",
+        ):
+            identifier(v[name])
+        for name in ("author_hint", "thread_hint"):
+            if v[name] is not None:
+                identifier(v[name])
+        if (
+            v["cause"] not in ("message_changed", "message_deleted")
+            or type(v["body_sha256"]) is not str
+            or re.fullmatch("[0-9a-f]{64}", v["body_sha256"]) is None
+        ):
+            raise ValueError()
+        expected_namespace = (
+            "slack:"
+            + hashlib.sha256(
+                canonical([v["app_id"], v["workspace_id"], v["channel_id"]])
+            ).hexdigest()
+        )
+        validate_target(v["target"])
+        if v["namespace"] != expected_namespace or any(
+            v[k] != v["target"][k] for k in ("workspace_id", "channel_id")
+        ):
+            raise ValueError()
+        if (
+            v["thread_hint"] is not None
+            and v["thread_hint"] != v["target"]["thread_id"]
+        ):
+            raise ValueError()
+        if canonical(v) != raw:
+            raise ValueError()
+        return cast(dict[str, Any], v)
+    except (ValueError, TypeError, UnicodeError, RecursionError):
+        pass
+    raise Rejected("invalid provider invalidation")
+
+
 class FeedbackStore:
     def __init__(
         self,
@@ -152,6 +206,9 @@ class FeedbackStore:
         | None = None,
         verify_target: Callable[[bytes, Payload, dict[str, Any]], bool] | None = None,
         sanitizer: Sanitizer | None = None,
+        *,
+        authenticate_invalidation: Callable[[bytes, object], bool] | None = None,
+        authorize_invalidation: Callable[[dict[str, Any]], bool] | None = None,
     ) -> None:
         if (
             type(path) is not str
@@ -162,10 +219,12 @@ class FeedbackStore:
             raise Rejected("durable feedback requires a filesystem path")
         self.journal = journal
         self.authenticate = authenticate
+        self.authenticate_invalidation = authenticate_invalidation
+        self.authorize_invalidation = authorize_invalidation
         self.authorize_retention = authorize_retention
         self.verify_target = verify_target
         self.sanitizer = sanitizer if sanitizer is not None else Sanitizer()
-        self.db: sqlite3.Connection = open_store(path, SCHEMA, 1413873665)
+        self.db: sqlite3.Connection = open_feedback_store(path)
 
     def close(self) -> None:
         self.db.close()
@@ -196,6 +255,8 @@ class FeedbackStore:
         if type(identity) is not Identity or identity != claimed:
             raise Rejected("feedback authentication failed")
         self.sanitizer.require_clean(event)
+        if self.invalidated(event["namespace"], event["feedback_id"]):
+            raise Rejected("feedback permanently invalidated")
         event_sha = hashlib.sha256(raw).hexdigest()
         target_sha = hashlib.sha256(canonical(event["target"])).hexdigest()
         authorize = self.authorize_retention
@@ -250,12 +311,19 @@ class FeedbackStore:
         self.db.execute("BEGIN IMMEDIATE")
         try:
             grant = verify()  # Recheck revocable authority after waiting for the lock.
+            if self.invalidated(event["namespace"], event["feedback_id"]):
+                raise Rejected("feedback permanently invalidated")
+            if self.db.execute(
+                "SELECT 1 FROM feedback_invalidation_events WHERE namespace=? AND event=?",
+                (event["namespace"], event["event_id"]),
+            ).fetchone():
+                raise Rejected("feedback provider event identity conflicted")
             old = self.db.execute(
                 "SELECT identity,digest FROM feedback_deliveries WHERE namespace=? AND event=?",
                 (event["namespace"], event["event_id"]),
             ).fetchone()
             head = self.db.execute(
-                "SELECT revision,binding,deleted,conflict FROM feedback_heads WHERE identity=?",
+                "SELECT revision,binding,deleted,conflict FROM feedback_heads_v2 WHERE identity=?",
                 (key,),
             ).fetchone()
             revision = self.db.execute(
@@ -273,7 +341,7 @@ class FeedbackStore:
                 keys = {key} | ({old[0]} if old else set())
                 for victim in keys:
                     self.db.execute(
-                        "UPDATE feedback_heads SET conflict=1,conflict_digest=COALESCE(conflict_digest,?) WHERE identity=?",
+                        "UPDATE feedback_heads_v2 SET conflict=1,conflict_digest=COALESCE(conflict_digest,?) WHERE identity=?",
                         (event_sha, victim),
                     )
                 self.db.execute("COMMIT")
@@ -310,16 +378,170 @@ class FeedbackStore:
             )
             if head is None:
                 self.db.execute(
-                    "INSERT INTO feedback_heads VALUES(?,?,?, ?,0,NULL)",
+                    "INSERT INTO feedback_heads_v2 VALUES(?,?,?, ?,0,NULL)",
                     (key, str(event["revision"]), binding, event["kind"] == "delete"),
                 )
             else:
                 self.db.execute(
-                    "UPDATE feedback_heads SET revision=?,deleted=? WHERE identity=?",
+                    "UPDATE feedback_heads_v2 SET revision=?,deleted=? WHERE identity=?",
                     (str(event["revision"]), event["kind"] == "delete", key),
                 )
             self.db.execute("COMMIT")
             return "retained"
+        except BaseException:
+            if self.db.in_transaction:
+                self.db.execute("ROLLBACK")
+            raise
+
+    def invalidation(self, namespace: str, message: str) -> dict[str, Any] | None:
+        blocked, digest = state(self.db)
+        if blocked:
+            return {"cause": "store_saturated", "body_sha256": digest}
+        row = self.db.execute(
+            "SELECT event,digest,cause FROM feedback_invalidations WHERE namespace=? AND message=?",
+            (namespace, message),
+        ).fetchone()
+        return (
+            None
+            if row is None
+            else {"event_id": row[0], "body_sha256": row[1], "cause": row[2]}
+        )
+
+    def invalidated(self, namespace: str, message: str) -> bool:
+        return self.invalidation(namespace, message) is not None
+
+    def invalidate(
+        self, raw: bytes, proof: object, delivery_raw: bytes, payload: Payload
+    ) -> str:
+        """Provider observation only. Never fabricate an authored feedback revision."""
+        authenticate, authorize = (
+            self.authenticate_invalidation,
+            self.authorize_invalidation,
+        )
+        if authenticate is None or authorize is None:
+            raise Rejected("trusted invalidation adapters unavailable")
+        authenticated = False
+        try:
+            authenticated = authenticate(raw, proof) is True
+        except Exception:
+            pass
+        if not authenticated:
+            raise Rejected("feedback invalidation authentication failed")
+        observation = decode_invalidation(raw)
+        # Only minimal identifiers/digest/cause and configured retained target are
+        # normalized; changed text, previous-message text and editor are not kept.
+        self.sanitizer.require_clean(observation)
+        namespace, message, event, digest = (
+            observation[k]
+            for k in ("namespace", "feedback_id", "event_id", "body_sha256")
+        )
+        key = hashlib.sha256(canonical([namespace, message])).hexdigest()
+
+        def verify() -> None:
+            permitted = False
+            try:
+                decision = json.loads(raw)
+                decision["effect_scope"] = "message_fence_or_storewide_saturation"
+                permitted = authorize(decision) is True
+            except Exception:
+                pass
+            if not permitted:
+                raise Rejected("feedback invalidation authority denied")
+            target = observation["target"]
+            retained = self.journal.retained_target(
+                delivery_raw, payload, target["message_id"]
+            )
+            if retained != target:
+                raise Rejected("feedback invalidation target mismatch")
+            original = self.db.execute(
+                "SELECT body FROM feedback_revisions WHERE identity=? ORDER BY rowid LIMIT 1",
+                (key,),
+            ).fetchone()
+            if original is not None:
+                prior = decode(original[0])
+                if prior["target"] != target or any(
+                    observation[hint] is not None and observation[hint] != prior[field]
+                    for hint, field in (
+                        ("author_hint", "actor_id"),
+                        ("thread_hint", "thread_id"),
+                    )
+                ):
+                    raise Rejected("feedback invalidation binding mismatch")
+
+        verify()
+        self.db.execute("BEGIN IMMEDIATE")
+        try:
+            verify()
+            if state(self.db)[0]:
+                self.db.execute("ROLLBACK")
+                return "saturated"
+            prior_event = self.db.execute(
+                "SELECT message,digest FROM feedback_invalidation_events WHERE namespace=? AND event=?",
+                (namespace, event),
+            ).fetchone()
+            prior_message = self.db.execute(
+                "SELECT 1 FROM feedback_invalidations WHERE namespace=? AND message=?",
+                (namespace, message),
+            ).fetchone()
+            # Capacity cannot silently drop a negative event then allow a late
+            # create. Permanently deny the store instead; no automatic reset.
+            if (
+                prior_message is None
+                and self.db.execute(
+                    "SELECT count(*) FROM feedback_invalidations"
+                ).fetchone()[0]
+                >= MAX_INVALIDATIONS
+            ) or (
+                prior_event is None
+                and self.db.execute(
+                    "SELECT count(*) FROM feedback_invalidation_events"
+                ).fetchone()[0]
+                >= MAX_INVALIDATIONS
+            ):
+                self.db.execute(
+                    "UPDATE feedback_invalidation_state SET blocked=1,digest=? WHERE singleton=1",
+                    (digest,),
+                )
+                self.db.execute("COMMIT")
+                return "saturated"
+            create_event = self.db.execute(
+                "SELECT identity,digest FROM feedback_deliveries WHERE namespace=? AND event=?",
+                (namespace, event),
+            ).fetchone()
+            collision = (
+                prior_event is not None and prior_event != (message, digest)
+            ) or create_event is not None
+            if create_event is not None:
+                # Negative quarantine never retargets or rewrites another record.
+                for victim in (key, create_event[0]):
+                    self.db.execute(
+                        "UPDATE feedback_heads_v2 SET conflict_digest=COALESCE(conflict_digest,?),conflict=1 WHERE identity=?",
+                        (digest, victim),
+                    )
+            if prior_message is None:
+                self.db.execute(
+                    "INSERT INTO feedback_invalidations VALUES(?,?,?,?,?)",
+                    (
+                        namespace,
+                        message,
+                        event,
+                        digest,
+                        "identity_conflict" if collision else observation["cause"],
+                    ),
+                )
+            if prior_event is None:
+                self.db.execute(
+                    "INSERT INTO feedback_invalidation_events VALUES(?,?,?,?)",
+                    (namespace, event, message, digest),
+                )
+            self.db.execute("COMMIT")
+            return (
+                "conflict"
+                if collision
+                else "duplicate"
+                if prior_event is not None
+                else "invalidated"
+            )
         except BaseException:
             if self.db.in_transaction:
                 self.db.execute("ROLLBACK")
@@ -333,7 +555,7 @@ class FeedbackStore:
         self.db.execute("BEGIN")
         try:
             head = self.db.execute(
-                "SELECT revision,deleted,conflict FROM feedback_heads WHERE identity=?",
+                "SELECT revision,deleted,conflict FROM feedback_heads_v2 WHERE identity=?",
                 (key,),
             ).fetchone()
             if head is None:
@@ -342,6 +564,7 @@ class FeedbackStore:
                 "SELECT digest,body,grant_ref,policy_revision FROM feedback_revisions WHERE identity=? ORDER BY rowid",
                 (key,),
             ).fetchall()
+            invalidation = self.invalidation(namespace, feedback_id)
             self.db.execute("COMMIT")
         except BaseException:
             if self.db.in_transaction:
@@ -363,7 +586,14 @@ class FeedbackStore:
             "version": "runspindle.tether.feedback-evidence.v1",
             "revisions": revisions,
             "head_revision": int(head[0]),
-            "state": "conflicted" if head[2] else "deleted" if head[1] else "active",
+            "state": "invalidated"
+            if invalidation
+            else "conflicted"
+            if head[2]
+            else "deleted"
+            if head[1]
+            else "active",
+            "provider_invalidation": invalidation,
             "transport_evidence": "historical_destination_confirmation",
             "core_acceptance": "not_established",
             "collection_allowed": False,
