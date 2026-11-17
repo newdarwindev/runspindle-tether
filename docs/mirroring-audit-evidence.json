@@ -93,7 +93,7 @@
     "tests/test_provider_journal.py": "95fa30affeedcb7d33d27ea4a795611c5a0131d543bbf50b64698fd50143c04f",
     "tests/test_sanitization.py": "4710f0ce95fb22cdb2be585bf0b93e9d586886ae889153f531d22711ca59e805",
     "tests/test_slack_wire.py": "f24c1a33dca2f91c0c9280fbf715310bc500f6b17e4f8ba1db12154069466d9c",
-    "tether/journal.py": "c98eeac8d818d6f51eac13bb378dfa9fb93cb1424281479f3224a9ba096ad426",
+    "tether/journal.py": "9b7d2ce2737d7a3005788f3a2a97df305f57e11c2a928336b046348631b18420",
     "tether/native_testing.py": "d92efe289d54fe66c5157ccb2d2ea2fd3bf15a2470e8ff35ffe154a1f07ca755",
     "tether/sanitization.py": "7c0b5e6fae5eb0e00e43667a447213d8268007588cd42d5fb56e6449a2eb064d",
     "tether/slack_wire.py": "0de192e858962cce3110d28682fe03329649d5341fcad06e6d75cac0797515b8",
@@ -232,5 +232,12 @@
       "specs/README.md": "c1c2cb4a2b94f514df30f0b0b218b18f04885c10be7f4319a87960cb64d02df9"
     },
     "evidence": "docs/offline-mirroring-evidence.json"
+  },
+  "wire_bridge_continuity": {
+    "scope": "Current shared validation extraction hash only. Historical validation results remain historical; the separate wire bridge tests do not qualify live Slack or Core composition.",
+    "previous_source_hashes": {
+      "tether/journal.py": "c98eeac8d818d6f51eac13bb378dfa9fb93cb1424281479f3224a9ba096ad426"
+    },
+    "contract": "specs/wire-delivery-bridge-v1.md"
   }
 }

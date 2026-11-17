@@ -1,6 +1,7 @@
 """Real SQLite fences and independently stored synthetic HTTP effects; no Slack."""
 
 import json
+from contextlib import closing
 import os
 import socket
 import sqlite3
@@ -77,7 +78,7 @@ class StoredHTTP:
             or url.hostname not in ("slack.com", "files.slack.com")
         ):
             raise AssertionError("forbidden fixture endpoint")
-        with sqlite3.connect(self.journal_path) as journal:
+        with closing(sqlite3.connect(self.journal_path)) as journal:
             retained = journal.execute(
                 "SELECT phase,file_id FROM uploads WHERE operation=?",
                 (request.scope.operation_id,),
@@ -562,9 +563,7 @@ class UploadTests(unittest.TestCase):
         source = (ROOT / "tether/slack_upload.py").read_text()
         old = "completed = client.complete(ticket, intent)"
         self.assertEqual(source.count(old), 1)
-        changed = source.replace(
-            old, old + "\n        client.complete(ticket, intent)"
-        )
+        changed = source.replace(old, old + "\n        client.complete(ticket, intent)")
         code = (
             "import tether.slack_upload as module\nexec(compile("
             + repr(changed)
@@ -617,6 +616,7 @@ class UploadTests(unittest.TestCase):
 
 CHILD = """
 import json, socket, sys
+from contextlib import closing
 from dataclasses import asdict
 from pathlib import Path
 from test_slack_upload import StoredHTTP, INTENT, SCOPE
