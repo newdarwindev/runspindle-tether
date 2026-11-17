@@ -1,0 +1,151 @@
+{
+  "schema": "tether.progress-parent-map.v1",
+  "scope": "local_render_approximation_only",
+  "parents": [
+    "https://github.com/newdarwindev/runspindle-tether/issues/1",
+    "https://github.com/newdarwindev/runspindle-tether/issues/3"
+  ],
+  "reused_h01": "https://github.com/newdarwindev/runspindle/issues/8",
+  "reused_h07": "https://github.com/newdarwindev/runspindle/issues/14",
+  "separate_live_h01": "https://github.com/newdarwindev/runspindle/issues/22",
+  "live_sibling_relationship": "Reuse these progress references; no duplicate visual family and no live qualification.",
+  "scenarios": [
+    {
+      "id": "admitted",
+      "fixture_criterion": "issue6.progress",
+      "parent_criteria": [
+        "Tether#3 identity-bound truthful mirroring",
+        "H01 progress/freshness/uncertainty"
+      ],
+      "reference_png": "admitted.png",
+      "expected_outcome": "Not sent",
+      "actual_slack": "not_run"
+    },
+    {
+      "id": "running",
+      "fixture_criterion": "issue6.progress",
+      "parent_criteria": [
+        "Tether#3 identity-bound truthful mirroring",
+        "H01 progress/freshness/uncertainty"
+      ],
+      "reference_png": "running.png",
+      "expected_outcome": "Not sent",
+      "actual_slack": "not_run"
+    },
+    {
+      "id": "blocked",
+      "fixture_criterion": "issue6.progress",
+      "parent_criteria": [
+        "Tether#3 identity-bound truthful mirroring",
+        "H01 progress/freshness/uncertainty"
+      ],
+      "reference_png": "blocked.png",
+      "expected_outcome": "Not sent",
+      "actual_slack": "not_run"
+    },
+    {
+      "id": "cancel-requested",
+      "fixture_criterion": "issue6.progress",
+      "parent_criteria": [
+        "Tether#3 identity-bound truthful mirroring",
+        "H01 progress/freshness/uncertainty"
+      ],
+      "reference_png": "cancel-requested.png",
+      "expected_outcome": "Unknown",
+      "actual_slack": "not_run"
+    },
+    {
+      "id": "terminal",
+      "fixture_criterion": "issue6.progress",
+      "parent_criteria": [
+        "Tether#3 identity-bound truthful mirroring",
+        "H01 progress/freshness/uncertainty",
+        "H07 exact accepted artifact versus delivery outcome"
+      ],
+      "reference_png": "terminal.png",
+      "expected_outcome": "Accepted",
+      "actual_slack": "not_run"
+    },
+    {
+      "id": "unknown",
+      "fixture_criterion": "issue6.progress",
+      "parent_criteria": [
+        "Tether#3 identity-bound truthful mirroring",
+        "H01 progress/freshness/uncertainty",
+        "H07 exact accepted artifact versus delivery outcome"
+      ],
+      "reference_png": "unknown.png",
+      "expected_outcome": "Unknown",
+      "actual_slack": "not_run"
+    },
+    {
+      "id": "unsupported",
+      "fixture_criterion": "issue6.progress",
+      "parent_criteria": [
+        "Tether#3 identity-bound truthful mirroring",
+        "H01 progress/freshness/uncertainty"
+      ],
+      "reference_png": "unsupported.png",
+      "expected_outcome": "Not sent",
+      "actual_slack": "not_run"
+    },
+    {
+      "id": "stale",
+      "fixture_criterion": "issue6.progress",
+      "parent_criteria": [
+        "Tether#3 identity-bound truthful mirroring",
+        "H01 progress/freshness/uncertainty"
+      ],
+      "reference_png": "stale.png",
+      "expected_outcome": "Unknown",
+      "actual_slack": "not_run"
+    },
+    {
+      "id": "edited",
+      "fixture_criterion": "issue6.progress",
+      "parent_criteria": [
+        "Tether#3 identity-bound truthful mirroring",
+        "H01 progress/freshness/uncertainty"
+      ],
+      "reference_png": "edited.png",
+      "expected_outcome": "Not sent",
+      "actual_slack": "not_run"
+    },
+    {
+      "id": "delivered",
+      "fixture_criterion": "issue6.artifact-delivery",
+      "parent_criteria": [
+        "Tether#3 identity-bound truthful mirroring",
+        "H01 progress/freshness/uncertainty",
+        "H07 exact accepted artifact versus delivery outcome"
+      ],
+      "reference_png": "delivered.png",
+      "expected_outcome": "Delivered",
+      "actual_slack": "not_run"
+    },
+    {
+      "id": "failed",
+      "fixture_criterion": "issue6.artifact-delivery",
+      "parent_criteria": [
+        "Tether#3 identity-bound truthful mirroring",
+        "H01 progress/freshness/uncertainty",
+        "H07 exact accepted artifact versus delivery outcome"
+      ],
+      "reference_png": "failed.png",
+      "expected_outcome": "Failed",
+      "actual_slack": "not_run"
+    },
+    {
+      "id": "long-content",
+      "fixture_criterion": "issue6.artifact-delivery",
+      "parent_criteria": [
+        "Tether#3 identity-bound truthful mirroring",
+        "H01 progress/freshness/uncertainty",
+        "H07 exact accepted artifact versus delivery outcome"
+      ],
+      "reference_png": "long-content.png",
+      "expected_outcome": "Unknown",
+      "actual_slack": "not_run"
+    }
+  ]
+}
