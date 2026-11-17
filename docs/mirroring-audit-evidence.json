@@ -83,7 +83,7 @@
     "docs/mirroring-coverage.json": "605f5aad22b51a76442e6e8c2866aa67eae00d83ce349578a83fa59781f09876",
     "docs/slack-wire-evidence.json": "78f896ab7ff4596b916204a7b8337a24a7f42b39106a188b7e8bbd8836c1cff6",
     "hygiene.json": "20afbbf219ee10b19406b2f46d2ed9af58868c9d5a546aff5259f137e38af8e7",
-    "provenance.json": "246d0b39286dea11eabab41206078a056b2e6b06e96abed4be4d882c02ff32ea",
+    "provenance.json": "a2587426537e4102ceb984240fd66c87f2feab4fdaf5b7defac39824a26c243e",
     "requirements-quality.txt": "9cbe1331549216b953f2922f1e8321357ca82bb985e1ea595c87fcee8a8fdc84",
     "specs/README.md": "c1c2cb4a2b94f514df30f0b0b218b18f04885c10be7f4319a87960cb64d02df9",
     "specs/slack-wire-v1.md": "cb4a86d5309b8ede8a475f2c53eb505bfcc50ce2fdbc95150d711baf8ae2319f",
@@ -210,5 +210,13 @@
     },
     "evidence": "docs/semantic-journal-evidence.json",
     "live_acceptance": "not_run"
+  },
+  "fixture_pin_continuity": {
+    "base_revision": "ae5ac216b45ca413283e4200c0a4a61054998b58",
+    "changed_artifact": "provenance.json",
+    "change": "synthetic_fixture_source.commit only; e8cd577 to e283957",
+    "validation_results_scope": "historical retained results, not a fresh runtime or aggregate receipt",
+    "fresh_fixture_evidence": "docs/shared-fixture-compatibility.json",
+    "runtime_behavior": "unchanged"
   }
 }

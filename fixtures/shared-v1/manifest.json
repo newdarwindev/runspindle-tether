@@ -3,10 +3,11 @@
   "files": {
     "artifact.txt": "5d331381d2f6ae517386fdda84eb4f92011915473935b57385c69648cc85bbc8",
     "contract.json": "f707f1d2b7147797042292b6374afd34aecc39c09916ec7a809ae7587ee556a9",
-    "fixturekit.py": "1bd6d10ae7105a44a0d583a8974230dde56af603c6ed2b75f67fe3f1fb16319f",
+    "faults.json": "21c1ed0e14e37c0904acd4a8fd90649c83ded15180e35e828e9c4d9df710b934",
+    "fixturekit.py": "29857e337c30f84e673387a2ac27c7f0fc95bada1d783b346085286251f65279",
     "golden.json": "ed7dfc929cf62ec2df680aee6c1f39ec46807d7b9783859b5bee6decfd58f8df",
     "vectors.json": "408cbe352e7cc6042fac7b2c03dcab58b0a0b8c9ea7d8cb022feda8dd49abdea"
   },
-  "origin_manifest_sha256": "1dd35d045064056dd66e6da3619ff100549e1c3e81c928f076cfd4109a524d81",
+  "origin_manifest_sha256": "11ba400c1e9a82566496678104200538f7d2f9b3394d73e65b6ad75c83c2d1ed",
   "schema": "runspindle.fixture.v1"
 }
