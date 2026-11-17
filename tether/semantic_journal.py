@@ -131,6 +131,17 @@ class SemanticAdmission(Admission):
             self.db.close()
             raise
 
+    def _require_event_owner(
+        self, namespace: str, event_id: str, raw_digest: str
+    ) -> None:
+        # This store is bound to exactly one app/account. Provider event identity
+        # is global inside that scope, not partitioned by a grant's namespace.
+        rows = self.db.execute(
+            "SELECT namespace,digest FROM deliveries WHERE event=?", (event_id,)
+        ).fetchall()
+        if rows != [(namespace, raw_digest)]:
+            raise Rejected("semantic global event conflict")
+
     def _retained_extension(
         self, raw: bytes, envelope: dict[str, Any], duplicate: bool
     ) -> None:
@@ -138,6 +149,11 @@ class SemanticAdmission(Admission):
             "SELECT singleton,app_id,account_id FROM intent_config"
         ).fetchall() != [(1, self.app_id, self.account_id)]:
             raise Rejected("semantic configuration changed")
+        self._require_event_owner(
+            envelope["payload"]["delivery_namespace"],
+            envelope["payload"]["delivery_id"],
+            digest(raw),
+        )
         binding = envelope["binding"]
         task, revision = binding["task_id"], binding["revision"]
         prior_rows = self.db.execute(
@@ -280,6 +296,7 @@ class SemanticAdmission(Admission):
                     request["payload"]["delivery_namespace"],
                     obj["event"]["event_id"],
                 )
+                self._require_event_owner(namespace, event_id, raw_digest)
                 if self.db.execute(
                     "SELECT digest FROM deliveries WHERE namespace=? AND event=?",
                     (namespace, event_id),

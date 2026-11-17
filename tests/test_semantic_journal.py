@@ -175,6 +175,100 @@ class JournalTests(unittest.TestCase):
             self.app.ingest(raw, None)
         self.assertEqual(self.snapshot(), before)
 
+    def competing_source(self) -> tuple[bytes, str]:
+        from tether.intent import expected_task_id
+
+        changed = event()
+        changed["message_id"] = "different-message"
+        raw: bytes = canonical(changed)
+        source = {
+            key: changed[key]
+            for key in (
+                "actor_id",
+                "workspace_id",
+                "channel_id",
+                "thread_id",
+                "message_id",
+            )
+        }
+        source.update(app_id="Atest", account_id="acct-test")
+        task = expected_task_id(source)
+        sha = hashlib.sha256(raw).hexdigest()
+        self.allowed[sha] = Grant(
+            IDENTITY,
+            sha,
+            task,
+            1,
+            "other-operation",
+            "policy-1",
+            "host-test",
+            1,
+            "other-legacy-grant",
+            "another-namespace",
+        )
+        return raw, task
+
+    def unique_references(self, envelope: dict[str, Any]) -> IntentReferences:
+        suffix = envelope["binding"]["task_id"].split(":")[-1]
+        return IntentReferences("v3-" + suffix, "delivery-" + suffix)
+
+    def test_global_event_identity_rejects_other_source_task_and_namespace(
+        self,
+    ) -> None:
+        self.app.references = self.unique_references
+        self.retain()
+        before = self.snapshot()
+        raw, task = self.competing_source()
+        with self.assertRaises(Rejected):
+            self.app.ingest(raw, None)
+        self.assertEqual(self.snapshot(), before)
+        with closing(sqlite3.connect(self.path)) as db:
+            self.assertEqual(
+                db.execute(
+                    "SELECT count(*) FROM deliveries WHERE event='Ev1'"
+                ).fetchone()[0],
+                1,
+            )
+            self.assertEqual(
+                db.execute(
+                    "SELECT count(*) FROM intent_candidates WHERE task=?", (task,)
+                ).fetchone()[0],
+                0,
+            )
+        # Exact same namespace/event/digest remains an ordinary duplicate.
+        self.assertEqual(self.retain(), "duplicate")
+        self.assertEqual(self.snapshot(), before)
+
+    def test_preexisting_global_conflict_blocks_snapshot_without_repair(self) -> None:
+        self.app.references = self.unique_references
+        self.retain()
+        raw, competing = self.competing_source()
+        # Reproduce pre-fix store state deliberately; do not modify guards used
+        # by the actual snapshot under test.
+        with patch.object(self.app, "_require_event_owner", lambda *args: None):
+            self.assertEqual(self.app.ingest(raw, None), "admitted")
+        before = self.snapshot()
+        for task in (TASK, competing):
+            with self.assertRaises(Rejected):
+                self.app.snapshot_batch(task)
+            with self.assertRaises(Rejected):
+                self.app.pending_batch(task)
+        with self.assertRaises(Rejected):
+            self.retain()
+        self.assertEqual(self.snapshot(), before)
+
+    def test_global_event_guard_mutant_fails_independent_regression(self) -> None:
+        with patch.object(
+            SemanticAdmission, "_require_event_owner", lambda *args: None
+        ):
+            result = unittest.TestResult()
+            JournalTests(
+                "test_global_event_identity_rejects_other_source_task_and_namespace"
+            ).run(result)
+        self.assertEqual(result.testsRun, 1)
+        self.assertEqual(result.errors, [])
+        self.assertTrue(result.failures, "global event guard mutant escaped regression")
+
     def test_pending_none_describes_snapshot_not_concurrent_drain(self) -> None:
         self.retain()
         first = self.app.snapshot_batch(TASK)

@@ -135,3 +135,26 @@ before commit proves both records roll back together. Missed prefix exports,
 reserved deletion capacity, wrong/absent/lost/late readback, concurrent newer
 local ingestion and immutable identity reuse are tested. Native effects and
 production transport/issuer compatibility remain separate qualification gates.
+
+
+## Global provider event ownership correction
+
+Provider event identity is unique across the entire app/account-bound semantic
+store, not merely one task or one delivery namespace. The semantic transaction
+hook queries every retained delivery with that event ID and requires exactly the
+current namespace/digest row. A fresh grant choosing another namespace cannot
+reuse an event for a different message/task. The whole competing admission rolls
+back, including source, head, delivery and candidate rows. Exact repeated
+namespace/event/digest requests remain duplicate without rewriting history.
+
+Snapshot/export also checks this store-global ownership. A pre-fix or corrupted
+store already containing conflicting cross-task entries rejects affected
+snapshots, pending queries and replays without repairing or deleting records.
+No automatic migration or retroactive authorization is introduced. Independent
+SQLite dumps prove failed admission/export does not change either existing task.
+The maintained global-guard-removal mutant must fail the competing-source
+regression by assertion, not by import or database error.
+
+Providers whose event IDs are only unique in a narrower scope must have their
+trusted authenticated adapter construct canonical scoped event IDs before this
+lane. Changing a grant delivery namespace must not weaken this ownership rule.
