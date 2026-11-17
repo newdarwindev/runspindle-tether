@@ -1,16 +1,17 @@
 """Explicit append-only reconciliation of a retained wire conflict, never resend."""
 
-from collections.abc import Callable
-from dataclasses import asdict, dataclass
-from contextlib import closing
+import asyncio
 import hashlib
 import json
 import re
 import sqlite3
+from collections.abc import Callable
+from contextlib import closing
+from dataclasses import asdict, dataclass
 from urllib.parse import quote
 
 from tether.admission import Rejected, canonical
-from tether.schema import open_store, inspect, inventory, SchemaRejected
+from tether.schema import SchemaRejected, inspect, inventory, open_store
 from tether.slack_upload import SCHEMA as UPLOAD_SCHEMA
 from tether.slack_wire import (
     ContentFacts,
@@ -173,6 +174,42 @@ class ResolutionJournal:
         if any(row[0] != encoded for row in rows) or len(rows) > 1:
             raise Rejected("resolution ownership conflict")
 
+    def _authorized(self, raw: bytes, digest: str, encoded: bytes) -> bool:
+        allowed, cancelled = False, ""
+        try:
+            allowed = (
+                self.authorize_resolution is not None
+                and self.authorize_resolution(raw, digest, encoded) is True
+            )
+        except Exception:
+            pass
+        except asyncio.CancelledError:
+            cancelled = "async"
+        except GeneratorExit:
+            cancelled = "generator"
+        except KeyboardInterrupt:
+            cancelled = "interrupt"
+        except SystemExit:
+            cancelled = "exit"
+        except BaseException:
+            cancelled = "other"
+        # Outside handlers: discard callback causes, contexts, notes and text.
+        if cancelled == "async":
+            raise asyncio.CancelledError(
+                "resolution authorization cancelled; outcome unknown"
+            )
+        if cancelled == "generator":
+            raise GeneratorExit("resolution authorization cancelled; outcome unknown")
+        if cancelled == "interrupt":
+            raise KeyboardInterrupt(
+                "resolution authorization cancelled; outcome unknown"
+            )
+        if cancelled == "exit":
+            raise SystemExit("resolution authorization cancelled; outcome unknown")
+        if cancelled:
+            raise BaseException("resolution authorization cancelled; outcome unknown")
+        return allowed
+
     def resolve(
         self, raw: bytes, payload: Payload, decision: ResolutionDecision
     ) -> ResolutionObservation:
@@ -196,10 +233,7 @@ class ResolutionJournal:
             ):
                 raise Rejected("resolution context changed")
             self._ownership(scope.operation_id, decision, encoded)
-            if (
-                self.authorize_resolution is None
-                or self.authorize_resolution(raw, payload.digest(), encoded) is not True
-            ):
+            if not self._authorized(raw, payload.digest(), encoded):
                 raise Rejected("resolution authority denied")
             if (
                 self.bridge._context(raw, payload) != (scope, intent)

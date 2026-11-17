@@ -1,20 +1,21 @@
 """Append-only explicit resolution with real stores and independent wire peer."""
 
-from dataclasses import asdict, replace
+import asyncio
 import hashlib
-from pathlib import Path
 import socket
 import sqlite3
 import subprocess
 import sys
 import tempfile
-import unittest
 import types
-from typing import Any
+import unittest
 from concurrent.futures import ThreadPoolExecutor
+from dataclasses import asdict, replace
+from pathlib import Path
+from typing import Any
 from unittest.mock import patch
 
-from tests.test_wire_delivery import PAYLOAD, envelope, prepare, ROOT
+from tests.test_wire_delivery import PAYLOAD, ROOT, envelope, prepare
 from tether.admission import Rejected, canonical
 from tether.wire_resolution import ResolutionDecision, ResolutionJournal
 
@@ -70,6 +71,135 @@ class ResolutionTests(unittest.TestCase):
 
     def resolve(self) -> object:
         return self.resolution.resolve(envelope(), PAYLOAD, self.decision)
+
+    def test_authorizer_errors_and_cancellations_do_not_escape_sensitive_text(
+        self,
+    ) -> None:
+        canary = "synthetic-resolution-secret"
+        for category in (
+            ValueError,
+            asyncio.CancelledError,
+            GeneratorExit,
+            KeyboardInterrupt,
+            SystemExit,
+            BaseException,
+        ):
+            with self.subTest(category=category.__name__):
+                original = category(canary)
+                original.add_note(canary)
+                original.__cause__ = RuntimeError(canary)
+                original.__context__ = RuntimeError(canary)
+
+                def fail(*_: object) -> bool:
+                    raise original
+
+                self.resolution.authorize_resolution = fail
+                before = self.peer.db.execute("SELECT count(*) FROM calls").fetchone()
+                expected = Rejected if category is ValueError else category
+                with self.assertRaises(expected) as caught:
+                    self.resolve()
+                self.assertNotIn(canary, str(caught.exception))
+                self.assertIsNot(caught.exception, original)
+                self.assertIsNone(caught.exception.__cause__)
+                self.assertIsNone(caught.exception.__context__)
+                self.assertFalse(getattr(caught.exception, "__notes__", None))
+                self.assertEqual(
+                    self.peer.db.execute("SELECT count(*) FROM calls").fetchone(),
+                    before,
+                )
+                self.assertEqual(
+                    self.resolution.db.execute(
+                        "SELECT count(*) FROM decisions"
+                    ).fetchone(),
+                    (0,),
+                )
+                self.assertFalse(self.resolution.db.in_transaction)
+                self.assertFalse(self.bridge.db.in_transaction)
+                self.assertFalse(self.resolution.inner.in_transaction)
+                for path in self.base.iterdir():
+                    if path.is_file():
+                        self.assertNotIn(canary.encode(), path.read_bytes())
+
+    def test_late_authorizer_cancellation_after_readback_keeps_stores_unchanged(
+        self,
+    ) -> None:
+        before = self.peer.db.execute("SELECT count(*) FROM calls").fetchone()[0]
+
+        def cancel_after_read(*_: object) -> bool:
+            if (
+                self.peer.db.execute("SELECT count(*) FROM calls").fetchone()[0]
+                > before
+            ):
+                raise KeyboardInterrupt("synthetic-private-readback-context")
+            return True
+
+        self.resolution.authorize_resolution = cancel_after_read
+        with self.assertRaises(KeyboardInterrupt) as caught:
+            self.resolve()
+        self.assertNotIn("synthetic-private", str(caught.exception))
+        self.assertIsNone(caught.exception.__context__)
+        self.assertEqual(
+            self.resolution.db.execute("SELECT count(*) FROM decisions").fetchone(),
+            (0,),
+        )
+        self.assertEqual(self.effects(), self.before)
+        self.assertFalse(self.resolution.db.in_transaction)
+
+    def test_cancellation_inside_commit_lock_rolls_back_without_sensitive_chain(
+        self,
+    ) -> None:
+        def cancel_locked(*_: object) -> bool:
+            if self.resolution.db.in_transaction:
+                raise SystemExit("synthetic-locked-secret")
+            return True
+
+        self.resolution.authorize_resolution = cancel_locked
+        with self.assertRaises(SystemExit) as caught:
+            self.resolve()
+        self.assertNotIn("synthetic-locked-secret", str(caught.exception))
+        self.assertIsNone(caught.exception.__context__)
+        with sqlite3.connect(self.base / "resolution.db") as independent:
+            self.assertEqual(
+                independent.execute("SELECT count(*) FROM decisions").fetchone(), (0,)
+            )
+        self.assertFalse(self.resolution.db.in_transaction)
+        self.assertFalse(self.bridge.db.in_transaction)
+        self.assertFalse(self.resolution.inner.in_transaction)
+        self.assertEqual(self.effects(), self.before)
+
+    def test_restoring_exception_propagation_mutation_exposes_canary(self) -> None:
+        path = ROOT / "tether/wire_resolution.py"
+        source = path.read_text()
+        needle = "except Exception:\n            pass"
+        self.assertEqual(source.count(needle), 1)
+        module = types.ModuleType("resolution_exception_mutant")
+        sys.modules[module.__name__] = module
+        self.addCleanup(lambda: sys.modules.pop(module.__name__, None))
+        exec(
+            compile(
+                source.replace(needle, "except Exception:\n            raise"),
+                str(path),
+                "exec",
+            ),
+            module.__dict__,
+        )
+
+        def fail(*_: object) -> bool:
+            raise ValueError("synthetic-mutant-secret")
+
+        mutant = module.ResolutionJournal(
+            str(self.base / "mutant-errors.db"), self.bridge, fail
+        )
+        try:
+            with self.assertRaises(ValueError) as caught:
+                mutant.resolve(
+                    envelope(),
+                    PAYLOAD,
+                    module.ResolutionDecision(**asdict(self.decision)),
+                )
+            self.assertIn("synthetic-mutant-secret", str(caught.exception))
+        finally:
+            mutant.close()
 
     def test_exact_resolution_preserves_original_conflict_and_reobserves(self) -> None:
         first = self.resolution.resolve(envelope(), PAYLOAD, self.decision)
