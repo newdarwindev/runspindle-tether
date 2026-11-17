@@ -1,0 +1,304 @@
+{
+  "mapping": {
+    "scenarios": [
+      {
+        "id": "admitted",
+        "criterion": "issue6.progress",
+        "expected_visible": [
+          "Admitted",
+          "synthetic-task-007",
+          "1700000000.000001",
+          "synthetic-message-001",
+          "2026-11-16T12:00:00Z",
+          "Not sent"
+        ],
+        "accessible_heading": "Admitted",
+        "plain_text_label": "Admitted plain-text version"
+      },
+      {
+        "id": "running",
+        "criterion": "issue6.progress",
+        "expected_visible": [
+          "Running",
+          "synthetic-task-007",
+          "1700000000.000001",
+          "synthetic-message-002",
+          "2026-11-16T12:00:00Z",
+          "Not sent"
+        ],
+        "accessible_heading": "Running",
+        "plain_text_label": "Running plain-text version"
+      },
+      {
+        "id": "blocked",
+        "criterion": "issue6.progress",
+        "expected_visible": [
+          "Blocked",
+          "synthetic-task-007",
+          "1700000000.000001",
+          "synthetic-message-003",
+          "2026-11-16T12:00:00Z",
+          "Not sent"
+        ],
+        "accessible_heading": "Blocked",
+        "plain_text_label": "Blocked plain-text version"
+      },
+      {
+        "id": "cancel-requested",
+        "criterion": "issue6.progress",
+        "expected_visible": [
+          "Cancellation requested",
+          "synthetic-task-007",
+          "1700000000.000001",
+          "synthetic-message-004",
+          "2026-11-16T12:00:00Z",
+          "Unknown"
+        ],
+        "accessible_heading": "Cancellation requested",
+        "plain_text_label": "Cancellation requested plain-text version"
+      },
+      {
+        "id": "terminal",
+        "criterion": "issue6.progress",
+        "expected_visible": [
+          "Completed",
+          "synthetic-task-007",
+          "1700000000.000001",
+          "synthetic-message-005",
+          "2026-11-16T12:00:00Z",
+          "Accepted"
+        ],
+        "accessible_heading": "Completed",
+        "plain_text_label": "Completed plain-text version"
+      },
+      {
+        "id": "unknown",
+        "criterion": "issue6.progress",
+        "expected_visible": [
+          "Outcome unknown",
+          "synthetic-task-007",
+          "1700000000.000001",
+          "synthetic-message-006",
+          "2026-11-16T12:00:00Z",
+          "Unknown"
+        ],
+        "accessible_heading": "Outcome unknown",
+        "plain_text_label": "Outcome unknown plain-text version"
+      },
+      {
+        "id": "unsupported",
+        "criterion": "issue6.progress",
+        "expected_visible": [
+          "Unsupported event",
+          "synthetic-task-007",
+          "1700000000.000001",
+          "synthetic-message-007",
+          "2026-11-16T12:00:00Z",
+          "Not sent"
+        ],
+        "accessible_heading": "Unsupported event",
+        "plain_text_label": "Unsupported event plain-text version"
+      },
+      {
+        "id": "stale",
+        "criterion": "issue6.progress",
+        "expected_visible": [
+          "Stale update",
+          "synthetic-task-007",
+          "1700000000.000001",
+          "synthetic-message-008",
+          "2026-11-16T12:00:00Z",
+          "Unknown"
+        ],
+        "accessible_heading": "Stale update",
+        "plain_text_label": "Stale update plain-text version"
+      },
+      {
+        "id": "edited",
+        "criterion": "issue6.progress",
+        "expected_visible": [
+          "Request edited \u00b7 revision 2",
+          "synthetic-task-007",
+          "1700000000.000001",
+          "synthetic-message-009",
+          "2026-11-16T12:00:00Z",
+          "Not sent"
+        ],
+        "accessible_heading": "Request edited \u00b7 revision 2",
+        "plain_text_label": "Request edited \u00b7 revision 2 plain-text version"
+      },
+      {
+        "id": "delivered",
+        "criterion": "issue6.artifact-delivery",
+        "expected_visible": [
+          "Delivered \u00b7 independently observed",
+          "synthetic-task-007",
+          "1700000000.000001",
+          "synthetic-message-010",
+          "2026-11-16T12:00:00Z",
+          "Delivered"
+        ],
+        "accessible_heading": "Delivered \u00b7 independently observed",
+        "plain_text_label": "Delivered \u00b7 independently observed plain-text version"
+      },
+      {
+        "id": "failed",
+        "criterion": "issue6.artifact-delivery",
+        "expected_visible": [
+          "Send failed",
+          "synthetic-task-007",
+          "1700000000.000001",
+          "synthetic-message-011",
+          "2026-11-16T12:00:00Z",
+          "Failed"
+        ],
+        "accessible_heading": "Send failed",
+        "plain_text_label": "Send failed plain-text version"
+      },
+      {
+        "id": "long-content",
+        "criterion": "issue6.artifact-delivery",
+        "expected_visible": [
+          "Long content \u00b7 preview unavailable",
+          "synthetic-task-007",
+          "1700000000.000001",
+          "synthetic-message-012",
+          "2026-11-16T12:00:00Z",
+          "Unknown"
+        ],
+        "accessible_heading": "Long content \u00b7 preview unavailable",
+        "plain_text_label": "Long content \u00b7 preview unavailable plain-text version"
+      }
+    ],
+    "artifact_sha256": "fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134"
+  },
+  "viewports": [
+    320,
+    390,
+    768,
+    1440
+  ],
+  "zoom_sample": "390px with 200% root text sizing; text reflow, not browser chrome zoom",
+  "keyboard": "automated traversal and Space expansion; manual screenshot review separate",
+  "computed_minimum_contrast": {
+    "progress-320.png": 5.99782713936259,
+    "progress-390.png": 5.99782713936259,
+    "progress-768.png": 5.99782713936259,
+    "progress-1440.png": 5.99782713936259,
+    "progress-390-text-200pct.png": 5.99782713936259,
+    "progress-390-css-zoom-200pct.png": 5.99782713936259
+  },
+  "css_zoom_sample": "390px at CSS zoom 2; layout zoom approximation, not browser chrome UI",
+  "pixel_comparison_threshold": 0,
+  "keyboard_labels": [
+    "Open accessible text reference",
+    "Admitted plain-text version",
+    "Running plain-text version",
+    "Blocked plain-text version",
+    "Cancellation requested plain-text version",
+    "Completed exact synthetic artifact",
+    "Completed plain-text version",
+    "Outcome unknown exact synthetic artifact",
+    "Outcome unknown plain-text version",
+    "Unsupported event plain-text version",
+    "Stale update plain-text version",
+    "Request edited \u00b7 revision 2 plain-text version",
+    "Delivered \u00b7 independently observed exact synthetic artifact",
+    "Delivered \u00b7 independently observed plain-text version",
+    "Send failed exact synthetic artifact",
+    "Send failed plain-text version",
+    "Long content \u00b7 preview unavailable exact synthetic artifact",
+    "Long content \u00b7 preview unavailable plain-text version"
+  ],
+  "mutants": {
+    "missing_label": "detected",
+    "clipping": "detected",
+    "split_header": "detected"
+  },
+  "unexpected_network_requests": 0,
+  "screenshots": [
+    "progress-320.png",
+    "progress-390.png",
+    "progress-768.png",
+    "progress-1440.png",
+    "progress-390-text-200pct.png",
+    "progress-390-css-zoom-200pct.png"
+  ],
+  "actual_slack": "not_run",
+  "baseline_approval": "approved_synthetic_reference",
+  "reviewer_disposition": "independent_v3_pixel_review_passed_same_v4_pixels",
+  "repeat_render_hashes": "identical",
+  "sha256": {
+    "accepted-artifact.txt": "fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134",
+    "admitted.png": "20e712ab8dc82a94762fee3f8daca5e7c45bb2e0e2358660fdacdd77c2f8abf8",
+    "blocked.png": "72bce6c39f525d0855fcfb86544ea35b29ce9a6760d1f77e802f00234aea7abf",
+    "cancel-requested.png": "69acbd5a43ee1cc498055bd9b4a63b450dfa0819681443e4dc1dd8ec8306f768",
+    "contact-sheet.png": "d085297ff5e926916cd5c2c84589ef8593ca42d37b620069092872d2302b9a1a",
+    "delivered.png": "019d062f3b571363ac31530efe3a07402379d700cdb3fefccc5104b705d22faa",
+    "edited.png": "55addeb562abe2c59e81c46c0f7b9d204e9bcb80acd9a895f58483d48a93eced",
+    "failed.png": "d158d66651ca1083767fd3630663edea565a50896f5d6da04288c240fd755573",
+    "index.html": "39f7b6c466e3bd037c76ef45ba617183db4805b9e940fe477a96f418e184df87",
+    "keyboard-expanded.png": "ce512227d25ad359986aab3fd3adbf1aac7f1586f38a87a195fa1881839f2d3e",
+    "long-content.png": "b7818663ac1cda0486e889554ab00a14621c27bf6014498f95e910a2f0923e68",
+    "mutant-clipping.png": "73a81fe66b4797acff7c07cbaafae7839360a7986fc6e8603c10f991e00baf74",
+    "plain-text.txt": "8813a1b267c37415612702008d6f4fabce88731e77654988d24c377eb9a955d3",
+    "progress-1440.aria.txt": "18b09334e3e80edc39e05817e9e8a211de0f29de08c1f3b0034abea66d7d6035",
+    "progress-1440.png": "9fb8a693acc5eea63a4b8003b184b48c6b0233ad0bfa87d2f6cf28976e9e7477",
+    "progress-320.aria.txt": "18b09334e3e80edc39e05817e9e8a211de0f29de08c1f3b0034abea66d7d6035",
+    "progress-320.png": "232887bd4b87c168936dc218b1e2f32399253cb3c9e5cb96c8e54463348b32ea",
+    "progress-390-css-zoom-200pct.aria.txt": "18b09334e3e80edc39e05817e9e8a211de0f29de08c1f3b0034abea66d7d6035",
+    "progress-390-css-zoom-200pct.png": "98fe252f63dd25cb80a90a6afbbab157e1a9d241616ee5413218c42202b0d060",
+    "progress-390-text-200pct.aria.txt": "18b09334e3e80edc39e05817e9e8a211de0f29de08c1f3b0034abea66d7d6035",
+    "progress-390-text-200pct.png": "9a1eff297bd6c51ceeffb87de614a765917afa2f3f00a224803a8fa811258245",
+    "progress-390.aria.txt": "18b09334e3e80edc39e05817e9e8a211de0f29de08c1f3b0034abea66d7d6035",
+    "progress-390.png": "d037ecfd838ebf382d07882c5393804e17db4cdc6c70cd4be355c518e00010ea",
+    "progress-768.aria.txt": "18b09334e3e80edc39e05817e9e8a211de0f29de08c1f3b0034abea66d7d6035",
+    "progress-768.png": "57b84784c70c67933b81d65f5b6e1bf7e4ace1b8b59afb08165750f105a6bc76",
+    "running.png": "7aae2f0ef58a0e0015029f4687a51c8d497f0fbad49f0b5ad2020bf35e67cebb",
+    "stale.png": "3fbf5d4b156cdaf17058fdb6f1e45750461f42a36de7db8f781bf6a02b6ca89a",
+    "terminal.png": "d1f60903ae4ca7da751135e408a11897c31a6965d0e46f919e0ce8805d7f13d5",
+    "unknown.png": "6f9234ca4725762d331dff1786f1bd1fe39dd47cbb50f0b91112ff983e1807d9",
+    "unsupported.png": "159fdfa0f2c6682b4dd0249d1c33e6377660ca736e8f203126db6aea975dfceb",
+    "zoom-long-content.png": "448864b6d2db8118d827d206e32a37057fb19ed7fbf0430f9d184961ca7971d4",
+    "repeat-diff.png": "94e967652344d35e1138af1cdd3eed169a3219b88a8a136e0350696f26fa8dd6",
+    "repeat-overlay.png": "d085297ff5e926916cd5c2c84589ef8593ca42d37b620069092872d2302b9a1a",
+    "repeat-contact-sheet.png": "d085297ff5e926916cd5c2c84589ef8593ca42d37b620069092872d2302b9a1a"
+  },
+  "chromium": "Google Chrome 157.0.8103.38",
+  "browser_executable": "/usr/bin/google-chrome",
+  "python": "3.14.8",
+  "platform": "Linux-7.1.5+kali-amd64-x86_64-with-glibc2.43",
+  "playwright": "1.56.0",
+  "pillow": "12.0.0",
+  "fonts": {
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf": "bb01e8ee9284e494256d4d34e8db8613b3a78148721250bfee91a875bccc3481",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf": "c00e833464994e92d5134a9a81bc692f4bc8d878189e25deb460b08fed0e9873"
+  },
+  "source_sha256": {
+    "visual/scenarios.json": "c3aacc3c49259d0ee891ee2c3e63fdb035a68761be7743552041d7f0b8fd3522",
+    "visual/progress.css": "4ce8736c42a681c316af9affb4923bbfd142cbc444aa06db9ab913cfaf176c16",
+    "tools/render_progress_fixtures.py": "b0b080fd81838fd5261a462d2b939102150afea910d54181da48bd435f5ae021"
+  },
+  "locale": "en-US",
+  "timezone": "UTC",
+  "device_pixel_ratio": 1,
+  "clock": "2026-11-16T12:00:00Z",
+  "seed": "fixed scenarios; no random inputs",
+  "animations": "disabled",
+  "review_date": "2026-11-17",
+  "manual_keyboard_review": {
+    "status": "passed",
+    "method": "assistant_directed_interactive_spot_check",
+    "sequence": [
+      "Tab fallback link",
+      "Tab admitted summary",
+      "Space expands",
+      "Tab running summary and auto-scroll",
+      "Shift+Tab returns",
+      "Enter collapses"
+    ],
+    "screen_reader": "not_run"
+  },
+  "browser_chrome_zoom": "not_run",
+  "cancellation_check": "SIGTERM_after_first_frame_owned_processes_reaped_no_partial_publication"
+}

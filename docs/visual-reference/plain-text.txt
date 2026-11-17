@@ -1,0 +1,141 @@
+Admitted
+The request is recorded. Execution has not started.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-001
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Not sent
+Untrusted text: <script>alert("not executed")</script>
+Inert reference: https://example.invalid/reference
+
+Running
+Preparing the requested summary from permitted inputs. This is a public progress summary, not internal reasoning.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-002
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Not sent
+Untrusted text: <script>alert("not executed")</script>
+Inert reference: https://example.invalid/reference
+
+Blocked
+Waiting for the required approval. No further action is being taken.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-003
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Not sent
+Untrusted text: <script>alert("not executed")</script>
+Inert reference: https://example.invalid/reference
+
+Cancellation requested
+Cancellation was requested. Work may still be stopping; completion is not confirmed.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-004
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Unknown
+Untrusted text: <script>alert("not executed")</script>
+Inert reference: https://example.invalid/reference
+
+Completed
+The bounded task finished. Delivery is tracked separately below.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-005
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Accepted
+Untrusted text: <script>alert("not executed")</script>
+Inert reference: https://example.invalid/reference
+Artifact: synthetic-summary.txt
+SHA-256: fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134
+
+Outcome unknown
+The send may have taken effect, but acknowledgment was lost. Check the exact destination before retrying.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-006
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Unknown
+Untrusted text: <script>alert("not executed")</script>
+Inert reference: https://example.invalid/reference
+Artifact: synthetic-summary.txt
+SHA-256: fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134
+
+Unsupported event
+This source exposes final output only. Live tool progress is not available.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-007
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Not sent
+Untrusted text: <script>alert("not executed")</script>
+Inert reference: https://example.invalid/reference
+
+Stale update
+This is the last observed snapshot. The source is disconnected; it is not a live view.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-008
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Unknown
+Untrusted text: <script>alert("not executed")</script>
+Inert reference: https://example.invalid/reference
+
+Request edited · revision 2
+Revision 1 is superseded. This card identifies revision 2 without implying that earlier work was automatically retargeted.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-009
+Revision: 2
+Observed: 2026-11-16T12:00:00Z
+Delivery: Not sent
+Untrusted text: <script>alert("not executed")</script>
+Inert reference: https://example.invalid/reference
+
+Delivered · independently observed
+Exact synthetic content and destination were observed by the fixture. This illustration is not a real Slack receipt.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-010
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Delivered
+Untrusted text: <script>alert("not executed")</script>
+Inert reference: https://example.invalid/reference
+Artifact: synthetic-summary.txt
+SHA-256: fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134
+
+Send failed
+The synthetic send was definitively rejected. The accepted artifact still exists; no delivery is claimed.
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-011
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Failed
+Untrusted text: <script>alert("not executed")</script>
+Inert reference: https://example.invalid/reference
+Artifact: synthetic-summary.txt
+SHA-256: fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134
+
+Long content · preview unavailable
+A deliberately long public summary explains an interrupted workflow without exposing hidden reasoning. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. 
+Task: synthetic-task-007
+Thread: 1700000000.000001
+Message: synthetic-message-012
+Revision: 1
+Observed: 2026-11-16T12:00:00Z
+Delivery: Unknown
+Untrusted text: <script>alert("not executed")</script>
+Inert reference: https://example.invalid/reference
+Artifact: synthetic-accepted-summary-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-revision-2.txt
+SHA-256: fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134
