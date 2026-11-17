@@ -91,6 +91,9 @@ class SemanticAdmission(Admission):
     Raw Slack edit/delete identity support is NOT supplied by this class.
     """
 
+    STORE_SCHEMA = JOURNAL_SCHEMA
+    STORE_FAMILY = FAMILY
+
     def __init__(
         self,
         path: str,
@@ -110,7 +113,7 @@ class SemanticAdmission(Admission):
         self.authorize = authorize
         self.references = references
         self.app_id, self.account_id = app_id, account_id
-        self.db = open_store(path, JOURNAL_SCHEMA, FAMILY)
+        self.db = open_store(path, self.STORE_SCHEMA, self.STORE_FAMILY)
         try:
             self.db.execute("BEGIN IMMEDIATE")
             rows = self.db.execute(
