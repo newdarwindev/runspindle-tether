@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "probe": "actual_browser_started_then_SIGTERM",
+  "harness_exit": 1,
+  "owned_browser_absent": true,
+  "owned_profile_absent": true,
+  "qualifier_report_status": "failed",
+  "log_sha256": "11fc865ef051ae49fbc3409be853ba71fd21e50c20cf235d9ba178810eaf87ce",
+  "scope": "actual_process_cleanup_not_live_provider_or_visual_approval"
+}
