@@ -114,6 +114,66 @@ def delivery(raw: bytes) -> dict[str, Any]:
     raise Rejected("invalid delivery envelope")
 
 
+def validate_artifact(
+    raw: bytes, payload: Payload, sanitizer: Sanitizer
+) -> tuple[dict[str, Any], str]:
+    envelope = delivery(raw)
+    sanitizer.require_clean(envelope)
+    if type(payload) is not Payload:
+        raise Rejected("payload type")
+    sanitizer.require_payload(payload)
+    digest = payload.digest()
+    p = envelope["payload"]
+    if (
+        len(payload.attachments) != 1
+        or payload.attachments[0].attachment_id != p["artifact_id"]
+        or hashlib.sha256(payload.attachments[0].content).hexdigest() != p["sha256"]
+    ):
+        raise Rejected("exact accepted artifact required")
+    return envelope, digest
+
+
+def validate_context(
+    raw: bytes,
+    payload: Payload,
+    sanitizer: Sanitizer,
+    admission: Admission | None,
+    authorize: Callable[[bytes, str], bool] | None,
+    resolve: Callable[[str, str], Destination | None] | None,
+) -> tuple[str, Destination, str]:
+    envelope, digest = validate_artifact(raw, payload, sanitizer)
+    p, b = envelope["payload"], envelope["binding"]
+    if admission is None or authorize is None or resolve is None:
+        raise Rejected("trusted integration unavailable")
+    # Core still owns accepted artifact validation and delivery authority. The
+    # callback must verify both exact envelope and normalized outbound content.
+    destination = None
+    unavailable = False
+    try:
+        if authorize(raw, digest) is not True:
+            raise Rejected("core delivery authorization denied")
+        destination = resolve(p["account_id"], p["destination_id"])
+    except Exception:
+        unavailable = True
+    if unavailable:
+        raise Rejected("trusted integration unavailable")
+    if type(destination) is not Destination:
+        raise Rejected("destination unavailable")
+    destination.validate()
+    sanitizer.require_clean(
+        [destination.workspace_id, destination.channel_id, destination.thread_id]
+    )
+    if destination.workspace_id != b["workspace_id"]:
+        raise Rejected("workspace mismatch")
+    admitted = any(e["binding"] == b for e in admission.envelopes())
+    head = admission.db.execute(
+        "SELECT revision,deleted FROM heads WHERE task=?", (b["task_id"],)
+    ).fetchone()
+    if not admitted or head != (str(b["revision"]), 0):
+        raise Rejected("missing, superseded or deleted admission")
+    return p["delivery_operation_id"], destination, digest
+
+
 class ProviderJournal:
     def __init__(
         self,
@@ -133,53 +193,12 @@ class ProviderJournal:
         self.db.close()
 
     def _artifact(self, raw: bytes, payload: Payload) -> tuple[dict[str, Any], str]:
-        envelope = delivery(raw)
-        self.sanitizer.require_clean(envelope)
-        if type(payload) is not Payload:
-            raise Rejected("payload type")
-        self.sanitizer.require_payload(payload)
-        digest = payload.digest()
-        p = envelope["payload"]
-        if (
-            len(payload.attachments) != 1
-            or payload.attachments[0].attachment_id != p["artifact_id"]
-            or hashlib.sha256(payload.attachments[0].content).hexdigest() != p["sha256"]
-        ):
-            raise Rejected("exact accepted artifact required")
-        return envelope, digest
+        return validate_artifact(raw, payload, self.sanitizer)
 
     def _context(self, raw: bytes, payload: Payload) -> tuple[str, Destination, str]:
-        envelope, digest = self._artifact(raw, payload)
-        p, b = envelope["payload"], envelope["binding"]
-        if self.admission is None or self.authorize is None or self.resolve is None:
-            raise Rejected("trusted integration unavailable")
-        # Core still owns accepted artifact validation and delivery authority. The
-        # callback must verify both exact envelope and normalized outbound content.
-        destination = None
-        unavailable = False
-        try:
-            if self.authorize(raw, digest) is not True:
-                raise Rejected("core delivery authorization denied")
-            destination = self.resolve(p["account_id"], p["destination_id"])
-        except Exception:
-            unavailable = True
-        if unavailable:
-            raise Rejected("trusted integration unavailable")
-        if type(destination) is not Destination:
-            raise Rejected("destination unavailable")
-        destination.validate()
-        self.sanitizer.require_clean(
-            [destination.workspace_id, destination.channel_id, destination.thread_id]
+        return validate_context(
+            raw, payload, self.sanitizer, self.admission, self.authorize, self.resolve
         )
-        if destination.workspace_id != b["workspace_id"]:
-            raise Rejected("workspace mismatch")
-        admitted = any(e["binding"] == b for e in self.admission.envelopes())
-        head = self.admission.db.execute(
-            "SELECT revision,deleted FROM heads WHERE task=?", (b["task_id"],)
-        ).fetchone()
-        if not admitted or head != (str(b["revision"]), 0):
-            raise Rejected("missing, superseded or deleted admission")
-        return p["delivery_operation_id"], destination, digest
 
     def retained_target(
         self, raw: bytes, payload: Payload, message_id: str
