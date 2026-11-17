@@ -9,7 +9,15 @@ import json
 from copy import deepcopy
 from typing import Any, cast
 
-from tether.admission import Rejected, canonical, counter, decode, identifier, pairs
+from tether.admission import (
+    Admission,
+    Rejected,
+    canonical,
+    counter,
+    decode,
+    identifier,
+    pairs,
+)
 
 VERSION = "runspindle.intent-admission.v1"
 SOURCE = {
@@ -107,6 +115,28 @@ def destination_id(source: dict[str, str]) -> str:
     )
 
 
+def expected_task_id(source: dict[str, str]) -> str:
+    """Stable source ownership across actors; never derive execution permission."""
+    _fields(source, SOURCE)
+    for item in source.values():
+        identifier(item)
+    return "tether-task:" + digest(
+        canonical(
+            [
+                source[key]
+                for key in (
+                    "app_id",
+                    "account_id",
+                    "workspace_id",
+                    "channel_id",
+                    "thread_id",
+                    "message_id",
+                )
+            ]
+        )
+    )
+
+
 def _validate(value: Any) -> None:
     _fields(value, {"version", "scoped", "event"})
     if value["version"] != VERSION:
@@ -134,6 +164,7 @@ def _validate(value: Any) -> None:
         or destination["destination_id"] != target
         or destination["delivery_operation_id"] == binding["operation_id"]
         or binding["workspace_id"] != source["workspace_id"]
+        or binding["task_id"] != expected_task_id(source)
         or event["revision"] != binding["revision"]
         or event["event_id"] != request["message_id"]
         or event["event_id"] != payload["delivery_id"]
@@ -248,3 +279,83 @@ def build_intent(
     wire: bytes = canonical(value)
     decode_intent(wire)
     return wire
+
+
+def export_retained_intent(
+    admission: Admission,
+    raw: bytes,
+    *,
+    app_id: str,
+    account_id: str,
+    binding: dict[str, Any],
+    delivery_namespace: str,
+    delivery_operation_id: str,
+    grant_ref: str,
+    previous_wire: bytes | None = None,
+) -> bytes:
+    """Export only the exact current retained revision, never submit or authorize.
+
+    The legacy grant reference is checked as retained data, not copied as v3
+    authority. Caller owns a fresh v3 issuer. A snapshot cannot fence later effects.
+    """
+    if type(admission) is not Admission or admission.db.in_transaction:
+        raise Rejected("retained admission transaction")
+    wire = build_intent(
+        raw,
+        app_id=app_id,
+        account_id=account_id,
+        binding=binding,
+        delivery_namespace=delivery_namespace,
+        delivery_operation_id=delivery_operation_id,
+        grant_ref=grant_ref,
+        previous_wire=previous_wire,
+    )
+    event = decode(raw)
+    scope, source_scope = Admission.scope(event), Admission.scope(event, False)
+    task, revision = binding["task_id"], str(binding["revision"])
+    raw_digest = digest(raw)
+    db = admission.db
+    db.execute("BEGIN")
+    try:
+        rows = db.execute(
+            "SELECT scope,kind,digest,envelope FROM revisions WHERE task=? AND revision=?",
+            (task, revision),
+        ).fetchall()
+        if len(rows) != 1 or rows[0][:3] != (scope, event["kind"], raw_digest):
+            raise Rejected("retained revision mismatch")
+        owner = db.execute(
+            "SELECT task FROM sources WHERE scope=?", (source_scope,)
+        ).fetchall()
+        delivery = db.execute(
+            "SELECT digest FROM deliveries WHERE namespace=? AND event=?",
+            (delivery_namespace, event["event_id"]),
+        ).fetchall()
+        head = db.execute(
+            "SELECT revision,scope,deleted FROM heads WHERE task=?", (task,)
+        ).fetchall()
+        mirrors = db.execute(
+            "SELECT scope FROM mirrors WHERE scope=?", (source_scope,)
+        ).fetchall()
+        if (
+            owner != [(task,)]
+            or delivery != [(raw_digest,)]
+            or head != [(revision, scope, int(event["kind"] == "delete"))]
+            or mirrors
+        ):
+            raise Rejected("retained source delivery or head mismatch")
+        try:
+            retained = json.loads(rows[0][3], object_pairs_hook=pairs)
+            _request(retained)
+            expected = deepcopy(decode_intent(wire)["scoped"]["request"])
+            expected["payload"]["normalized_digest"] = raw_digest
+            expected["payload"]["grant_ref"] = retained["payload"]["grant_ref"]
+            valid = retained == expected and canonical(retained).decode() == rows[0][3]
+        except (ValueError, TypeError, UnicodeError, RecursionError):
+            valid = False
+        if not valid:
+            raise Rejected("retained envelope mismatch")
+        # Apply existing metadata sanitization without altering identity or bytes.
+        admission.sanitizer.require_clean(decode_intent(wire))
+        return wire
+    finally:
+        db.execute("ROLLBACK")

@@ -23,7 +23,8 @@ The exact destination is `tether:` followed by lowercase SHA256 of canonical JSO
 array `[app_id, account_id, workspace_id, channel_id, thread_id]`. Its account
 matches source account. The scoped envelope's normalized digest hashes the whole
 semantic event, including prior request and prior full-wire digest. Delivery and
-task operation IDs differ. No existing v1 wire format is changed.
+task operation IDs differ. The legacy ingress/envelope serializers are unchanged. The still-unqualified
+semantic lane now requires source-owned deterministic task identity as below.
 
 A grant reference does not authorize these bytes. A trusted issuer must issue a
 **fresh runspindle.authority.v3 assertion over the resulting full wire**. Never
@@ -83,3 +84,56 @@ bytes, not just a producer/decoder round trip.
 See [bounded evidence](../docs/intent-producer-evidence.json) for test counts,
 artifact digests and explicit aggregate static-check blockers. No existing debt
 baseline was relaxed. Full cross-component qualification must pin both final heads.
+
+## Source-owned task identity correction
+
+A semantic request MUST supply `binding.task_id` equal to `expected_task_id(source)`:
+`tether-task:` + lowercase SHA256 of canonical JSON array
+`[app_id, account_id, workspace_id, channel_id, thread_id, message_id]`.
+The codec rejects a mismatch; it never silently rewrites a caller's task ID.
+Actor is deliberately excluded: different actors referring to the same source
+message must address the same durable Core workflow, not parallel task registries.
+Core must independently enforce this deterministic address AND immutable source
+actor binding, freshness, authority and revision ordering. The hash gives no
+permission and is not global durable admission on its own.
+
+This corrects a gap in the previously unqualified semantic candidate: its arbitrary
+initial task IDs could address multiple workflows for one source. Earlier fixture
+hashes and semantic bytes are superseded, not qualified for production. Legacy
+arbitrary-task workflows are not automatically migrated, adopted or coalesced.
+Migration requires separate explicit qualification. Delete remains non-executable,
+empty-content, and terminal; only the Core lane can reserve authenticated deletion
+against actual durable history. Signed Slack edits/deletes remain deny-only here.
+
+## Retained export seam
+
+`export_retained_intent(admission, raw, **build_arguments)` accepts an actual
+`Admission` owned by trusted application code, not a request-controlled database.
+It builds the candidate then uses one SQLite read transaction to verify the exact
+retained revision kind/scope/raw digest, canonical legacy envelope, source owner,
+global delivery namespace/event digest, current head and absence of a mirror.
+Any missing, different, stale or corrupted record rejects. Nested transactions
+reject without committing or rolling back the caller's transaction. Every owned
+read transaction rolls back on success, failure or cancellation; no record changes.
+
+The legacy retained envelope's grant reference is validated only as retained data;
+it is never reused to authorize the new wire. The explicit new grant reference is
+still merely a reference requiring fresh v3 issuance. The returned bytes contain
+no raw message text. The existing sanitizer checks exported metadata unchanged.
+
+This export is deliberately latest-retained-only. After a newer revision is
+retained, earlier candidates cannot be newly exported by this seam. Export/store
+processing must preserve order; this helper is not a replay coordinator or a way
+to reconstruct missed exports after later admissions. A prior candidate's exact
+wire must already be available when exporting its successor. Durable end-to-end
+coordination/recovery remains a separate Core/composition qualification gate.
+The read snapshot cannot prevent a later deletion or revocation before effect;
+Core's independent current authority and state fencing remain mandatory.
+
+Pure `build_intent` remains available for conformance and trusted construction,
+not as a production ingress bypass. A production bridge must use retained export
+and must not submit arbitrary codec output around the existing authenticated,
+durable delivery/source deduplication path. Retained export tests use actual SQLite
+with explicitly fake authentication and grants, independently inspect unchanged
+database dumps, reject conflicting provider event IDs across sources, and reopen
+in fresh normal/optimized processes. There is no issuer/provider/network effect.
