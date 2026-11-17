@@ -1,0 +1,2144 @@
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128c130>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128c310>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128c4f0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128c5e0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128c400>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128c7c0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128c6d0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128c9a0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128c8b0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128c9a0>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128c7c0>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128c5e0>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d030>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d120>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128cf40>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d300>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d210>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d4e0>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d3f0>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d6c0>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d5d0>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d8a0>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128db70>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128dd50>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128dc60>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128df30>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e020>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e200>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e2f0>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e110>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e4d0>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e3e0>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e6b0>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e890>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e7a0>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e7a0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e980>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e6b0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e3e0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e110>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e4d0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e200>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e2f0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128df30>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e020>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128dd50>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d6c0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d4e0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d120>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d030>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128ef20>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128cf40>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128c7c0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f1f0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f2e0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f010>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f3d0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f6a0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f880>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f970>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fa60>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fb50>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fc40>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fd30>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128ff10>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360040>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360130>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360400>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13604f0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13605e0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13608b0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13609a0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360a90>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360d60>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360e50>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360f40>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361210>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361300>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:888: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13613f0>
+  def setup_positions(expr, force_valid=True):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fe20>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f790>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fd30>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fc40>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fb50>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fa60>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f880>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f6a0>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e980>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e7a0>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e200>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d030>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f3d0>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361210>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360e50>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361030>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360d60>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f2e0>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360a90>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13606d0>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360400>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13605e0>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360310>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360c70>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360040>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13617b0>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361a80>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13618a0>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361b70>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360220>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361e40>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362200>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13624d0>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13622f0>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13625c0>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361c60>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362890>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362c50>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362f20>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362d40>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1363010>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13626b0>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:325: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13632e0>
+  head = self.db.execute(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f100>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f010>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d030>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e7a0>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128ef20>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f880>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f6a0>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fb50>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f1f0>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f790>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fe20>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13626b0>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13631f0>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fc40>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362e30>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362980>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362b60>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362890>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362f20>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13624d0>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362110>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362200>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362020>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13625c0>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361b70>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13617b0>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13618a0>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361990>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360220>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360c70>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13605e0>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360130>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360400>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13614e0>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13609a0>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360d60>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360a90>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361030>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13607c0>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360e50>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13613f0>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e020>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d120>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e3e0>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fc40>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fe20>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f790>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128ff10>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fd30>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f2e0>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128c130>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128dd50>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fb50>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fa60>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f880>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128ef20>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e980>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f6a0>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e200>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f010>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f100>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e7a0>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361300>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1363100>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13613f0>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128cf40>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360e50>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13607c0>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13614e0>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13606d0>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13604f0>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360c70>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13605e0>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360310>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13615d0>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360220>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361990>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361a80>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361b70>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361d50>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f3d0>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128c7c0>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d6c0>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d030>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f1f0>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:361: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f970>
+  obj, end = self.scan_once(s, idx)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fe20>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f790>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128ff10>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128ef20>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f6a0>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d030>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e200>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f010>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e7a0>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d6c0>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f3d0>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e5c0>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e6b0>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e4d0>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f5b0>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128d120>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e3e0>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e020>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360a90>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+<frozen importlib._bootstrap>:491: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f4c0>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128fc40>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361030>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361990>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13615d0>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13607c0>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128e7a0>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f010>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361d50>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360e50>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361f30>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360f40>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13625c0>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13613f0>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13622f0>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13623e0>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361c60>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361e40>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362c50>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362a70>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1363010>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362f20>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13635b0>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13634c0>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13636a0>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362d40>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1363790>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1363970>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:88: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1363880>
+  if type(limits) is not Limits or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f970>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f5b0>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d128f880>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1363c40>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1363b50>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1363880>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1363790>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362d40>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13636a0>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13633d0>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13635b0>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1360220>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13626b0>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13632e0>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d13631f0>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1363010>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362a70>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1362c50>
+  __dict__['_mock_mock_calls'] = _CallList()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:389: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361b70>
+  self.db.execute("COMMIT")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/feedback.py:389: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361030>
+  self.db.execute("COMMIT")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361030>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1361b70>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111c400>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111c310>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111c7c0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111c8b0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111c6d0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111cb80>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111c9a0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111ca90>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111cc70>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111cd60>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111c220>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111c130>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111cf40>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111c4f0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111d030>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111c5e0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111ce50>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111d120>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111d210>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111d300>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111d4e0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111d3f0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111d6c0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d111d5d0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/campaign_testing.py:108: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc918a0>
+  self.db.executemany(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/campaign_testing.py:108: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc92110>
+  self.db.executemany(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d10d0c70>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91990>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91b70>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc918a0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91e40>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91300>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc925c0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:694: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91990>
+  raise AttributeError(name)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91f30>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:151: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93b50>
+  def _validate(self, value: object) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:151: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc932e0>
+  def _validate(self, value: object) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:151: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91b70>
+  def _validate(self, value: object) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:151: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc931f0>
+  def _validate(self, value: object) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:151: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc936a0>
+  def _validate(self, value: object) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:151: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93970>
+  def _validate(self, value: object) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:151: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93880>
+  def _validate(self, value: object) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:151: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93a60>
+  def _validate(self, value: object) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:151: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc934c0>
+  def _validate(self, value: object) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc934c0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93e20>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc936a0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93d30>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93790>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93010>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93880>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc931f0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc932e0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc931f0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91b70>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93880>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:526: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d16af010>
+  def format_frame_summary(self, frame_summary, **kwargs):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:526: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d16acc70>
+  def format_frame_summary(self, frame_summary, **kwargs):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:526: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93880>
+  def format_frame_summary(self, frame_summary, **kwargs):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:526: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93010>
+  def format_frame_summary(self, frame_summary, **kwargs):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:526: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc933d0>
+  def format_frame_summary(self, frame_summary, **kwargs):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:526: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93790>
+  def format_frame_summary(self, frame_summary, **kwargs):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:526: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91b70>
+  def format_frame_summary(self, frame_summary, **kwargs):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:526: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93c40>
+  def format_frame_summary(self, frame_summary, **kwargs):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:526: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc932e0>
+  def format_frame_summary(self, frame_summary, **kwargs):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:526: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93d30>
+  def format_frame_summary(self, frame_summary, **kwargs):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:526: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc92f20>
+  def format_frame_summary(self, frame_summary, **kwargs):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:526: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc936a0>
+  def format_frame_summary(self, frame_summary, **kwargs):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:526: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93e20>
+  def format_frame_summary(self, frame_summary, **kwargs):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:526: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91f30>
+  def format_frame_summary(self, frame_summary, **kwargs):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:526: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc935b0>
+  def format_frame_summary(self, frame_summary, **kwargs):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/traceback.py:526: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93970>
+  def format_frame_summary(self, frame_summary, **kwargs):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb8b80>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9120>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9030>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9300>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9210>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb94e0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb97b0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9a80>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9c60>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9b70>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9e40>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9d50>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba020>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9f30>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1556b60>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d1555c60>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93c40>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc934c0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc936a0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc92f20>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc935b0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91990>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc933d0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc932e0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d16e95d0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93b50>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba200>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba110>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb96c0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb95d0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba3e0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba2f0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba5c0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba4d0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba7a0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba6b0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba980>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba890>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbab60>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbad40>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbaf20>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb1f0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb010>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb2e0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb3d0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb5b0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb4c0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb790>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb6a0>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb970>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbba60>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbc40>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbb50>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbe20>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/case.py:262: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbd30>
+  def __exit__(self, exc_type, exc_value, tb):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbd30>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbf10>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbb50>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbe20>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbba60>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbc40>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb6a0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb970>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb4c0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb790>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb3d0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb5b0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb010>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb2e0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbaf20>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb1f0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbab60>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbad40>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba980>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba890>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba7a0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba6b0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba5c0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba4d0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba3e0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba2f0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb8b80>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9120>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9030>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9300>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9210>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb95d0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb94e0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb96c0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb97b0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9a80>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9c60>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9b70>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9e40>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9d50>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba020>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9f30>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba200>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba110>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93b50>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d16e95d0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc933d0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc932e0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc931f0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91990>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc92f20>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc935b0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93880>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc936a0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93c40>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80040>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80220>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80130>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80400>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80310>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb805e0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb804f0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb807c0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb806d0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb809a0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb808b0>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80b80>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80a90>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:32: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80d60>
+  cu = connection.cursor()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93c40>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d16e95d0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93880>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc936a0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc92f20>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc935b0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc931f0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91990>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc933d0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc932e0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba110>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93b50>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9f30>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba200>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9d50>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba020>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9b70>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9e40>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9a80>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9c60>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb96c0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb97b0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb95d0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb94e0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9300>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9210>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9120>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9030>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba2f0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb8b80>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba4d0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba3e0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba6b0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba5c0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba890>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba7a0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbad40>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba980>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb1f0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbab60>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb2e0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbaf20>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb5b0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb010>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb790>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb3d0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb970>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb4c0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbc40>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb6a0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbe20>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbba60>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbf10>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbb50>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80d60>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbd30>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80b80>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80a90>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb809a0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb808b0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb807c0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb806d0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb805e0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb804f0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80400>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80310>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80220>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80130>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80e50>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80040>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb81030>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80f40>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb81210>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb81120>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb813f0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb81300>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb815d0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb814e0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb817b0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb816c0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb81990>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb818a0>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb81b70>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/decoder.py:337: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb81a80>
+  self.scan_once = scanner.make_scanner(self)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbb80c70>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbd30>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbb50>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbba60>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbf10>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb6a0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbe20>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb4c0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbc40>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb3d0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb970>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb010>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb790>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbaf20>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb5b0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbab60>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb2e0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba980>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb1f0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba7a0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbad40>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba5c0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba3e0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb8b80>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba4d0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9030>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9120>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9300>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9210>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb95d0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb94e0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb96c0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb97b0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9a80>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9c60>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9b70>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9e40>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9d50>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba020>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9f30>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba200>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d16e95d0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba110>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc932e0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93b50>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91990>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc933d0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc935b0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc931f0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc936a0>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:100: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc92f20>
+  pending.extend((item, depth + 1) for item in value)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d16af010>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba110>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9f30>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9d50>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9b70>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9e40>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9a80>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9c60>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb96c0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb97b0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb95d0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb94e0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9300>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9210>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9030>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9120>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb8b80>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba4d0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba5c0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba980>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbab60>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb6a0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb8d60>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb8220>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/unittest/mock.py:2259: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb88b0>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d16af010>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbab60>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba7a0>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba980>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba3e0>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbad40>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba4d0>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba5c0>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb95d0>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9e40>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9d50>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9b70>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba110>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9f30>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d16e98a0>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbe20>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc92f20>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93880>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc931f0>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc936a0>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc933d0>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc935b0>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93b50>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91990>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91f30>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc932e0>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93d30>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93f10>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93a60>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93e20>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93010>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc925c0>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93970>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91300>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/sqlite3/dump.py:89: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93790>
+  "','".join(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93790>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93c40>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93970>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93a60>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93d30>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91f30>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93b50>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91990>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc933d0>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc935b0>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc931f0>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc936a0>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc92f20>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93880>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb94e0>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d16e98a0>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9030>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb1f0>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9f30>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9b70>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9e40>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9d50>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb97b0>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb95d0>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9c60>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9a80>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba5c0>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:187: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbb4c0>
+  for key, child in item.items():
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb94e0>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbc40>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba110>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb96c0>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9b70>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb9d50>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:155: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91b70>
+  def walk(item: object, depth: int) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:496: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4d16af010>
+  if not re.fullmatch(r"[A-Za-z0-9-]+", name) or any(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/pathlib/__init__.py:329: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb96c0>
+  @property
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:152: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc932e0>
+  seen: set[int] = set()
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/sanitization.py:151: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba110>
+  def _validate(self, value: object) -> None:
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/pathlib/__init__.py:329: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc932e0>
+  @property
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/pathlib/__init__.py:329: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc93c40>
+  @property
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/pathlib/__init__.py:329: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbba110>
+  @property
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/pathlib/__init__.py:329: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbaf20>
+  @property
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/pathlib/__init__.py:329: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbf10>
+  @property
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/pathlib/__init__.py:329: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbab8130>
+  @property
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbb96c0>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbbbbf10>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc932e0>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbab85e0>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/tmp/tether9-conflict-resolution-20261117/tether/slack_wire.py:126: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc932e0>
+  if not name or any(ord(c) < 32 for c in name) or any(c in name for c in "/\\"):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.14/json/encoder.py:254: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7ff4cbc91d50>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+----------------------------------------------------------------------
+Ran 508 tests in 60.308s
+
+OK (skipped=1)
