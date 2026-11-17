@@ -1,13 +1,15 @@
 {
   "schema_version": 1,
-  "scope": "Tether issue8 pure semantic admission producer only",
-  "base_revision": "dcaa5c9d61564e7247ff05793afa0e7cc1ae08b3",
+  "scope": "Tether issue8 deterministic semantic identity and bounded current-retained export",
+  "base_revision": "7bed27828d1afc746da867e8b601f4147c79e54e",
   "python": "3.14.8",
   "ruff": "0.14.5",
   "legacy_fixture_revision": "040b71f2213a34f34e6b6a40124ed1164b93ce30",
   "entrypoints": [
     "tether.intent.build_intent",
-    "tether.intent.decode_intent"
+    "tether.intent.decode_intent",
+    "tether.intent.expected_task_id",
+    "tether.intent.export_retained_intent"
   ],
   "real_boundaries": [
     "Python canonical JSON, UTF-8 and SHA256",
@@ -20,17 +22,17 @@
   "verification": {
     "focused_tests": {
       "status": "passed",
-      "tests": 11,
-      "mutation": "mirror guard removal causes existing regression assertion failure"
+      "tests": 21,
+      "mutation": "mirror guard and deterministic task guard removal each cause regression assertion failure"
     },
     "full_normal": {
       "status": "passed",
-      "tests": 396,
+      "tests": 406,
       "skipped": 1
     },
     "full_optimized": {
       "status": "passed",
-      "tests": 396,
+      "tests": 406,
       "skipped": 1
     },
     "changed_file_ruff_and_strict_mypy": "passed",
@@ -47,8 +49,14 @@
   ],
   "issue8_completion": false,
   "artifact_sha256": {
-    "tether/intent.py": "e9c7ddae27fb0061b96d3fc95db7ff624d364ebf61d362b9de66d972e8847751",
-    "tests/test_intent.py": "ee6c99b9222403b6e96b53e988aa7c72ae569e155642b75f7687a495ac8909f6",
-    "conformance/intent-v1/vectors.json": "af00da846663b3c105e375f3c387b060a29ff9e43d8d8e8c5a61db4e296f3bc7"
-  }
+    "tether/intent.py": "2bf4f6e3c1b1dcb48cd081e9f123e0588bd1022045cb6aa55225435f7ae25358",
+    "tests/test_intent.py": "52a53f135c1563c0795678613fee4053e103e1894e6d9fe1c723695085a0b344",
+    "tests/test_intent_retained.py": "eaed8735f3b71ca8f0c8d1e38c4f94ca6cb0e919389582f07b791e4791ddb0e6",
+    "conformance/intent-v1/vectors.json": "47bc9415404986d25e2ae5ecea2d857d7fe880ae721607ff59da35d3555b7c49"
+  },
+  "supersedes_producer_revision": "3457e8b464fd2d0c76366b8398a08de3723409ee",
+  "remaining_gaps": [
+    "Current-retained export cannot reconstruct missed predecessor exports after later admission; explicit failing-closed regression included",
+    "Durable ordered semantic export and atomic Core supersession/batch admission not yet implemented"
+  ]
 }

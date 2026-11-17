@@ -10,7 +10,7 @@ from typing import Any
 from unittest.mock import patch
 
 from tether.admission import Rejected, canonical
-from tether.intent import build_intent, decode_intent
+from tether.intent import build_intent, decode_intent, expected_task_id
 
 
 def event(
@@ -39,7 +39,10 @@ def options(revision: int = 1) -> dict[str, Any]:
         delivery_operation_id=f"delivery-{revision}",
         grant_ref=f"v3-grant-{revision}",
         binding=dict(
-            task_id="task-test",
+            task_id="tether-task:"
+            + hashlib.sha256(
+                b'["Atest","acct-test","Wtest","Ctest","1700000000.000000","1700000000.000001"]'
+            ).hexdigest(),
             revision=revision,
             operation_id=f"operation-{revision}",
             policy_revision="policy-1",
@@ -263,6 +266,47 @@ class IntentTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             build_intent(canonical(event()), **{**options(), "grant": object()})
 
+    def test_source_owned_task_identity_excludes_actor(self) -> None:
+        raw = produce()
+        source = json.loads(raw)["event"]["source"]
+        expected = (
+            "tether-task:"
+            + hashlib.sha256(
+                b'["Atest","acct-test","Wtest","Ctest","1700000000.000000","1700000000.000001"]'
+            ).hexdigest()
+        )
+        self.assertEqual(expected_task_id(source), expected)
+        changed_actor = dict(source, actor_id="Uother")
+        self.assertEqual(expected_task_id(changed_actor), expected)
+        for key in (
+            "app_id",
+            "account_id",
+            "workspace_id",
+            "channel_id",
+            "thread_id",
+            "message_id",
+        ):
+            self.assertNotEqual(
+                expected_task_id(dict(source, **{key: "other"})), expected
+            )
+        for task in ("arbitrary-task", "tether-task:" + "0" * 64):
+            args = options()
+            args["binding"]["task_id"] = task
+            with self.assertRaises(Rejected):
+                build_intent(canonical(event()), **args)
+            value = json.loads(raw)
+            value["scoped"]["request"]["binding"]["task_id"] = task
+            with self.assertRaises(Rejected):
+                decode_intent(independent_bytes(value))
+        # A different actor cannot address a parallel workflow for this source.
+        altered = event()
+        altered["actor_id"] = "Uother"
+        candidate = build_intent(canonical(altered), **options())
+        self.assertEqual(
+            json.loads(candidate)["scoped"]["request"]["binding"]["task_id"], expected
+        )
+        # This is only addressing; Core must reject changed actor against its history.
+
     def test_pinned_independent_vectors(self) -> None:
         path = (
             Path(__file__).resolve().parents[1] / "conformance/intent-v1/vectors.json"
@@ -279,6 +323,28 @@ class IntentTest(unittest.TestCase):
                 row["semantic_sha256"],
             )
             previous = raw
+
+    def test_task_guard_mutant_fails_independent_regression(self) -> None:
+        source = (Path(__file__).resolve().parents[1] / "tether/intent.py").read_text()
+        old = 'or binding["task_id"] != expected_task_id(source)'
+        self.assertEqual(source.count(old), 1)
+        module = ModuleType("intent_task_mutant")
+        exec(
+            compile(source.replace(old, "or False", 1), "intent_task_mutant", "exec"),
+            module.__dict__,
+        )
+        with patch.dict(
+            globals(),
+            build_intent=module.build_intent,
+            decode_intent=module.decode_intent,
+        ):
+            result = unittest.TestResult()
+            IntentTest("test_source_owned_task_identity_excludes_actor").run(result)
+        self.assertEqual(result.testsRun, 1)
+        self.assertEqual(result.errors, [])
+        self.assertTrue(
+            result.failures, "task identity guard mutant escaped regression"
+        )
 
     def test_guard_mutant_fails_independent_regression(self) -> None:
         source = (Path(__file__).resolve().parents[1] / "tether/intent.py").read_text()
