@@ -180,6 +180,11 @@ class Admission:
             "INSERT OR IGNORE INTO mirrors VALUES (?)", (canonical(values).decode(),)
         )
 
+    def _retained_extension(
+        self, raw: bytes, envelope: dict[str, Any], duplicate: bool
+    ) -> None:
+        """Internal transaction hook. Legacy admission retains no semantic export."""
+
     def ingest(self, raw: bytes, proof: object) -> str:
         # Authentication precedes parsing, authority precedes all persistent effects.
         if self.authenticate is None or self.authorize is None:
@@ -288,6 +293,7 @@ class Admission:
             if previous:
                 if previous[0] != digest:
                     raise Rejected("delivery conflict")
+                self._retained_extension(raw, envelope, True)
                 self.db.execute("ROLLBACK")
                 return "duplicate"
             head = self.db.execute(
@@ -327,6 +333,7 @@ class Admission:
                 "INSERT OR REPLACE INTO heads VALUES (?,?,?,?)",
                 (grant.task_id, str(grant.revision), scope, event["kind"] == "delete"),
             )
+            self._retained_extension(raw, envelope, False)
             self.db.execute("COMMIT")
             return "admitted"
         except BaseException:

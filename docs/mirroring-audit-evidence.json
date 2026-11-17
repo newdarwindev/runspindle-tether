@@ -74,7 +74,7 @@
   },
   "reviewed_commit_record": "The containing commit identifies these exact bytes; final commit/tree and manifest hash are retained in the publication receipt and private mapping. No recursive self-hash is claimed.",
   "sha256": {
-    "STATUS.json": "441d2448203358382f8aa288802b1adaa56eec7f914f1d4e4da967e2a54326f8",
+    "STATUS.json": "d1a19681cf24bddd8df7b6cfb44135fd6bb7bc05205af0af0db92da8d996ddac",
     "docs/LICENSE-SRC-014.txt": "6633fb2316603acd45898cbcd7497f18e045449547eddf137b1919358b57fe2e",
     "docs/MIRRORING_ACCEPTANCE.md": "c4853930f2257426ac72c107a926f1617b48a60369d5fb079ca464c487261d40",
     "docs/MIRRORING_COVERAGE.md": "17415f72ffc1feefdbdf47e80cb6d22a3f2f4e59a23ebfd262313d0958f11350",
@@ -85,7 +85,7 @@
     "hygiene.json": "20afbbf219ee10b19406b2f46d2ed9af58868c9d5a546aff5259f137e38af8e7",
     "provenance.json": "246d0b39286dea11eabab41206078a056b2e6b06e96abed4be4d882c02ff32ea",
     "requirements-quality.txt": "9cbe1331549216b953f2922f1e8321357ca82bb985e1ea595c87fcee8a8fdc84",
-    "specs/README.md": "2771a1bff58c14720ec700483f14df0043cefde0bf662f627d91597e81c2ae65",
+    "specs/README.md": "c1c2cb4a2b94f514df30f0b0b218b18f04885c10be7f4319a87960cb64d02df9",
     "specs/slack-wire-v1.md": "cb4a86d5309b8ede8a475f2c53eb505bfcc50ce2fdbc95150d711baf8ae2319f",
     "tests/test_fake_transport.py": "d440c3217dba6072ebca9abb4770ee132f391d8b288b176a4f80e8dfc427d730",
     "tests/test_mirroring_audit.py": "98b17a648b56a082aec2bfcf234b6ac73091d5b42a0472844db9109f4ad33b49",
@@ -199,6 +199,16 @@
       "specs/README.md": "3b3a56667c7c5b2ad1103932d4c0b6d37aa0cd452934a443049f6365bed460af"
     },
     "evidence": "docs/visual-reference/evidence.json",
+    "live_acceptance": "not_run"
+  },
+  "semantic_journal_follow_up": {
+    "base_revision": "787476d06f2b3260dfe616d60cc7992995245423",
+    "scope": "Refresh only current metadata hashes for separately documented semantic journal component. Prior audit validation remains historical; new exact source evidence is separate.",
+    "previous_metadata_hashes": {
+      "STATUS.json": "441d2448203358382f8aa288802b1adaa56eec7f914f1d4e4da967e2a54326f8",
+      "specs/README.md": "2771a1bff58c14720ec700483f14df0043cefde0bf662f627d91597e81c2ae65"
+    },
+    "evidence": "docs/semantic-journal-evidence.json",
     "live_acceptance": "not_run"
   }
 }

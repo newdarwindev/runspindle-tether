@@ -58,5 +58,7 @@
   "remaining_gaps": [
     "Current-retained export cannot reconstruct missed predecessor exports after later admission; explicit failing-closed regression included",
     "Durable ordered semantic export and atomic Core supersession/batch admission not yet implemented"
-  ]
+  ],
+  "evidence_snapshot_revision": "e7c46a9c61a8a8a20bacc5f7d60f8724ffff1da6",
+  "journal_followup_evidence": "docs/semantic-journal-evidence.json"
 }

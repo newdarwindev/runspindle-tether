@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "scope": "Versioned atomic semantic ingress journal and bounded Core batch/retention interfaces",
+  "base_revision": "787476d06f2b3260dfe616d60cc7992995245423",
+  "python": "3.14.8",
+  "ruff": "0.14.5",
+  "legacy_fixture_revision": "040b71f2213a34f34e6b6a40124ed1164b93ce30",
+  "entrypoints": [
+    "SemanticAdmission.ingest",
+    "SemanticAdmission.snapshot_batch",
+    "SemanticAdmission.pending_batch",
+    "SemanticAdmission.reconcile_retention",
+    "SignedSemanticIngress.ingest"
+  ],
+  "real": [
+    "SQLite atomic transaction and fresh-process reopen",
+    "Actual HMAC verifier with synthetic signed ordinary-create requests",
+    "Canonical JSON and SHA256",
+    "os._exit before commit rollback"
+  ],
+  "synthetic": [
+    "Transport and authorization callbacks for normalized edits/deletes",
+    "Explicit new grant references, not signed assertions",
+    "Core readback fixture callbacks"
+  ],
+  "verification": {
+    "journal_focused": {
+      "status": "passed",
+      "tests": 16
+    },
+    "mutation": "missing atomic hook fails independent SQL assertion; codec task and mirror guard mutations retained",
+    "full_normal": {
+      "status": "passed",
+      "tests": 422,
+      "skipped": 1
+    },
+    "full_optimized": {
+      "status": "pending_final_metadata_refresh_rerun",
+      "last_run_tests": 422,
+      "last_run_failures": 2,
+      "last_run_errors": 1,
+      "cause": "New STATUS/spec-index metadata hashes required refresh in audit inventory; no runtime test failed"
+    },
+    "static_new_code": "no_new_diagnostics",
+    "aggregate_static": "failed_unchanged_visual_dependencies_and_upload_test_formatting",
+    "existing_visual_skip": "explicit pinned renderer not configured",
+    "review": "Independent corrected-source review approved; all16 journal tests independently passed normal and optimized",
+    "metadata_followup": "Exact current metadata hashes refreshed; historical hashes retained and quality baseline unchanged"
+  },
+  "not_run": [
+    "Production issuer provisioning",
+    "Raw Slack edit/delete actor attribution",
+    "Live Slack/native acceptance",
+    "Final committed-head composed Core qualifier"
+  ],
+  "boundaries": [
+    "No server/subscription/deployment/network sender",
+    "No legacy store migration or inferred v3 grants",
+    "Complete batch only; never sequential executable predecessor replay",
+    "retained receipt does not mean executed/delivered/cancelled",
+    "pending None is snapshot-only, not globally drained",
+    "Concurrent local ingress does not revoke an already submitted batch"
+  ],
+  "issue8_completion": false,
+  "artifact_sha256": {
+    "tether/admission.py": "1b2f2e778bd23e5f956ff8e0e69d46a00d5ea42454a09d3930537d11568373ca",
+    "tether/intent.py": "4d678e12620cc4a4bbd86d92b7b71b8bcd45da09eceedbaf11e5b8c406dde4c8",
+    "tether/semantic_journal.py": "b1750230e72e47c032bf99c3f817f1640df31dff88e6983990689f5b3b5c05b5",
+    "tether/semantic_ingress.py": "21733fc1384525f8cafd83e05576b94b63f6c401466177da0bbc5bf6393f0da3",
+    "tests/test_intent.py": "bbda23372c73c5032396fc68d4199df6a2ecee2171acb04887f5e71b172beecc",
+    "tests/test_semantic_journal.py": "4891d7b3a4dddb3c7ebda99cb1f35ad73e4c25016aeb2246af01e0c99ba7214e",
+    "conformance/intent-v1/vectors.json": "47bc9415404986d25e2ae5ecea2d857d7fe880ae721607ff59da35d3555b7c49",
+    "conformance/intent-batch-v1/vectors.json": "43ad0c2957a82d2b794a71b93226eb4f16cd968bada4aa99195b6d0d16a1eb7a"
+  }
+}
