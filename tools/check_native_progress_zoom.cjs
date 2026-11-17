@@ -36,6 +36,29 @@ function validatePair(normal, zoomed) {
   assert.ok(Math.abs(zoomed.dpr / normal.dpr - 2) < 0.001, 'native DPR must double');
   assert.ok(Math.abs(normal.innerWidth / zoomed.innerWidth - 2) < 0.01, 'CSS viewport must halve');
 }
+function validateBitmap(pixels, expected) {
+  assert.ok(Math.abs(pixels.size[0]-expected.width)<=1 && Math.abs(pixels.size[1]-expected.height)<=1, 'captured bitmap is incomplete');
+  assert.ok(pixels.color_count_lower_bound>=8, 'captured bitmap is blank');
+}
+function pixelsOf(png) {
+  return JSON.parse(cp.execFileSync('python3',['-B','-c','import sys,io,hashlib,json; from PIL import Image; im=Image.open(io.BytesIO(sys.stdin.buffer.read())).convert("RGB"); c=im.getcolors(256); print(json.dumps(dict(size=im.size,rgb_sha256=hashlib.sha256(im.tobytes()).hexdigest(),color_count_lower_bound=len(c) if c is not None else 257)))'],{input:png,timeout:10000}).toString());
+}
+async function nativeBitmap(page, session, mode, selector) {
+  const metrics=await session.send('Page.getLayoutMetrics');
+  const zoom=metrics.visualViewport.zoom;
+  let clip, expected;
+  if(mode==='full') {
+    clip={x:0,y:0,width:metrics.contentSize.width,height:metrics.contentSize.height,scale:1}; expected=clip;
+    const extent=await page.evaluate(()=>({right:Math.max(...[...document.querySelectorAll('.card')].map(e=>e.getBoundingClientRect().right+scrollX)),bottom:document.querySelector('footer').getBoundingClientRect().bottom+scrollY}));
+    assert.ok(extent.right*zoom<=clip.width+1 && extent.bottom*zoom<=clip.height+1,'full bitmap omits renderer content');
+  } else if(mode==='card') {
+    const rect=await page.locator(selector).evaluate(e=>{const r=e.getBoundingClientRect();return {x:r.x+scrollX,y:r.y+scrollY,width:r.width,height:r.height};});
+    clip={x:rect.x*zoom,y:rect.y*zoom,width:rect.width*zoom,height:rect.height*zoom,scale:1};expected=clip;
+  } else {assert.equal(mode,'viewport');expected={width:metrics.layoutViewport.clientWidth,height:metrics.layoutViewport.clientHeight};}
+  const result=await session.send('Page.captureScreenshot',{format:'png',fromSurface:true,captureBeyondViewport:mode!=='viewport',...(clip?{clip}:{})});
+  const png=Buffer.from(result.data,'base64'), pixels=pixelsOf(png);validateBitmap(pixels,expected);
+  return {png,pixels,capture:{mode,zoom,expected,coordinate_space:'Chrome_layout_metrics_DIP_not_CSS_pixels'}};
+}
 async function pageChecks(page, mappings, scenarios) {
   for (const row of mappings.scenarios) {
     const card = page.locator('#' + row.id), text = await card.innerText();
@@ -104,7 +127,7 @@ async function qualify(options) {
   assert.ok(fs.existsSync(browserElf),'explicit Chrome ELF required');
   const before = { playwright: inventory(packageRoot), playwright_core: inventory(coreRoot), browser: inventory(path.dirname(browser)) };
   fs.mkdirSync(output,{recursive:true});
-  const sourceFiles = ['tools/check_native_progress_zoom.cjs','tools/render_progress_fixtures.py','visual/scenarios.json','visual/progress.css','tether/sanitization.py','tether/__init__.py','tools/progress_visual_provenance.py','visual/parent-criterion-map.json','tests/native_progress_zoom.test.cjs','requirements-visual.txt'];
+  const sourceFiles = ['tools/check_native_progress_zoom.cjs','tools/render_progress_fixtures.py','visual/scenarios.json','visual/progress.css','tether/sanitization.py','tether/__init__.py','tools/progress_visual_provenance.py','visual/parent-criterion-map.json','tests/native_progress_zoom.test.cjs','tests/probe_native_progress_zoom.py','requirements-visual.txt'];
   const sourceHashes = Object.fromEntries(sourceFiles.map(name=>[name,fileHash(path.join(ROOT,name))]));
   const built = JSON.parse(cp.execFileSync('python3',['-B','-c','import json; from tools.render_progress_fixtures import build,ARTIFACT; a,b,c=build(); print(json.dumps(dict(html=a,plain=b,mapping=c,artifact=ARTIFACT.decode())))'],{cwd:ROOT,encoding:'utf8',timeout:10000,env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'}}));
   fs.writeFileSync(path.join(output,'index.html'),built.html); fs.writeFileSync(path.join(output,'plain-text.txt'),built.plain);fs.writeFileSync(path.join(output,'accepted-artifact.txt'),built.artifact);
@@ -132,14 +155,15 @@ async function qualify(options) {
             const args=cp.execFileSync('ps',['-eo','args'],{encoding:'utf8'}).split('\n').filter(line=>line.includes(profile)&&line.includes('chrome'));
             assert.ok(args.length && args.every(line=>!line.includes('--no-sandbox')&&!line.includes('--disable-setuid-sandbox')),'sandbox must remain enabled');
             const checks=await pageChecks(page,built.mapping,scenarios);
-            const png=await page.screenshot({fullPage:true,animations:'disabled'});
+            const session=await context.newCDPSession(page);
+            const full=await nativeBitmap(page,session,'full');const png=full.png;
             const filename=`native-window-${width}-zoom-${percent}.png`;
-            const pixelDigest=JSON.parse(cp.execFileSync('python3',['-B','-c','import sys,io,hashlib,json; from PIL import Image; im=Image.open(io.BytesIO(sys.stdin.buffer.read())).convert("RGB"); print(json.dumps(dict(size=im.size,rgb_sha256=hashlib.sha256(im.tobytes()).hexdigest())))'],{input:png,timeout:10000}).toString());
+            const pixelDigest=full.pixels;
             const perState={};
             if(width===780 && percent===200){
               for(const scenario of built.mapping.scenarios){
-                const image=await page.locator('#'+scenario.id).screenshot({animations:'disabled'});
-                perState[scenario.id]=sha(image);
+                const cardCapture=await nativeBitmap(page,session,'card','#'+scenario.id);const image=cardCapture.png;
+                perState[scenario.id]={png_sha256:sha(image),pixels:cardCapture.pixels,capture:cardCapture.capture};
                 if(repeat===1){const filename='native-200-effective-390-'+scenario.id+'.png';fs.writeFileSync(path.join(output,filename),image);receipt.sha256[filename]=sha(image);}
               }
             }
@@ -148,8 +172,8 @@ async function qualify(options) {
               if(width===780 && percent===200 && label==='Admitted plain-text version'){
                 const rect=await active.evaluate(e=>({rect:e.getBoundingClientRect().toJSON(),height:innerHeight,outline:getComputedStyle(e).outlineStyle}));
                 assert.ok(rect.rect.top>=-1 && rect.rect.bottom<=rect.height+1 && rect.outline!=='none','expanded focus obscured');
-                const image=await page.screenshot({fullPage:false,animations:'disabled'});
-                focused={label,rect,png_sha256:sha(image)};
+                const focusCapture=await nativeBitmap(page,session,'viewport');const image=focusCapture.png;
+                focused={label,rect,png_sha256:sha(image),pixels:focusCapture.pixels,capture:focusCapture.capture};
                 if(repeat===1){const filename='native-200-effective-390-expanded-focus.png';fs.writeFileSync(path.join(output,filename),image);receipt.sha256[filename]=sha(image);}
               }
             });assert.deepEqual(blocked,[],'unexpected outbound page request');
@@ -161,11 +185,11 @@ async function qualify(options) {
               assert.ok(rejected,'deliberate clipping mutation escaped');
               await pageChecks(page,built.mapping,scenarios);clippingMutation='rejected_and_restored';
             }
-            const row={per_state_png_sha256:perState,expanded_focus:focused,clipping_mutation:clippingMutation,requested_window_width:width,zoom_percent:percent,repeat,actual:checks.metrics,keyboard,scenarios:built.mapping.scenarios.map(r=>r.id),png_sha256:sha(png),pixels:pixelDigest,preferences_sha256:sha(preferences),native_preferences:zoomPreferences(percent),sandbox_disable_flags_absent:true,page_outbound_requests:0,browser_version:context.browser()?.version(),actual_browser_argv:args[0].split(profile).join('<disposable-profile>')};
+            const row={full_capture:full.capture,per_state_png_sha256:perState,expanded_focus:focused,clipping_mutation:clippingMutation,requested_window_width:width,zoom_percent:percent,repeat,actual:checks.metrics,keyboard,scenarios:built.mapping.scenarios.map(r=>r.id),png_sha256:sha(png),pixels:pixelDigest,preferences_sha256:sha(preferences),native_preferences:zoomPreferences(percent),sandbox_disable_flags_absent:true,page_outbound_requests:0,browser_version:context.browser()?.version(),actual_browser_argv:args[0].split(profile).join('<disposable-profile>')};
             if(repeat===1){first=row;fs.writeFileSync(path.join(output,filename),png);receipt.sha256[filename]=sha(png);pair[percent]=checks.metrics;}
             else {assert.deepEqual(row.actual,first.actual,'repeat metrics drift');assert.deepEqual(row.pixels,first.pixels,'repeat normalized pixels drift');assert.deepEqual(row.keyboard,first.keyboard,'repeat keyboard drift');assert.deepEqual(row.expanded_focus,first.expanded_focus,'repeat expanded focus drift');assert.deepEqual(row.per_state_png_sha256,first.per_state_png_sha256,'repeat per-state pixels drift');}
             receipt.cases.push(row);
-          } finally {if(context){await context.close();context=null;}fs.rmSync(profile,{recursive:true,force:true});receipt.profiles_removed++;}
+          } finally {try{if(context)await context.close();}finally{context=null;fs.rmSync(profile,{recursive:true,force:true});receipt.profiles_removed++;}}
         }
       }
       validatePair(pair[100],pair[200]);
@@ -177,5 +201,5 @@ async function qualify(options) {
   finally {process.removeListener('SIGTERM',cancel);process.removeListener('SIGINT',cancel);if(context)await context.close();for(const name of ['index.html','plain-text.txt','accepted-artifact.txt'])receipt.sha256[name]=fileHash(path.join(output,name));fs.writeFileSync(path.join(output,'evidence.json'),JSON.stringify(receipt,null,2)+'\n');}
   return receipt;
 }
-module.exports={zoomPreferences,validatePair};
+module.exports={zoomPreferences,validatePair,validateBitmap};
 if(require.main===module){const args=process.argv.slice(2);assert.equal(args.length,6,'required --browser PATH --playwright DIRECTORY --output NEW_DIRECTORY');const options={};for(let i=0;i<args.length;i+=2){assert.ok(['--browser','--playwright','--output'].includes(args[i]));options[args[i].slice(2)]=args[i+1];}assert.ok(options.browser&&options.playwright&&options.output);qualify(options).then(r=>console.log(JSON.stringify({status:r.status,cases:r.cases.length,baseline_approval:r.baseline_approval}))).catch(e=>{console.error(String(e));process.exitCode=1;});}
