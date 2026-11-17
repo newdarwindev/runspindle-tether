@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "scope": "Tether issue8 pure semantic admission producer only",
+  "base_revision": "dcaa5c9d61564e7247ff05793afa0e7cc1ae08b3",
+  "python": "3.14.8",
+  "ruff": "0.14.5",
+  "legacy_fixture_revision": "040b71f2213a34f34e6b6a40124ed1164b93ce30",
+  "entrypoints": [
+    "tether.intent.build_intent",
+    "tether.intent.decode_intent"
+  ],
+  "real_boundaries": [
+    "Python canonical JSON, UTF-8 and SHA256",
+    "Existing regression SQLite and HMAC components"
+  ],
+  "synthetic_boundaries": [
+    "All source/account/task identities and content",
+    "No issuer, native execution or provider transport in producer"
+  ],
+  "verification": {
+    "focused_tests": {
+      "status": "passed",
+      "tests": 11,
+      "mutation": "mirror guard removal causes existing regression assertion failure"
+    },
+    "full_normal": {
+      "status": "passed",
+      "tests": 396,
+      "skipped": 1
+    },
+    "full_optimized": {
+      "status": "passed",
+      "tests": 396,
+      "skipped": 1
+    },
+    "changed_file_ruff_and_strict_mypy": "passed",
+    "aggregate_validation": "failed_static_quality_other_checks_passed",
+    "remaining_static_diagnostics": [
+      "PIL and Playwright absent in prepared quality environment for unchanged visual modules",
+      "Unchanged tests/test_slack_upload.py and tests/test_upload_authority_binding.py formatting debt"
+    ],
+    "visual_skip": "Explicit pinned renderer not configured",
+    "initial_full_attempt": "failed_missing_pinned_legacy_fixture_then_retried_with_exact_prepared_revision"
+  },
+  "not_run": [
+    "Production issuer, live Slack, native effects, deployment, final-head cross-component durable acceptance"
+  ],
+  "issue8_completion": false,
+  "artifact_sha256": {
+    "tether/intent.py": "e9c7ddae27fb0061b96d3fc95db7ff624d364ebf61d362b9de66d972e8847751",
+    "tests/test_intent.py": "ee6c99b9222403b6e96b53e988aa7c72ae569e155642b75f7687a495ac8909f6",
+    "conformance/intent-v1/vectors.json": "af00da846663b3c105e375f3c387b060a29ff9e43d8d8e8c5a61db4e296f3bc7"
+  }
+}
