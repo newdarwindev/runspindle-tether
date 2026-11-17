@@ -191,6 +191,36 @@ class SignedRevisionTests(unittest.TestCase):
             self.app.ingest(raw, headers(raw, secret=b"wrong"))
         self.assertEqual(before, self.dump())
 
+    def test_deleted_previous_author_is_not_deleter(self):
+        self.send(callback(), 1)
+        value = callback()
+        value["event_id"] = "EvDELETEDORIGINALAUTHOR"
+        previous = copy.deepcopy(callback()["event"])
+        value["event"] = dict(
+            type="message",
+            subtype="message_deleted",
+            hidden=True,
+            channel=ROUTE.channel_id,
+            ts="1900000010.000000",
+            event_ts="1900000010.000000",
+            deleted_ts=previous["ts"],
+            previous_message=previous,
+        )
+        # A framework may expose previous_message.user, but it proves authorship,
+        # not who deleted the message. Even a valid signature grants no actor.
+        self.assertEqual(previous["user"], ROUTE.actor_id)
+        before = self.dump()
+        raw = wire(value)
+        with patch.object(
+            self.app.admission,
+            "authorize",
+            side_effect=AssertionError("must not resolve deletion authority"),
+        ) as authorize:
+            with self.assertRaises(Rejected):
+                self.app.ingest(raw, headers(raw))
+            authorize.assert_not_called()
+        self.assertEqual(before, self.dump())
+
     def test_revocation_and_atomic_hook_rollback(self):
         raw = wire(callback())
         with self.assertRaises(Rejected):
