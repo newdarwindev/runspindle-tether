@@ -86,5 +86,6 @@ the runtime and live acceptance gates above remain unchanged.
 - [Upload authority binding](upload-authority-binding.md): exact request/scope
   callback checks before effects; synthetic component evidence only.
 
-- [Progress visual fixture sources](progress-visual-fixtures.md): partial editable
-  synthetic references; Chromium rendering blocked, no PNG or visual pass.
+- [Reviewed progress visual references](progress-visual-fixtures.md): editable synthetic
+  references, pinned local renders, semantic/keyboard checks and explicit zero-pixel
+  review threshold. Actual Slack and browser-chrome zoom remain not-run.

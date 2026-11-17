@@ -1,77 +1,108 @@
-# Synthetic progress visual fixture sources (partial #6)
+# Reviewed synthetic progress-message references
 
-This is a source-only candidate package, not completed visual generation and not a
-Slack-native screenshot or replacement application. No reference PNG or contact
-sheet was generated. No visual baseline is approved, no image threshold selected,
-and actual Slack rendering/accessibility remains not-run.
+Issue #6 generation evidence is now available in
+[the reference directory](../docs/visual-reference/) and its
+[manifest](../docs/visual-reference/evidence.json). These are original local
+render approximations, not Slack screenshots or production/runtime acceptance.
+No real account, native session, provider, private history or proprietary UI
+asset is used. Parent behavioral and live gates are unchanged.
 
-Editable `visual/scenarios.json` and `visual/progress.css` define twelve synthetic
-states: admitted, running, blocked, cancellation requested, completed, unknown,
-unsupported, stale, edited revision, delivered, failed and long content. Task,
-thread, message, revision and fixed observation time remain visible. Delivery is
-separate from task completion and artifact acceptance. Existing
-`Sanitizer.project` processes the invented public-summary/final payloads; arbitrary
-markup is escaped and reference URLs rendered inert. No hidden reasoning appears.
-A local download contains exact invented accepted-artifact bytes, with SHA-256
-attribution. Unavailable previews never imply delivery.
+## Scope and review
 
-`docs/visual-source/index.html` is the locally editable/renderable approximation;
-`plain-text.txt`, `field-map.json` and `accepted-artifact.txt` provide accessible
-source fallback and state/field/criterion mapping. The HTML visibly declares
-LOCAL RENDER APPROXIMATION, candidate-not-approved and actual Slack NOT RUN.
-The scenario fixture intentionally contains an invented secret canary as sanitizer
-input; generated HTML/plain text omit it. No real secrets or history are used.
+Twelve synthetic states cover admitted/running/blocked/cancellation requested,
+terminal/accepted, uncertain send, unsupported source, stale update, edited
+revision, delivered, failed and long content. Task/thread/message/revision/time,
+explicit delivery state and unsupported/unknown labels remain visible. Exact
+invented accepted bytes and their digest are available for local download;
+unavailable previews never imply delivery. URLs are inert and configured secret
+canaries are absent from HTML, text and accessibility output.
 
-## Execution boundary and blocker
+The package contains 25 named PNGs: twelve cards, six full-page viewport/zoom
+samples, contact sheet, expanded keyboard-focus state, enlarged long-content
+card, intentional clipping mutant, repeat contact sheet, overlay and diff.
+Six accessibility snapshots plus editable HTML/plain text and the accepted
+artifact are retained. Source fixtures, CSS and field mappings remain in
+`visual/` and `docs/visual-source/`; evidence maps states to expected text,
+accessible labels and parent criteria.
 
-The installed Chromium 156.0.8078.79 failed before opening any page with
-`process_singleton_posix: socket() failed: Operation not permitted`. A bounded
-sandbox-escalated retry failed at the same local socket boundary. A separate
-supported browser attempt reported that `file://` navigation is disallowed and
-only HTTP/HTTPS is accepted. No server, security setting change, extra permission
-workaround or further bypass was attempted.
+Independent pixel review found and rejected a narrow enlarged-header defect.
+The revised header wraps its badge onto a separate row when needed and preserves
+whole title/status words. The revised pixels passed independent review. Exact
+zero normalized-RGB-pixel drift is the explicitly accepted threshold only for
+this pinned local reference environment. Changed environments, fixtures,
+thresholds or baselines require a new explicit review; the checker never writes
+or regenerates its reference. Captured images retain their candidate-stage
+caption. Their later approval disposition is recorded separately in the manifest,
+not painted over the original capture.
 
-Consequently DOM/accessibility/keyboard assertions, screenshots, clipping and
-missing-label mutations, repeat-render hashes, contact sheet and manual visual
-review have NOT RUN. Only source contracts and declared palette contrast were
-tested. Those tests cannot establish computed browser contrast, layout, semantics,
-focus visibility, screen-reader behavior or any Slack compatibility.
+## Checks and boundaries
 
-## Source-only reproduction (no browser required)
+Verified widths: 320, 390, 768 and 1440 CSS pixels. Additional 390px samples use
+200% root text and CSS layout zoom 2. These exercise enlarged/reflowed references,
+not browser-chrome zoom UI or Slack-native behavior. Computed text contrast is
+at least 5.998:1. DOM checks cover visible identities, headings/accessibility
+labels, word-preserving headers, no horizontal overflow, inert content/links and
+canary exclusion. Keyboard traversal and Space expansion are asserted; a separate
+assistant-directed interactive spot-check inspected Tab, Shift+Tab, Space and
+Enter focus/expansion/scrolling screenshots. This is not human screen-reader
+certification. Actual Slack and browser-chrome zoom remain not-run.
 
+Two independent browser runs produced identical outputs. Missing-label, clipping
+and split-header defects are deliberately injected and detected. A separate
+one-pixel mutation proves the pixel comparison fails even if its file digest is
+updated. File/source hashes reject accidental edits without rewriting baselines.
+
+The renderer uses Chrome's normal sandbox, a fresh disposable context, local
+files, offline mode, request denial, fixed data/clock, UTC/en-US, DPR 1, explicit
+fonts and disabled animations/caret. Browser calls have bounded timeouts.
+SIGTERM/SIGINT are deferred to safe checkpoints rather than unwinding an active
+Playwright greenlet; browser owners close before exit. A real SIGTERM test after
+the first frame verifies observed owned processes exit and no partial candidate
+is published. Final output publication is atomic. No host settings are changed.
+
+## Pinned reproduction
+
+Prerequisites: Linux with Google Chrome **157.0.8103.38**, Python **3.14.8**,
+the exact `requirements-visual.txt` packages and the DejaVu Sans/Mono font files
+hashed in the manifest. OS, renderer, dependency and font pins are recorded;
+changes require qualification rather than a silent new baseline. No fonts or
+browser binaries are copied into the repository.
+
+Example isolated package preparation (using an already installed pip):
+
+```sh
+python3 -m venv --without-pip /tmp/tether-visual-env
+pip --python /tmp/tether-visual-env/bin/python install -r requirements-visual.txt
 ```
-PYTHONPATH=. python3 tools/render_progress_fixtures.py --source-only --output /tmp/tether-visual-new-source
+
+One bounded generation command; choose a fresh output path:
+
+```sh
+timeout --signal=TERM --kill-after=30 180 env PYTHONPATH=. \
+  /tmp/tether-visual-env/bin/python tools/render_progress_fixtures.py \
+  --browser /usr/bin/google-chrome --expected-browser-version 157.0.8103.38 \
+  --output /tmp/tether-visual-actual
 ```
 
-This writes exact HTML, plain text, field map and artifact without importing
-Playwright/Pillow or launching a browser, and refuses an existing nonempty output.
-The source-only CLI is tested under denied browser imports and network attempts.
-It does not generate or validate any images.
+Then compare read-only:
 
-## Reproduction after an authorized renderer is available
-
-```
-PYTHONPATH=. python3 tools/render_progress_fixtures.py --output /tmp/tether-visual-new-candidates
-python3 -m unittest discover -s tests -p test_progress_visual_source.py -v
-python3 -O -m unittest discover -s tests -p test_progress_visual_source.py -v
+```sh
+python tools/check_progress_visual.py docs/visual-reference /tmp/tether-visual-actual
 ```
 
-The unqualified renderer requires Chromium sandboxing; no security-relaxation
-flag is retained and rendering was not retried after this source correction.
-It is written for local file input only, an offline browser
-context and rejection of non-file requests. It specifies installed DejaVu Sans/
-Mono, UTC/en-US, device scale 1, fixed fixture time, disabled animation and widths
-320/390/768/1440. The fifth sample uses 200% root text sizing at 390px: this is a
-text-reflow approximation, not browser-chrome zoom qualification. It attempts two
-independent temporary renders and refuses output if their hashes differ; it also
-refuses to overwrite any existing candidate directory. Both rules are source
-intent, not verified rendering evidence. Temporary render directories are cleaned
-on normal success/failure; generated candidate outputs require explicit review
-and may be removed as ordinary scratch artifacts.
+The generation command refuses a nonempty destination. Temporary browser/render
+and staging directories are cleaned on normal failure/cancellation. The completed
+output is an explicit retained artifact; remove only the scratch output you made
+when finished. Baseline replacement is never part of generation or comparison.
 
-No browser/font assets are copied. Raster outputs, if later generated, use the
-installed DejaVu font files whose hashes are recorded in source evidence. Original
-synthetic copy/layout only; no proprietary Slack UI assets or user screenshots.
-This work does not duplicate the H01/H07 or API-key references and establishes no
-native UI/provider/authority/durability/deployment acceptance. Existing parent
-criteria and issue #6's ungenerated image/visual-review gates remain open.
+Run source/artifact tests with `python -m unittest discover -s tests -p
+ 'test_progress_visual_*.py'`. To include the real cancellation test, set
+`RUNSPINDLE_VISUAL_BROWSER=/usr/bin/google-chrome` and
+`RUNSPINDLE_VISUAL_BROWSER_VERSION=157.0.8103.38` with pinned dependencies.
+Full historical migration tests additionally require the exact old reader
+`040b71f2213a34f34e6b6a40124ed1164b93ce30` via
+`RUNSPINDLE_TETHER_V1_SOURCE`.
+
+The earlier `docs/progress-visual-source-evidence.json` is retained as historical
+source-only evidence, including its then-blocked renderer. It is not the current
+render result; this manifest and reviewed reference package supersede that gap.

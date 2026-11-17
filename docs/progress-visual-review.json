@@ -1,0 +1,63 @@
+{
+  "schema": "tether.visual-review.v1",
+  "issue": 6,
+  "evidence_class": "local_render_approximation",
+  "date": "2026-11-17",
+  "source_base_revision": "6b1c6b6bbac5ffb2f7e9aa795b17b4c0846d0ba7",
+  "reference": "docs/visual-reference",
+  "artifact_manifest": "docs/visual-reference/evidence.json",
+  "disposition": "approved_bounded_synthetic_reference",
+  "pixel_tolerance": 0,
+  "environment_change_requires_review": true,
+  "independent_pixel_review": {
+    "first_candidate": "rejected_enlarged_narrow_header_word_splitting",
+    "revised_candidate": "passed",
+    "fix": "Responsive header wraps badge; whole title/status words remain intact.",
+    "reviewed_states": 12,
+    "viewports": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "enlarged_samples": [
+      "200_percent_root_text",
+      "CSS_layout_zoom_2"
+    ],
+    "actual_browser_chrome_zoom": "not_run"
+  },
+  "interactive_keyboard_review": {
+    "method": "assistant_directed_stepwise_keyboard_and_fresh_screenshot_inspection",
+    "status": "passed",
+    "keys": [
+      "Tab",
+      "Shift+Tab",
+      "Space",
+      "Enter"
+    ],
+    "observed": [
+      "visible_unobscured_focus",
+      "summary_expansion_and_collapse",
+      "forward_and_backward_navigation",
+      "automatic_focus_scrolling"
+    ],
+    "human_screen_reader_review": "not_run"
+  },
+  "safety_and_reproducibility": {
+    "two_independent_renders": "byte_identical",
+    "reviewed_to_final_renderer_pixels": "identical_all_25_PNGs",
+    "computed_minimum_contrast": 5.99782713936259,
+    "unexpected_page_requests": 0,
+    "secret_canary_output": "absent",
+    "mutations_detected": [
+      "missing_accessible_label",
+      "horizontal_clipping",
+      "split_header_words",
+      "one_changed_pixel"
+    ],
+    "sigterm_after_first_frame": "owned_children_exit_no_partial_publication",
+    "publication": "atomic_no_overwrite"
+  },
+  "actual_slack": "not_run",
+  "parent_runtime_and_live_gates": "unchanged"
+}

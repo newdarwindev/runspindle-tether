@@ -1,0 +1,256 @@
+- main:
+  - text: TETHER / OUTPUT CONTRACT STUDIES
+  - heading "Progress, without overclaiming." [level=1]
+  - paragraph: Synthetic message and attachment reference cards. Every state keeps identity, freshness and delivery uncertainty visible.
+  - complementary:
+    - strong: LOCAL RENDER APPROXIMATION
+    - text: "Not a Slack screenshot. Candidate references, not approved baselines. Actual Slack rendering: NOT RUN."
+  - paragraph:
+    - link "Open accessible text reference":
+      - /url: "#fallback"
+  - region "Synthetic progress scenarios":
+    - article "Admitted":
+      - text: 01 / SYNTHETIC
+      - heading "Admitted" [level=2]
+      - text: Not sent
+      - paragraph: The request is recorded. Execution has not started.
+      - term: Task
+      - definition: synthetic-task-007 · r1
+      - term: Thread
+      - definition: "1700000000.000001"
+      - term: Message
+      - definition: synthetic-message-001
+      - term: Observed
+      - definition: 2026-11-16T12:00:00Z
+      - paragraph: "Delivery: Not sent. Acceptance is not delivery; task completion is not delivery."
+      - group: Plain-text version
+      - code: https://example.invalid/reference
+    - article "Running":
+      - text: 02 / SYNTHETIC
+      - heading "Running" [level=2]
+      - text: Not sent
+      - paragraph: Preparing the requested summary from permitted inputs. This is a public progress summary, not internal reasoning.
+      - term: Task
+      - definition: synthetic-task-007 · r1
+      - term: Thread
+      - definition: "1700000000.000001"
+      - term: Message
+      - definition: synthetic-message-002
+      - term: Observed
+      - definition: 2026-11-16T12:00:00Z
+      - paragraph: "Delivery: Not sent. Acceptance is not delivery; task completion is not delivery."
+      - group: Plain-text version
+      - code: https://example.invalid/reference
+    - article "Blocked":
+      - text: 03 / SYNTHETIC
+      - heading "Blocked" [level=2]
+      - text: Not sent
+      - paragraph: Waiting for the required approval. No further action is being taken.
+      - term: Task
+      - definition: synthetic-task-007 · r1
+      - term: Thread
+      - definition: "1700000000.000001"
+      - term: Message
+      - definition: synthetic-message-003
+      - term: Observed
+      - definition: 2026-11-16T12:00:00Z
+      - paragraph: "Delivery: Not sent. Acceptance is not delivery; task completion is not delivery."
+      - group: Plain-text version
+      - code: https://example.invalid/reference
+    - article "Cancellation requested":
+      - text: 04 / SYNTHETIC
+      - heading "Cancellation requested" [level=2]
+      - text: Unknown
+      - paragraph: Cancellation was requested. Work may still be stopping; completion is not confirmed.
+      - term: Task
+      - definition: synthetic-task-007 · r1
+      - term: Thread
+      - definition: "1700000000.000001"
+      - term: Message
+      - definition: synthetic-message-004
+      - term: Observed
+      - definition: 2026-11-16T12:00:00Z
+      - paragraph: "Delivery: Unknown. Acceptance is not delivery; task completion is not delivery."
+      - group: Plain-text version
+      - code: https://example.invalid/reference
+    - article "Completed":
+      - text: 05 / SYNTHETIC
+      - heading "Completed" [level=2]
+      - text: Accepted
+      - paragraph: The bounded task finished. Delivery is tracked separately below.
+      - term: Task
+      - definition: synthetic-task-007 · r1
+      - term: Thread
+      - definition: "1700000000.000001"
+      - term: Message
+      - definition: synthetic-message-005
+      - term: Observed
+      - definition: 2026-11-16T12:00:00Z
+      - region "Accepted artifact metadata":
+        - strong: synthetic-summary.txt
+        - paragraph: Exact synthetic accepted bytes · 67 bytes
+        - paragraph:
+          - text: SHA-256
+          - code: fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134
+        - paragraph: Preview unavailable. A preview would not prove exact-byte delivery.
+        - link "Completed exact synthetic artifact":
+          - /url: accepted-artifact.txt
+          - text: Download exact synthetic artifact
+      - paragraph: "Delivery: Accepted. Acceptance is not delivery; task completion is not delivery."
+      - group: Plain-text version
+      - code: https://example.invalid/reference
+    - article "Outcome unknown":
+      - text: 06 / SYNTHETIC
+      - heading "Outcome unknown" [level=2]
+      - text: Unknown
+      - paragraph: The send may have taken effect, but acknowledgment was lost. Check the exact destination before retrying.
+      - term: Task
+      - definition: synthetic-task-007 · r1
+      - term: Thread
+      - definition: "1700000000.000001"
+      - term: Message
+      - definition: synthetic-message-006
+      - term: Observed
+      - definition: 2026-11-16T12:00:00Z
+      - region "Accepted artifact metadata":
+        - strong: synthetic-summary.txt
+        - paragraph: Exact synthetic accepted bytes · 67 bytes
+        - paragraph:
+          - text: SHA-256
+          - code: fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134
+        - paragraph: Preview unavailable. A preview would not prove exact-byte delivery.
+        - link "Outcome unknown exact synthetic artifact":
+          - /url: accepted-artifact.txt
+          - text: Download exact synthetic artifact
+      - paragraph: "Delivery: Unknown. Acceptance is not delivery; task completion is not delivery."
+      - group: Plain-text version
+      - code: https://example.invalid/reference
+    - article "Unsupported event":
+      - text: 07 / SYNTHETIC
+      - heading "Unsupported event" [level=2]
+      - text: Not sent
+      - paragraph: This source exposes final output only. Live tool progress is not available.
+      - term: Task
+      - definition: synthetic-task-007 · r1
+      - term: Thread
+      - definition: "1700000000.000001"
+      - term: Message
+      - definition: synthetic-message-007
+      - term: Observed
+      - definition: 2026-11-16T12:00:00Z
+      - paragraph: "Delivery: Not sent. Acceptance is not delivery; task completion is not delivery."
+      - group: Plain-text version
+      - code: https://example.invalid/reference
+    - article "Stale update":
+      - text: 08 / SYNTHETIC
+      - heading "Stale update" [level=2]
+      - text: Unknown
+      - paragraph: This is the last observed snapshot. The source is disconnected; it is not a live view.
+      - term: Task
+      - definition: synthetic-task-007 · r1
+      - term: Thread
+      - definition: "1700000000.000001"
+      - term: Message
+      - definition: synthetic-message-008
+      - term: Observed
+      - definition: 2026-11-16T12:00:00Z
+      - paragraph: "Delivery: Unknown. Acceptance is not delivery; task completion is not delivery."
+      - group: Plain-text version
+      - code: https://example.invalid/reference
+    - article "Request edited · revision 2":
+      - text: 09 / SYNTHETIC
+      - heading "Request edited · revision 2" [level=2]
+      - text: Not sent
+      - paragraph: Revision 1 is superseded. This card identifies revision 2 without implying that earlier work was automatically retargeted.
+      - term: Task
+      - definition: synthetic-task-007 · r2
+      - term: Thread
+      - definition: "1700000000.000001"
+      - term: Message
+      - definition: synthetic-message-009
+      - term: Observed
+      - definition: 2026-11-16T12:00:00Z
+      - paragraph: "Delivery: Not sent. Acceptance is not delivery; task completion is not delivery."
+      - group: Plain-text version
+      - code: https://example.invalid/reference
+    - article "Delivered · independently observed":
+      - text: 10 / SYNTHETIC
+      - heading "Delivered · independently observed" [level=2]
+      - text: Delivered
+      - paragraph: Exact synthetic content and destination were observed by the fixture. This illustration is not a real Slack receipt.
+      - term: Task
+      - definition: synthetic-task-007 · r1
+      - term: Thread
+      - definition: "1700000000.000001"
+      - term: Message
+      - definition: synthetic-message-010
+      - term: Observed
+      - definition: 2026-11-16T12:00:00Z
+      - region "Accepted artifact metadata":
+        - strong: synthetic-summary.txt
+        - paragraph: Exact synthetic accepted bytes · 67 bytes
+        - paragraph:
+          - text: SHA-256
+          - code: fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134
+        - paragraph: Preview unavailable. A preview would not prove exact-byte delivery.
+        - link "Delivered · independently observed exact synthetic artifact":
+          - /url: accepted-artifact.txt
+          - text: Download exact synthetic artifact
+      - paragraph: "Delivery: Delivered. Acceptance is not delivery; task completion is not delivery."
+      - group: Plain-text version
+      - code: https://example.invalid/reference
+    - article "Send failed":
+      - text: 11 / SYNTHETIC
+      - heading "Send failed" [level=2]
+      - text: Failed
+      - paragraph: The synthetic send was definitively rejected. The accepted artifact still exists; no delivery is claimed.
+      - term: Task
+      - definition: synthetic-task-007 · r1
+      - term: Thread
+      - definition: "1700000000.000001"
+      - term: Message
+      - definition: synthetic-message-011
+      - term: Observed
+      - definition: 2026-11-16T12:00:00Z
+      - region "Accepted artifact metadata":
+        - strong: synthetic-summary.txt
+        - paragraph: Exact synthetic accepted bytes · 67 bytes
+        - paragraph:
+          - text: SHA-256
+          - code: fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134
+        - paragraph: Preview unavailable. A preview would not prove exact-byte delivery.
+        - link "Send failed exact synthetic artifact":
+          - /url: accepted-artifact.txt
+          - text: Download exact synthetic artifact
+      - paragraph: "Delivery: Failed. Acceptance is not delivery; task completion is not delivery."
+      - group: Plain-text version
+      - code: https://example.invalid/reference
+    - article "Long content · preview unavailable":
+      - text: 12 / SYNTHETIC
+      - heading "Long content · preview unavailable" [level=2]
+      - text: Unknown
+      - paragraph: A deliberately long public summary explains an interrupted workflow without exposing hidden reasoning. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text. Long status text remains readable across narrow screens and enlarged text.
+      - term: Task
+      - definition: synthetic-task-007 · r1
+      - term: Thread
+      - definition: "1700000000.000001"
+      - term: Message
+      - definition: synthetic-message-012
+      - term: Observed
+      - definition: 2026-11-16T12:00:00Z
+      - region "Accepted artifact metadata":
+        - strong: synthetic-accepted-summary-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-long-name-revision-2.txt
+        - paragraph: Exact synthetic accepted bytes · 67 bytes
+        - paragraph:
+          - text: SHA-256
+          - code: fdf84e62dd87185e595634fcd3fc951f5e53fb9f8850840d6f1f45b0dccfd134
+        - paragraph: Preview unavailable. A preview would not prove exact-byte delivery.
+        - link "Long content · preview unavailable exact synthetic artifact":
+          - /url: accepted-artifact.txt
+          - text: Download exact synthetic artifact
+      - paragraph: "Delivery: Unknown. Acceptance is not delivery; task completion is not delivery."
+      - group: Plain-text version
+      - code: https://example.invalid/reference
+  - heading "Accessible text reference" [level=2]
+  - paragraph: Each card has an expandable plain-text equivalent. The same text is also supplied in plain-text.txt.
+  - text: Fixed synthetic observation · 16 November 2026, 12:00 UTC. No live provider, authorization, durability or delivery claim.

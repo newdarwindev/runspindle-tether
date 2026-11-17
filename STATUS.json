@@ -87,10 +87,11 @@
     "evidence": "docs/upload-authority-binding-evidence.json"
   },
   "progress_visual_sources": {
-    "status": "partial_source_only_render_blocked",
-    "evidence": "docs/progress-visual-source-evidence.json",
-    "reference_pngs": "not_generated",
+    "status": "generated_reviewed_local_synthetic_references",
+    "evidence": "docs/visual-reference/evidence.json",
+    "reference_pngs": "25_generated",
     "actual_slack": "not_run",
-    "baseline_approval": "not_approved"
+    "baseline_approval": "approved_synthetic_reference_zero_pixel_tolerance",
+    "browser_chrome_zoom": "not_run"
   }
 }
