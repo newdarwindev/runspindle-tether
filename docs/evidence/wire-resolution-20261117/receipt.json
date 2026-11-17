@@ -1,0 +1,80 @@
+{
+  "schema": "runspindle.wire-resolution-qualification.v1",
+  "tested_source": "0393a700957bcb7dfe67754cebaf8fd98f3f05ac",
+  "base": "d669e1d81e031bd91107a03629ffa9d60d0bb64a",
+  "status": "passed_bounded_offline_component",
+  "source_sha256": {
+    "specs/wire-resolution-v1.md": "e7c4d168f2de8bec141b6af307614e3b8a15f3aa5538832af946ff1380361198",
+    "tests/test_admission.py": "08357cb39ce984775885e174ec920ba1cff4686a73a115eaf23ba6a69a1bd9c3",
+    "tests/test_provider_journal.py": "95fa30affeedcb7d33d27ea4a795611c5a0131d543bbf50b64698fd50143c04f",
+    "tests/test_slack_upload.py": "84761ed272f53f45a635882c7bd4a2ea4894745c47f28385501c1dcfb773e7f8",
+    "tests/test_wire_delivery.py": "92ea3d42a13d099ea7144d2115275e4808f7d6e70c44945ba0b74cbd3ef9e794",
+    "tests/test_wire_resolution.py": "e2cfac8f4ff248aee5a312df4d8dec50818832b8b670670e2d4b5fb4689f3e08",
+    "tether/__init__.py": "8c7f563517f58350d1bd45b95b8ea03f5cadbdd98df399c9f9b17b176075d11e",
+    "tether/admission.py": "1b2f2e778bd23e5f956ff8e0e69d46a00d5ea42454a09d3930537d11568373ca",
+    "tether/campaign_testing.py": "f539475f6a334db1dfc637b6a5a0336e42114d0a42f41092afe2814696b4ec5f",
+    "tether/feedback.py": "017f1d2c463282ef4fbd845c0aafe921ea10ea525e4b1cb5adb5331f6512baff",
+    "tether/feedback_schema.py": "d26f76629f4b0cd1e2bcabc589cb215817f209f1279b563b091aa86472e7f03f",
+    "tether/intent.py": "4d678e12620cc4a4bbd86d92b7b71b8bcd45da09eceedbaf11e5b8c406dde4c8",
+    "tether/journal.py": "9b7d2ce2737d7a3005788f3a2a97df305f57e11c2a928336b046348631b18420",
+    "tether/native_testing.py": "d92efe289d54fe66c5157ccb2d2ea2fd3bf15a2470e8ff35ffe154a1f07ca755",
+    "tether/sanitization.py": "7c0b5e6fae5eb0e00e43667a447213d8268007588cd42d5fb56e6449a2eb064d",
+    "tether/schema.py": "ebd7544018096f02394c637d70dd1570baab66ea844232a1963c8318d0a3d3a1",
+    "tether/semantic_ingress.py": "21733fc1384525f8cafd83e05576b94b63f6c401466177da0bbc5bf6393f0da3",
+    "tether/semantic_journal.py": "1324010f0d942afa35d7eaadd4188d16be6dc15e93b7a049319d3db35cddfbe3",
+    "tether/slack_feedback.py": "2a1592bbb3e5c88fa33945d122bc6679123e48a2d20c2f9328ddaf6dace434cf",
+    "tether/slack_http.py": "32b6379509f7428ae10783467a41ebc0f996b62284b918f1d7f857add4bccf15",
+    "tether/slack_ingress.py": "846582ffca135c5e3d39538b592269d55c87000b483d02231c05d94e6becb791",
+    "tether/slack_revisions.py": "dc33fa78f483983ffd8de22e1470b2cea8b2875b182694af867c34151785c5c1",
+    "tether/slack_upload.py": "aa3cec3161db4509a0adc9eefae494f54cfb731d300733c579f84ccac80169c5",
+    "tether/slack_wire.py": "0de192e858962cce3110d28682fe03329649d5341fcad06e6d75cac0797515b8",
+    "tether/source_observation.py": "8b96b00233057e37b378cf27a6977c9345bf25c20c994321bd562e44369e6421",
+    "tether/testing.py": "2b84de229c6aff62ec48b52c6decb8dd369e20bade2b0b3d16003ed14ff046c9",
+    "tether/wire_delivery.py": "dc63f13ca319595596a136bee3e2fa12eebd16914ea6079cd63476cabc5b43ce",
+    "tether/wire_resolution.py": "33e3ad871893a7d999d784e54b3410eec7a36df21e8c9a6596bf9254b0a8c36d"
+  },
+  "toolchain": {
+    "python": "3.14.8 (main, Oct  1 2026, 19:55:55) [GCC 16.2.0]",
+    "python_executable_sha256": "098f865cad2de188bdbad3baac99dd91ebb74bab361d2359f0baaf1929b1dd82",
+    "ruff": "0.14.5",
+    "mypy": "1.18.2"
+  },
+  "legacy_fixture_source": "040b71f2213a34f34e6b6a40124ed1164b93ce30",
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 RUNSPINDLE_TETHER_V1_SOURCE=<exact legacy_fixture_source checkout> python3 -m unittest discover -s tests -q",
+    "PYTHONDONTWRITEBYTECODE=1 RUNSPINDLE_TETHER_V1_SOURCE=<exact legacy_fixture_source checkout> python3 -O -m unittest discover -s tests -q"
+  ],
+  "results": {
+    "normal": {
+      "tests": 508,
+      "skips": 1,
+      "result": "passed"
+    },
+    "optimized": {
+      "tests": 508,
+      "skips": 1,
+      "result": "passed"
+    },
+    "independent_focused_review": {
+      "tests": 15,
+      "normal": "passed",
+      "optimized": "passed"
+    },
+    "ruff": "passed_changed_files",
+    "mypy": "passed_strict_focused",
+    "aggregate_static": "not_run"
+  },
+  "logs": {
+    "optimized.log": "c396fb5ca4d4dcac70c32c410afb3ed1601583faafe8b35d07dd69049b9fc956",
+    "normal.log": "189080332112096b32aa23059b4c3b5b26e50aa98ff1e8817d46518dad9b952d"
+  },
+  "boundaries": [
+    "Actual append-only resolution and original delivery/upload SQLite stores, independent SQLite HTTP fake; no live provider.",
+    "Original sticky conflicts and attempts unchanged; explicit decision lane only, no automatic supersession.",
+    "Normal full run used identical source bytes immediately before commit; optimized run verified exact clean commit.",
+    "One existing optional renderer skip; inherited ResourceWarnings retained.",
+    "Python socket construction denied in new tests, not OS-wide network proof.",
+    "Independent original-schema and typed-selection review findings fixed before frozen qualification.",
+    "Core v2 integration and parent/dependency closure require separate evidence."
+  ]
+}
