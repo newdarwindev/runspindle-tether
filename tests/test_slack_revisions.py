@@ -3,6 +3,8 @@
 import copy
 import hashlib
 import json
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -283,6 +285,45 @@ class SignedRevisionTests(unittest.TestCase):
             "edited"
         ]["ts"]
         self.deny(value, 3)
+
+    def test_fresh_process_retains_provider_and_candidate(self):
+        self.send(callback(), 1)
+        self.send(changed(), 2)
+        code = """
+import json, sys
+from tests.test_slack_ingress import SECRET, ROUTE, NOW
+from tether.slack_revisions import SignedRevisionIngress
+app = SignedRevisionIngress(sys.argv[1], SECRET, ROUTE, lambda: NOW, account_id='acct-synthetic')
+rows = app.admission.db.execute('SELECT scope,revision,version_ts FROM slack_versions').fetchall()
+assert len(rows) == 1 and rows[0][1:] == ('2','1900000000.000012')
+assert len(app.admission._provider_head(rows[0][0])) == 1
+assert len(json.loads(app.admission.snapshot_batch(sys.argv[2]))['intents']) == 2
+app.close()
+"""
+        result = subprocess.run(
+            [sys.executable, "-B", "-c", code, self.path, self.task],
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_missing_provider_hook_detected(self):
+        from tether.semantic_journal import SemanticAdmission
+
+        store = self.app.admission
+        with patch.object(
+            store,
+            "_retained_extension",
+            side_effect=lambda *args: SemanticAdmission._retained_extension(
+                store, *args
+            ),
+        ):
+            self.send(callback(), 1)
+        # A mutated hook cannot fabricate provider continuity from semantic history.
+        self.assertEqual(
+            store.db.execute("SELECT count(*) FROM slack_versions").fetchone()[0], 0
+        )
+        self.deny(changed(), 2)
 
     def test_exact_integer_timestamp(self):
         self.assertEqual(
