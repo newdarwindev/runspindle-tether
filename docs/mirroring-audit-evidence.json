@@ -74,7 +74,7 @@
   },
   "reviewed_commit_record": "The containing commit identifies these exact bytes; final commit/tree and manifest hash are retained in the publication receipt and private mapping. No recursive self-hash is claimed.",
   "sha256": {
-    "STATUS.json": "6348dd35d4057b72bc340c379422a9dd60d7113b4a41a244f7431bcf19536938",
+    "STATUS.json": "6594da917a921739e63a28a6f1d1ae6b9179700f831e03a8bf89d343893b4c37",
     "docs/LICENSE-SRC-014.txt": "6633fb2316603acd45898cbcd7497f18e045449547eddf137b1919358b57fe2e",
     "docs/MIRRORING_ACCEPTANCE.md": "c4853930f2257426ac72c107a926f1617b48a60369d5fb079ca464c487261d40",
     "docs/MIRRORING_COVERAGE.md": "17415f72ffc1feefdbdf47e80cb6d22a3f2f4e59a23ebfd262313d0958f11350",
@@ -85,7 +85,7 @@
     "hygiene.json": "20afbbf219ee10b19406b2f46d2ed9af58868c9d5a546aff5259f137e38af8e7",
     "provenance.json": "a2587426537e4102ceb984240fd66c87f2feab4fdaf5b7defac39824a26c243e",
     "requirements-quality.txt": "9cbe1331549216b953f2922f1e8321357ca82bb985e1ea595c87fcee8a8fdc84",
-    "specs/README.md": "c1c2cb4a2b94f514df30f0b0b218b18f04885c10be7f4319a87960cb64d02df9",
+    "specs/README.md": "5e994c4935d2badf080c12d8de66c09809b82c1df887b2f9cf85295d146ffde8",
     "specs/slack-wire-v1.md": "cb4a86d5309b8ede8a475f2c53eb505bfcc50ce2fdbc95150d711baf8ae2319f",
     "tests/test_fake_transport.py": "d440c3217dba6072ebca9abb4770ee132f391d8b288b176a4f80e8dfc427d730",
     "tests/test_mirroring_audit.py": "98b17a648b56a082aec2bfcf234b6ac73091d5b42a0472844db9109f4ad33b49",
@@ -224,5 +224,13 @@
     "previous_status_sha256": "d1a19681cf24bddd8df7b6cfb44135fd6bb7bc05205af0af0db92da8d996ddac",
     "evidence": "docs/native-zoom-reference/evidence.json",
     "review": "docs/native-zoom-reference/review.json"
+  },
+  "offline_campaign_continuity": {
+    "scope": "Current metadata hashes only for the separately documented offline campaign. All original validation_results remain historical; no new live Slack, runtime or aggregate success is implied.",
+    "previous_metadata_hashes": {
+      "STATUS.json": "6348dd35d4057b72bc340c379422a9dd60d7113b4a41a244f7431bcf19536938",
+      "specs/README.md": "c1c2cb4a2b94f514df30f0b0b218b18f04885c10be7f4319a87960cb64d02df9"
+    },
+    "evidence": "docs/offline-mirroring-evidence.json"
   }
 }

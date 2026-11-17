@@ -93,3 +93,11 @@ the runtime and live acceptance gates above remain unchanged.
 - [Atomic semantic journal and batch recovery](semantic-journal-v1.md): isolated
   store family, atomic ingress/candidate persistence and exact trusted retention
   readback; Core batch qualification remains separate, raw Slack revisions deny-only.
+
+## Offline durable mirroring campaign
+
+[The bounded campaign fixture](offline-campaign-v1.md) composes existing synthetic
+transport/native-event/sanitization contracts with actual disposable SQLite
+scheduling, progress-operation recovery and independently observed effects.
+[Acceptance audit](../docs/OFFLINE_MIRRORING_ACCEPTANCE.md) separates this offline
+qualification from live Slack, production retries and Core outbox integration.

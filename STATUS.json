@@ -106,5 +106,15 @@
     "raw_slack_edit_delete": "deny_only_actor_attribution_not_implemented",
     "core_atomic_batch": "separate_exact_head_qualification_required",
     "production_issuer_and_live_transport": "not_qualified"
+  },
+  "offline_mirroring_campaign": {
+    "status": "real_sqlite_synthetic_campaign_acceptance_passed",
+    "specification": "specs/offline-campaign-v1.md",
+    "acceptance_audit": "docs/OFFLINE_MIRRORING_ACCEPTANCE.md",
+    "evidence": "docs/offline-mirroring-evidence.json",
+    "tests": "tests/test_offline_campaign.py",
+    "production_retry_authority": "unchanged_no_new_permission",
+    "live_slack": "not_run",
+    "core_outbox_integration": "not_qualified"
   }
 }
