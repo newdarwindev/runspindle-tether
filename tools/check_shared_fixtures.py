@@ -8,7 +8,7 @@ import re
 import types
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = {'artifact.txt', 'contract.json', 'fixturekit.py', 'golden.json', 'vectors.json'}
+FILES = {'artifact.txt', 'contract.json', 'fixturekit.py', 'golden.json', 'vectors.json', 'faults.json'}
 
 
 def digest(path):

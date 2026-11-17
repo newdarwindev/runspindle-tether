@@ -1,0 +1,83 @@
+{
+  "automatic_pin_upgrade": false,
+  "changes": [
+    {
+      "after": "21c1ed0e14e37c0904acd4a8fd90649c83ded15180e35e828e9c4d9df710b934",
+      "before": null,
+      "file": "faults.json"
+    },
+    {
+      "after": "29857e337c30f84e673387a2ac27c7f0fc95bada1d783b346085286251f65279",
+      "before": "1bd6d10ae7105a44a0d583a8974230dde56af603c6ed2b75f67fe3f1fb16319f",
+      "file": "fixturekit.py"
+    }
+  ],
+  "component": "tether",
+  "contract_changed": false,
+  "current_focused_tests_both_modes": 8,
+  "current_schema": "runspindle.fixture.v1",
+  "evidence_class": "synthetic_fixture_compatibility_diff",
+  "forbidden_network_and_process_import": "guarded; no calls",
+  "metadata_changes": [
+    {
+      "after": "11ba400c1e9a82566496678104200538f7d2f9b3394d73e65b6ad75c83c2d1ed",
+      "after_present": true,
+      "before": "1dd35d045064056dd66e6da3619ff100549e1c3e81c928f076cfd4109a524d81",
+      "before_present": true,
+      "field": "origin_manifest_sha256"
+    }
+  ],
+  "observed_validator_decisions": [
+    {
+      "current": "accepted",
+      "input": "none",
+      "kind": "admission.observed",
+      "previous": "accepted"
+    },
+    {
+      "current": "rejected:field-type-or-bound",
+      "input": "expected-counter-float",
+      "kind": "admission.observed",
+      "previous": "accepted"
+    },
+    {
+      "current": "accepted",
+      "input": "none",
+      "kind": "event.observed",
+      "previous": "accepted"
+    },
+    {
+      "current": "rejected:field-type-or-bound",
+      "input": "expected-counter-float",
+      "kind": "event.observed",
+      "previous": "accepted"
+    },
+    {
+      "current": "rejected:field-type-or-bound",
+      "input": "receipt-counter-float",
+      "kind": "event.observed",
+      "previous": "accepted"
+    },
+    {
+      "current": "accepted",
+      "input": "none",
+      "kind": "feedback.observed",
+      "previous": "accepted"
+    },
+    {
+      "current": "rejected:field-type-or-bound",
+      "input": "expected-counter-float",
+      "kind": "feedback.observed",
+      "previous": "accepted"
+    }
+  ],
+  "previous_consumer_tests": "passed",
+  "previous_schema": "runspindle.fixture.v1",
+  "previous_source_commit": "e8cd5779968fede213443db13a591c992cd0e183",
+  "review_required": true,
+  "runtime": "not_run",
+  "runtime_compatibility": "not_run",
+  "schema_semantics": "unchanged; stricter independent identity validation and added fault oracle",
+  "source_bundle_tree": "3be3d0b80358f4801dfa20e55d32b49f50e9c6ea",
+  "source_commit": "e283957d80aebc48fb0bd3b6e2a600850ff6dc97"
+}
