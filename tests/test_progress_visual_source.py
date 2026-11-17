@@ -20,9 +20,18 @@ class ProgressVisualSourceTests(unittest.TestCase):
         self.assertEqual(
             states,
             {
-                "admitted", "running", "blocked", "cancel-requested", "terminal",
-                "unknown", "unsupported", "stale", "edited", "delivered",
-                "failed", "long-content",
+                "admitted",
+                "running",
+                "blocked",
+                "cancel-requested",
+                "terminal",
+                "unknown",
+                "unsupported",
+                "stale",
+                "edited",
+                "delivered",
+                "failed",
+                "long-content",
             },
         )
         for row in mapping["scenarios"]:
@@ -46,7 +55,9 @@ class ProgressVisualSourceTests(unittest.TestCase):
     def test_accepted_bytes_and_plaintext_are_deterministic(self) -> None:
         first = build()
         self.assertEqual(first, build())
-        self.assertEqual(first[2]["artifact_sha256"], hashlib.sha256(ARTIFACT).hexdigest())
+        self.assertEqual(
+            first[2]["artifact_sha256"], hashlib.sha256(ARTIFACT).hexdigest()
+        )
         self.assertIn('href="accepted-artifact.txt" download', first[0])
         self.assertIn("Preview unavailable", first[0])
         manifest = json.loads((ROOT / "visual/scenarios.json").read_text())
@@ -63,14 +74,21 @@ class ProgressVisualSourceTests(unittest.TestCase):
             return sum(a * b for a, b in zip(linear, (0.2126, 0.7152, 0.0722)))
 
         for foreground, background in (
-            ("172b42", "ffffff"), ("ffffff", "172b42"), ("38516b", "eef2f6"),
-            ("714b00", "fff5d6"), ("9a2534", "fff0f1"), ("155f45", "eaf8f0"),
-            ("52657a", "ffffff"), ("124e82", "ffffff"),
+            ("172b42", "ffffff"),
+            ("ffffff", "172b42"),
+            ("38516b", "eef2f6"),
+            ("714b00", "fff5d6"),
+            ("9a2534", "fff0f1"),
+            ("155f45", "eaf8f0"),
+            ("52657a", "ffffff"),
+            ("124e82", "ffffff"),
         ):
             low, high = sorted((luminance(foreground), luminance(background)))
             self.assertGreaterEqual((high + 0.05) / (low + 0.05), 4.5)
 
-    def test_source_only_cli_never_imports_browser_or_network_and_refuses_overwrite(self) -> None:
+    def test_source_only_cli_never_imports_browser_or_network_and_refuses_overwrite(
+        self,
+    ) -> None:
         script = """
 import builtins
 import runpy
@@ -95,16 +113,22 @@ with patch.object(builtins, '__import__', guarded_import):
                 command, cwd=ROOT, text=True, capture_output=True, timeout=30
             )
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertEqual(json.loads(result.stdout)["status"], "source_only_not_rendered")
+            self.assertEqual(
+                json.loads(result.stdout)["status"], "source_only_not_rendered"
+            )
             source, text, mapping = build()
             self.assertEqual((output / "index.html").read_text(), source)
             self.assertEqual((output / "plain-text.txt").read_text(), text)
             self.assertEqual((output / "accepted-artifact.txt").read_bytes(), ARTIFACT)
-            self.assertEqual(json.loads((output / "field-map.json").read_text()), mapping)
+            self.assertEqual(
+                json.loads((output / "field-map.json").read_text()), mapping
+            )
             before = {file.name: file.read_bytes() for file in output.iterdir()}
             repeated = subprocess.run(
                 command, cwd=ROOT, text=True, capture_output=True, timeout=30
             )
             self.assertNotEqual(repeated.returncode, 0)
             self.assertIn("Refusing to overwrite", repeated.stderr)
-            self.assertEqual(before, {file.name: file.read_bytes() for file in output.iterdir()})
+            self.assertEqual(
+                before, {file.name: file.read_bytes() for file in output.iterdir()}
+            )

@@ -106,3 +106,17 @@ Full historical migration tests additionally require the exact old reader
 The earlier `docs/progress-visual-source-evidence.json` is retained as historical
 source-only evidence, including its then-blocked renderer. It is not the current
 render result; this manifest and reviewed reference package supersede that gap.
+
+### Remaining issue acceptance
+
+Issue #6 remains open: the real browser-surface 200% zoom criterion has not
+been exercised. CSS layout zoom and root-text enlargement are supplemental
+references, not substitutes. The available supported computer-use inventory on
+the qualification machine exposed no browser or native app surface; no global
+keyboard input was sent to a personal desktop. Keep this PR draft until genuine
+browser zoom can be performed and its actual factor verified through supported
+controls.
+
+Accessibility snapshots are retained as raw Playwright text (`.aria.txt`), not
+normalized or rewritten as manually authored YAML. The screenshot pixels remain
+identical to the independently reviewed v3 images after static-check corrections.

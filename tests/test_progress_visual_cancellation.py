@@ -17,7 +17,9 @@ ROOT = Path(__file__).resolve().parents[1]
     os.environ.get("RUNSPINDLE_VISUAL_BROWSER"), "explicit pinned renderer required"
 )
 class VisualCancellationTests(unittest.TestCase):
-    def test_sigterm_after_first_frame_reaps_owned_children_and_publishes_nothing(self):
+    def test_sigterm_after_first_frame_reaps_owned_children_and_publishes_nothing(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory(prefix="tether-render-cancel-") as temporary:
             root = Path(temporary)
             output = root / "candidates"

@@ -15,7 +15,7 @@ REFERENCE = ROOT / "docs/visual-reference"
 
 
 class ProgressVisualArtifactsTests(unittest.TestCase):
-    def test_committed_inputs_and_artifacts_match_manifest(self):
+    def test_committed_inputs_and_artifacts_match_manifest(self) -> None:
         evidence = verify_manifest(REFERENCE)
         self.assertEqual(evidence["actual_slack"], "not_run")
         self.assertEqual(len(evidence["mapping"]["scenarios"]), 12)
@@ -33,11 +33,11 @@ class ProgressVisualArtifactsTests(unittest.TestCase):
             self.assertGreaterEqual(value, 4.5)
         for width in (320, 390, 768, 1440):
             self.assertIn(f"progress-{width}.png", evidence["sha256"])
-            self.assertIn(f"progress-{width}.aria.yml", evidence["sha256"])
+            self.assertIn(f"progress-{width}.aria.txt", evidence["sha256"])
         self.assertIn("zoom-long-content.png", evidence["sha256"])
         self.assertIn("keyboard-expanded.png", evidence["sha256"])
 
-    def test_guard_never_silently_rewrites_changed_artifact(self):
+    def test_guard_never_silently_rewrites_changed_artifact(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             target = Path(temporary)
             shutil.copytree(REFERENCE, target, dirs_exist_ok=True)
@@ -51,7 +51,7 @@ class ProgressVisualArtifactsTests(unittest.TestCase):
     @unittest.skipUnless(
         importlib.util.find_spec("PIL"), "pinned visual dependencies required"
     )
-    def test_exact_pixel_oracle_and_deliberate_one_pixel_mutation(self):
+    def test_exact_pixel_oracle_and_deliberate_one_pixel_mutation(self) -> None:
         from PIL import Image
 
         self.assertEqual(compare(REFERENCE, REFERENCE)["pixel_threshold"], 0)

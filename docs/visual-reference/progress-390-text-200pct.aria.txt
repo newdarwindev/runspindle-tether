@@ -1,3 +1,4 @@
+---
 - main:
   - text: TETHER / OUTPUT CONTRACT STUDIES
   - heading "Progress, without overclaiming." [level=1]

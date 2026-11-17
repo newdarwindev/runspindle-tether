@@ -7,11 +7,12 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+from typing import Any, cast
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def verify_manifest(directory: Path) -> dict:
+def verify_manifest(directory: Path) -> dict[str, Any]:
     evidence = json.loads((directory / "evidence.json").read_text())
     for name, expected in evidence["sha256"].items():
         if Path(name).name != name:
@@ -21,10 +22,10 @@ def verify_manifest(directory: Path) -> dict:
     for name, expected in evidence["source_sha256"].items():
         if hashlib.sha256((ROOT / name).read_bytes()).hexdigest() != expected:
             raise ValueError("source digest mismatch: " + name)
-    return evidence
+    return cast(dict[str, Any], evidence)
 
 
-def compare(reference: Path, actual: Path) -> dict:
+def compare(reference: Path, actual: Path) -> dict[str, Any]:
     from PIL import Image, ImageChops
 
     baseline, observed = verify_manifest(reference), verify_manifest(actual)

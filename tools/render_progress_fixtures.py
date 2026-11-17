@@ -22,14 +22,13 @@ ROOT = Path(__file__).resolve().parents[1]
 FONT = Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")
 MONO = Path("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf")
 CANARY = "SYNTHETIC_SECRET_CANARY"
-ARTIFACT = b'Original synthetic accepted artifact. No real account or delivery.\n'
+ARTIFACT = b"Original synthetic accepted artifact. No real account or delivery.\n"
 CANCEL_SIGNAL = 0
 
 
 def check_cancelled() -> None:
     if CANCEL_SIGNAL:
         raise SystemExit(128 + CANCEL_SIGNAL)
-
 
 
 def sha(data: bytes) -> str:
@@ -58,7 +57,7 @@ def build() -> tuple[str, str, dict[str, Any]]:
         )
         artifact = ""
         if row["artifact"]:
-            text += '\nArtifact: ' + row["filename"] + '\nSHA-256: ' + sha(ARTIFACT)
+            text += "\nArtifact: " + row["filename"] + "\nSHA-256: " + sha(ARTIFACT)
             artifact = f'''<section class="artifact" aria-label="Accepted artifact metadata">
 <strong>{html.escape(row["filename"])}</strong>
 <p>Exact synthetic accepted bytes · {len(ARTIFACT)} bytes</p>
@@ -76,8 +75,12 @@ def build() -> tuple[str, str, dict[str, Any]]:
                 "id": row["id"],
                 "criterion": row["criterion"],
                 "expected_visible": [
-                    row["title"], row["task_id"], row["thread_id"],
-                    row["message_id"], row["timestamp"], row["outcome"],
+                    row["title"],
+                    row["task_id"],
+                    row["thread_id"],
+                    row["message_id"],
+                    row["timestamp"],
+                    row["outcome"],
                 ],
                 "accessible_heading": row["title"],
                 "plain_text_label": row["title"] + " plain-text version",
@@ -137,9 +140,13 @@ def build() -> tuple[str, str, dict[str, Any]]:
 </main>
 </body>
 </html>"""
-    if CANARY in source or CANARY in '\n'.join(plain):
+    if CANARY in source or CANARY in "\n".join(plain):
         raise ValueError("unsanitized canary")
-    return (source, '\n\n'.join(plain) + '\n', {"scenarios": mappings, "artifact_sha256": sha(ARTIFACT)})
+    return (
+        source,
+        "\n\n".join(plain) + "\n",
+        {"scenarios": mappings, "artifact_sha256": sha(ARTIFACT)},
+    )
 
 
 def check_page(page: Any, mapping: dict[str, Any]) -> float:
@@ -150,11 +157,18 @@ def check_page(page: Any, mapping: dict[str, Any]) -> float:
                 raise AssertionError("missing visible label: " + row["id"])
         if card.get_attribute("aria-labelledby") != "heading-" + row["id"]:
             raise AssertionError("missing accessible label")
-        if card.get_by_role("heading", name=row["accessible_heading"], exact=True).count() != 1:
+        if (
+            card.get_by_role(
+                "heading", name=row["accessible_heading"], exact=True
+            ).count()
+            != 1
+        ):
             raise AssertionError("missing heading")
         if card.get_by_label(row["plain_text_label"], exact=True).count() != 1:
             raise AssertionError("missing plain text label")
-    violations = page.evaluate("() => [...document.querySelectorAll('body,main,.card,.meta dd,.artifact,.badge')].filter(e=>e.scrollWidth>e.clientWidth+1).map(e=>e.id||e.className)")
+    violations = page.evaluate(
+        "() => [...document.querySelectorAll('body,main,.card,.meta dd,.artifact,.badge')].filter(e=>e.scrollWidth>e.clientWidth+1).map(e=>e.id||e.className)"
+    )
     if violations:
         raise AssertionError("horizontal clipping: " + str(violations))
     broken = page.evaluate(r"""() => {
@@ -175,7 +189,7 @@ def check_page(page: Any, mapping: dict[str, Any]) -> float:
 
     if page.locator("script,iframe,img,form").count():
         raise AssertionError("active/unexpected content")
-    if page.locator("a:not([href^=\"#\"]):not([href=\"accepted-artifact.txt\"])").count():
+    if page.locator('a:not([href^="#"]):not([href="accepted-artifact.txt"])').count():
         raise AssertionError("active external link")
     if CANARY in page.content():
         raise AssertionError("secret escaped")
@@ -194,13 +208,13 @@ def check_page(page: Any, mapping: dict[str, Any]) -> float:
     }""")
     if contrast < 4.5:
         raise AssertionError("computed text contrast")
-    return contrast
-
+    return float(contrast)
 
 
 def render(directory: Path, browser_path: str) -> dict[str, Any]:
     from PIL import Image, ImageDraw
     from playwright.sync_api import sync_playwright
+
     source, text, mapping = build()
     directory.mkdir(parents=True, exist_ok=True)
     (directory / "index.html").write_text(source)
@@ -221,7 +235,14 @@ def render(directory: Path, browser_path: str) -> dict[str, Any]:
         )
         try:
             check_cancelled()
-            for width, zoom in ((320, 1), (390, 1), (768, 1), (1440, 1), (390, 2), (390, 3)):
+            for width, zoom in (
+                (320, 1),
+                (390, 1),
+                (768, 1),
+                (1440, 1),
+                (390, 2),
+                (390, 3),
+            ):
                 check_cancelled()
                 context = browser.new_context(
                     viewport={"width": width, "height": 900},
@@ -239,6 +260,7 @@ def render(directory: Path, browser_path: str) -> dict[str, Any]:
                     else:
                         blocked.append(route.request.url)
                         route.abort()
+
                 context.set_default_timeout(5000)
                 context.route("**/*", deny)
                 page = context.new_page()
@@ -248,15 +270,33 @@ def render(directory: Path, browser_path: str) -> dict[str, Any]:
                     page.add_style_tag(content="html{font-size:32px}")
                 if zoom == 3:
                     page.add_style_tag(content="html{zoom:2}")
-                name = f'progress-{width}' + ("-text-200pct" if zoom == 2 else "-css-zoom-200pct" if zoom == 3 else "") + ".png"
+                name = (
+                    f"progress-{width}"
+                    + (
+                        "-text-200pct"
+                        if zoom == 2
+                        else "-css-zoom-200pct"
+                        if zoom == 3
+                        else ""
+                    )
+                    + ".png"
+                )
                 contrasts[name] = check_page(page, mapping)
-                (directory / name.replace(".png", ".aria.yml")).write_text(page.locator("body").aria_snapshot())
-                page.screenshot(path=str(directory / name), full_page=True, animations="disabled")
+                (directory / name.replace(".png", ".aria.txt")).write_text(
+                    "---\n" + page.locator("body").aria_snapshot() + "\n"
+                )
+                page.screenshot(
+                    path=str(directory / name), full_page=True, animations="disabled"
+                )
                 check_cancelled()
                 screenshots.append(name)
                 if zoom == 3:
-                    page.locator("#long-content").screenshot(path=str(directory / "zoom-long-content.png"))
-                    mutant = page.add_style_tag(content=".card header{flex-wrap:nowrap}.card header>div{flex:0 0 16px}")
+                    page.locator("#long-content").screenshot(
+                        path=str(directory / "zoom-long-content.png")
+                    )
+                    mutant = page.add_style_tag(
+                        content=".card header{flex-wrap:nowrap}.card header>div{flex:0 0 16px}"
+                    )
                     try:
                         check_page(page, mapping)
                     except AssertionError:
@@ -266,19 +306,29 @@ def render(directory: Path, browser_path: str) -> dict[str, Any]:
                     mutant.evaluate("e=>e.remove()")
                 if width == 390 and zoom == 1:
                     for row in mapping["scenarios"]:
-                        page.locator("#" + row["id"]).screenshot(path=str(directory / (row["id"] + ".png")))
+                        page.locator("#" + row["id"]).screenshot(
+                            path=str(directory / (row["id"] + ".png"))
+                        )
                     page.keyboard.press("Tab")
                     expected_order = ["Open accessible text reference"]
-                    for fixture in json.loads((ROOT / "visual/scenarios.json").read_text())["scenarios"]:
+                    for fixture in json.loads(
+                        (ROOT / "visual/scenarios.json").read_text()
+                    )["scenarios"]:
                         if fixture["artifact"]:
-                            expected_order.append(fixture["title"] + " exact synthetic artifact")
+                            expected_order.append(
+                                fixture["title"] + " exact synthetic artifact"
+                            )
                         expected_order.append(fixture["title"] + " plain-text version")
                     for expected in expected_order:
                         active = page.locator(":focus")
-                        label = active.get_attribute("aria-label") or active.inner_text()
+                        label = (
+                            active.get_attribute("aria-label") or active.inner_text()
+                        )
                         if label != expected:
                             raise AssertionError("keyboard order")
-                        style = active.evaluate("(e)=>({outline:getComputedStyle(e).outlineStyle,rect:e.getBoundingClientRect().toJSON()})")
+                        style = active.evaluate(
+                            "(e)=>({outline:getComputedStyle(e).outlineStyle,rect:e.getBoundingClientRect().toJSON()})"
+                        )
                         if (
                             style["outline"] == "none"
                             or style["rect"]["width"] <= 0
@@ -291,20 +341,33 @@ def render(directory: Path, browser_path: str) -> dict[str, Any]:
                     # Inspect keyboard-operated expanded text and its focus ring.
                     page.get_by_label("Admitted plain-text version", exact=True).focus()
                     page.keyboard.press("Space")
-                    if not page.locator("#admitted details").get_attribute("open") == "":
+                    if (
+                        not page.locator("#admitted details").get_attribute("open")
+                        == ""
+                    ):
                         raise AssertionError("keyboard expansion")
-                    page.locator("#admitted").screenshot(path=str(directory / "keyboard-expanded.png"))
+                    page.locator("#admitted").screenshot(
+                        path=str(directory / "keyboard-expanded.png")
+                    )
                     page.keyboard.press("Space")
-                    page.locator("#admitted").evaluate("(e)=>e.removeAttribute(\"aria-labelledby\")")
+                    page.locator("#admitted").evaluate(
+                        '(e)=>e.removeAttribute("aria-labelledby")'
+                    )
                     try:
                         check_page(page, mapping)
                     except AssertionError:
                         pass
                     else:
                         raise AssertionError("missing-label mutant escaped")
-                    page.locator("#admitted").evaluate("(e)=>e.setAttribute(\"aria-labelledby\",\"heading-admitted\")")
-                    page.add_style_tag(content=".meta dd{white-space:nowrap;width:16px;overflow:hidden}")
-                    page.locator("#admitted").screenshot(path=str(directory / "mutant-clipping.png"))
+                    page.locator("#admitted").evaluate(
+                        '(e)=>e.setAttribute("aria-labelledby","heading-admitted")'
+                    )
+                    page.add_style_tag(
+                        content=".meta dd{white-space:nowrap;width:16px;overflow:hidden}"
+                    )
+                    page.locator("#admitted").screenshot(
+                        path=str(directory / "mutant-clipping.png")
+                    )
                     try:
                         check_page(page, mapping)
                     except AssertionError:
@@ -323,7 +386,9 @@ def render(directory: Path, browser_path: str) -> dict[str, Any]:
         thumbs.append((row["id"], im.copy()))
     sheet = Image.new("RGB", (900, 4 * 650 + 55), "#eef2f6")
     draw = ImageDraw.Draw(sheet)
-    draw.text((18, 15), "LOCAL RENDER APPROXIMATION / UNAPPROVED CANDIDATES", fill="#172b42")
+    draw.text(
+        (18, 15), "LOCAL RENDER APPROXIMATION / UNAPPROVED CANDIDATES", fill="#172b42"
+    )
     for index, (name, im) in enumerate(thumbs):
         x = 15 + index % 3 * 300
         y = 55 + index // 3 * 650
@@ -341,7 +406,11 @@ def render(directory: Path, browser_path: str) -> dict[str, Any]:
         "css_zoom_sample": "390px at CSS zoom 2; layout zoom approximation, not browser chrome UI",
         "pixel_comparison_threshold": 0,
         "keyboard_labels": keyboard,
-        "mutants": {"missing_label": "detected", "clipping": "detected", "split_header": "detected"},
+        "mutants": {
+            "missing_label": "detected",
+            "clipping": "detected",
+            "split_header": "detected",
+        },
         "unexpected_network_requests": 0,
         "screenshots": screenshots,
         "actual_slack": "not_run",
@@ -368,12 +437,11 @@ def main() -> None:
         # The next safe checkpoint closes browser/context owners normally.
         global CANCEL_SIGNAL
         CANCEL_SIGNAL = signum
+
     signal.signal(signal.SIGTERM, cancelled)
     signal.signal(signal.SIGINT, cancelled)
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--output", type=Path, default=ROOT / "docs/visual-candidates"
-    )
+    parser.add_argument("--output", type=Path, default=ROOT / "docs/visual-candidates")
     parser.add_argument(
         "--source-only",
         action="store_true",
@@ -389,17 +457,31 @@ def main() -> None:
         )
     if args.source_only:
         write_source(args.output)
-        print(json.dumps({
-            "status": "source_only_not_rendered",
-            "output": str(args.output),
-            "files": 4,
-        }))
+        print(
+            json.dumps(
+                {
+                    "status": "source_only_not_rendered",
+                    "output": str(args.output),
+                    "files": 4,
+                }
+            )
+        )
         return
 
-    browser_version = subprocess.check_output([args.browser, "--version"], text=True).strip()
-    if not args.expected_browser_version or args.expected_browser_version not in browser_version.split():
-        raise SystemExit("Exact --expected-browser-version is required and must match the installed renderer.")
-    with tempfile.TemporaryDirectory() as first, tempfile.TemporaryDirectory() as second:
+    browser_version = subprocess.check_output(
+        [args.browser, "--version"], text=True
+    ).strip()
+    if (
+        not args.expected_browser_version
+        or args.expected_browser_version not in browser_version.split()
+    ):
+        raise SystemExit(
+            "Exact --expected-browser-version is required and must match the installed renderer."
+        )
+    with (
+        tempfile.TemporaryDirectory() as first,
+        tempfile.TemporaryDirectory() as second,
+    ):
         a, b = Path(first), Path(second)
         evidence = render(a, args.browser)
         render(b, args.browser)
@@ -408,6 +490,7 @@ def main() -> None:
             raise SystemExit("Repeat render mismatch; no references published.")
         shutil.copyfile(b / "contact-sheet.png", a / "repeat-contact-sheet.png")
         from PIL import Image, ImageChops
+
         # Keep repeat output, overlay and diff distinct from candidate references.
         with Image.open(a / "contact-sheet.png") as image:
             reference = image.convert("RGB")
@@ -419,44 +502,52 @@ def main() -> None:
         if difference.getbbox() is not None:
             raise SystemExit("Nonzero repeat pixel difference")
         hashes.update({p.name: sha(p.read_bytes()) for p in a.glob("repeat-*.png")})
-        evidence.update({
-            "repeat_render_hashes": "identical",
-            "sha256": hashes,
-            "chromium": browser_version,
-            "browser_executable": args.browser,
-            "python": platform.python_version(),
-            "platform": platform.platform(),
-            "playwright": importlib.metadata.version("playwright"),
-            "pillow": importlib.metadata.version("pillow"),
-            "fonts": {str(p): sha(p.read_bytes()) for p in (FONT, MONO)},
-            "source_sha256": {
-                str(p.relative_to(ROOT)): sha(p.read_bytes())
-                for p in (
-                    ROOT / "visual/scenarios.json",
-                    ROOT / "visual/progress.css",
-                    Path(__file__).resolve(),
-                )
-            },
-            "locale": "en-US",
-            "timezone": "UTC",
-            "device_pixel_ratio": 1,
-            "clock": "2026-11-16T12:00:00Z",
-            "seed": "fixed scenarios; no random inputs",
-            "animations": "disabled",
-        })
+        evidence.update(
+            {
+                "repeat_render_hashes": "identical",
+                "sha256": hashes,
+                "chromium": browser_version,
+                "browser_executable": args.browser,
+                "python": platform.python_version(),
+                "platform": platform.platform(),
+                "playwright": importlib.metadata.version("playwright"),
+                "pillow": importlib.metadata.version("pillow"),
+                "fonts": {str(p): sha(p.read_bytes()) for p in (FONT, MONO)},
+                "source_sha256": {
+                    str(p.relative_to(ROOT)): sha(p.read_bytes())
+                    for p in (
+                        ROOT / "visual/scenarios.json",
+                        ROOT / "visual/progress.css",
+                        Path(__file__).resolve(),
+                    )
+                },
+                "locale": "en-US",
+                "timezone": "UTC",
+                "device_pixel_ratio": 1,
+                "clock": "2026-11-16T12:00:00Z",
+                "seed": "fixed scenarios; no random inputs",
+                "animations": "disabled",
+            }
+        )
         (a / "evidence.json").write_text(json.dumps(evidence, indent=2) + "\n")
         check_cancelled()
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        with tempfile.TemporaryDirectory(prefix=".tether-visual-stage-", dir=args.output.parent) as staging:
+        with tempfile.TemporaryDirectory(
+            prefix=".tether-visual-stage-", dir=args.output.parent
+        ) as staging:
             publish = Path(staging) / "candidates"
             shutil.copytree(a, publish)
             check_cancelled()
             publish.rename(args.output)
-    print(json.dumps({
-        "status": "generated_candidates",
-        "output": str(args.output),
-        "files": len(hashes),
-    }))
+    print(
+        json.dumps(
+            {
+                "status": "generated_candidates",
+                "output": str(args.output),
+                "files": len(hashes),
+            }
+        )
+    )
 
 
 if __name__ == "__main__":
