@@ -69,7 +69,7 @@ def prepare(
 
 def worker(base: str, fault: str) -> None:
     with patch.object(
-        socket.socket, "connect", side_effect=AssertionError("forbidden network")
+        socket, "socket", side_effect=AssertionError("forbidden network")
     ):
         a, s, j = prepare(Path(base), fault)
         try:
@@ -104,7 +104,7 @@ class WireDeliveryTests(unittest.TestCase):
         self.addCleanup(self.peer.close)
         self.addCleanup(self.journal.close)
         self.network = patch.object(
-            socket.socket, "connect", side_effect=AssertionError("forbidden network")
+            socket, "socket", side_effect=AssertionError("forbidden network")
         )
         self.spy = self.network.start()
         self.addCleanup(self.network.stop)
