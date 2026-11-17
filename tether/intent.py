@@ -184,6 +184,8 @@ def _validate(value: Any) -> None:
             old["revision"] + 1 != event["revision"]
             or old["task_id"] != binding["task_id"]
             or old["workspace_id"] != binding["workspace_id"]
+            or old["host_id"] != binding["host_id"]
+            or old["lease_epoch"] != binding["lease_epoch"]
             or old["operation_id"] == binding["operation_id"]
         ):
             raise Rejected("intent prior binding")

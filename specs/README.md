@@ -89,3 +89,7 @@ the runtime and live acceptance gates above remain unchanged.
 - [Reviewed progress visual references](progress-visual-fixtures.md): editable synthetic
   references, pinned local renders, semantic/keyboard checks and explicit zero-pixel
   review threshold. Actual Slack and browser-chrome zoom remain not-run.
+
+- [Atomic semantic journal and batch recovery](semantic-journal-v1.md): isolated
+  store family, atomic ingress/candidate persistence and exact trusted retention
+  readback; Core batch qualification remains separate, raw Slack revisions deny-only.

@@ -93,5 +93,15 @@
     "actual_slack": "not_run",
     "baseline_approval": "approved_synthetic_reference_zero_pixel_tolerance",
     "browser_chrome_zoom": "not_run"
+  },
+  "semantic_intent_journal": {
+    "status": "versioned_component_candidate",
+    "specification": "specs/semantic-journal-v1.md",
+    "evidence": "docs/semantic-journal-evidence.json",
+    "legacy_store_migration": "not_supported",
+    "signed_slack_create": "shared_verifier_component_tested",
+    "raw_slack_edit_delete": "deny_only_actor_attribution_not_implemented",
+    "core_atomic_batch": "separate_exact_head_qualification_required",
+    "production_issuer_and_live_transport": "not_qualified"
   }
 }

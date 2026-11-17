@@ -185,6 +185,8 @@ class IntentTest(unittest.TestCase):
             ("operation_id", "operation-1"),
             ("revision", 3),
             ("workspace_id", "other"),
+            ("host_id", "other"),
+            ("lease_epoch", 2),
             ("lease_epoch", True),
         ):
             args = options(2)
