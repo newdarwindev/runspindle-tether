@@ -106,6 +106,58 @@ class JournalTests(unittest.TestCase):
         with closing(sqlite3.connect(self.path)) as db:
             return list(db.iterdump())
 
+    def test_foreign_store_identity_rejected_before_export_or_readback(self) -> None:
+        # Model a misbound restore: the intact retained chain belongs to another
+        # app/account than the newly configured store. No candidate is rehashed.
+        self.retain()
+        batch = self.app.snapshot_batch(TASK)
+        for field in ("app_id", "account_id"):
+            with self.subTest(field=field):
+                changed = "other-app" if field == "app_id" else "other-account"
+                self.app.db.execute(f"UPDATE intent_config SET {field}=?", (changed,))
+                self.app.db.commit()
+                config = dict(app_id="Atest", account_id="acct-test")
+                config[field] = changed
+                with closing(SemanticAdmission(self.path, **config)) as other:
+                    before = self.snapshot()
+                    calls: list[bytes] = []
+                    for operation in (
+                        lambda: other.snapshot_batch(TASK),
+                        lambda: other.pending_batch(TASK),
+                        lambda: other.reconcile_retention(
+                            batch, lambda wire: calls.append(wire) or receipt(wire)
+                        ),
+                    ):
+                        with self.assertRaisesRegex(
+                            Rejected, "semantic source installation"
+                        ):
+                            operation()
+                        self.assertEqual(calls, [])
+                        self.assertEqual(self.snapshot(), before)
+                    code = (
+                        "from tether.semantic_journal import SemanticAdmission; "
+                        "from tether.admission import Rejected; "
+                        f"app=SemanticAdmission({self.path!r}, **{config!r}); "
+                        "\ntry: app.pending_batch(" + repr(TASK) + ")"
+                        "\nexcept Rejected: pass"
+                        "\nelse: raise SystemExit('foreign source exported')"
+                        "\nfinally: app.close()"
+                    )
+                    result = subprocess.run(
+                        [sys.executable, "-c", code],
+                        cwd=ROOT,
+                        capture_output=True,
+                        text=True,
+                        check=False,
+                    )
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                self.app.db.execute(
+                    f"UPDATE intent_config SET {field}=?",
+                    ("Atest" if field == "app_id" else "acct-test",),
+                )
+                self.app.db.commit()
+        self.assertEqual(self.app.pending_batch(TASK), batch)
+
     def test_atomic_candidate_available_without_export(self) -> None:
         self.assertEqual(self.retain(), "admitted")
         with closing(sqlite3.connect(self.path)) as db:

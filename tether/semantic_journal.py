@@ -264,6 +264,11 @@ class SemanticAdmission(Admission):
                 if raw_digest != original_digest:
                     raise Rejected("semantic retained digest")
                 source = obj["event"]["source"]
+                if (source["app_id"], source["account_id"]) != (
+                    self.app_id,
+                    self.account_id,
+                ):
+                    raise Rejected("semantic source installation")
                 source_scope = canonical(
                     [
                         source[k]
