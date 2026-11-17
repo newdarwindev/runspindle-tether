@@ -37,6 +37,33 @@ recovery stay attached to the same job.
 These are fictional/synthetic concepts, not live trading, measured outcomes or
 Bloomberg endorsement. [Asset provenance and claim limits](https://github.com/newdarwindev/runspindle_for_bloomberg/blob/main/ASSETS.md).
 
+## Conversations that preserve the underlying work
+
+**CORRECT A REQUEST WITHOUT REPLAYING ITS EFFECTS.** If an owner changes tomorrow's
+bakery quantity or corrects a destination, TETHER must identify the exact source and
+revision rather than treat the new text as an unrelated instruction. Its
+[signed edit lane](docs/signed-own-message-edits.md) and
+[atomic semantic journal](specs/semantic-journal-v1.md) implement constrained revision
+admission with controlled fixtures. The [bakery prep concept](https://newdarwindev.github.io/runspindle_for_bloomberg/assets/Runspindle_Gallery_Index.html#page-03)
+and [pack-size correction](https://newdarwindev.github.io/runspindle_for_bloomberg/assets/Runspindle_Gallery_Index.html#page-17)
+illustrate why exact input and output versions matter. *Live order intake, prep-sheet
+generation and feedback-driven improvement require their own end-to-end qualification.*
+
+**RECONCILE A LOST REPORT-UPLOAD CONFIRMATION.** An upload may have succeeded even
+when its acknowledgement was lost. [Durable upload coordination](specs/durable-slack-upload-v1.md)
+records substep fences and checks independent readback; it does not blindly upload
+again. [Conflicting exact observations](docs/upload-conflict-evidence.json) remain
+quarantined across restart. *Real Slack delivery and complete Core/provider composition
+must be qualified separately from these synthetic HTTP and SQLite tests.*
+
+**TRACE A MISSING-DIVIDEND INQUIRY.** The custody-transfer inquiry in the
+[proposed workflow catalog](https://github.com/newdarwindev/runspindle_for_bloomberg/blob/main/assets/runspindle_bloomberg_workflows.csv)
+is an illustrative cross-system use case: retain the source question, exact evidence
+and destination of a reply instead of losing their relationship in chat.
+*TETHER does not currently establish entitlement, reconcile a live custodian, send a
+claim or confirm a payout. Those financial facts and actions require separate sources,
+authority and integration; the catalog is not production acceptance.*
+
 ### Follow the implementation
 
 - [Atomic semantic journal](specs/semantic-journal-v1.md) and [Core bridge](https://github.com/newdarwindev/runspindle-core/blob/main/docs/INTENT_BRIDGE.md).
