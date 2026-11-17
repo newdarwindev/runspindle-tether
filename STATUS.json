@@ -92,7 +92,10 @@
     "reference_pngs": "25_generated",
     "actual_slack": "not_run",
     "baseline_approval": "approved_synthetic_reference_zero_pixel_tolerance",
-    "browser_chrome_zoom": "not_run"
+    "browser_chrome_zoom": "passed_reviewed_native_200_percent_local_reference",
+    "native_zoom_evidence": "docs/native-zoom-reference/evidence.json",
+    "native_zoom_review": "docs/native-zoom-reference/review.json",
+    "acceptance_audit": "docs/PROGRESS_VISUAL_ACCEPTANCE.md"
   },
   "semantic_intent_journal": {
     "status": "versioned_component_candidate",
