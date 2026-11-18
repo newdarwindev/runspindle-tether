@@ -32,6 +32,14 @@ The authenticator and Core authority/effect boundary are explicit injected trust
 interfaces in this first stage. Durable event replay, ownership fencing and exact
 provider readback remain the retained authoritative boundary's responsibility;
 process-local one-shot guards do not claim cross-process replay protection.
+A distinct mandatory `output_execute(VerifiedAction, payload, route)` hook owns
+the durable output reservation, unknown state and independent readback. Missing
+output executor denies before routing, and only output actions may carry a route.
+The gate never invokes that route directly. Its opaque current destination is
+bound in the authenticated workspace/channel/thread and platform proof. The
+registered bridge cannot be swapped during the deferred operation. The test uses
+an actual SQLite reservation fixture retained across fresh adapter instances to
+prove unknown delivery is not replayed, not a production outbox replacement.
 Output callback return is not proof of delivery; the adapter never marks an upstream
 final as sent solely because that callback returned. Unknown exceptions propagate,
 with no automatic retry. Whole-output current permission/sanitization must precede
@@ -72,7 +80,7 @@ persistent daemon, hidden history collection or production activation is qualifi
    real-component negative campaigns before removing superseded implementations.
 
 ### Initial local observations
-11 original-upstream adapter tests pass normally and with optimized Python.
+13 original-upstream adapter tests pass normally and with optimized Python.
 Existing compatibility discovery ran 523 tests with seven explicit skips and one
 Mac-specific pre-existing provenance-test error (`platform.architecture` receives a
 mocked string where it expects bytes). The same error reproduces in the unchanged
@@ -80,3 +88,8 @@ baseline checkout. Thus the full suite is not reported green; the new adapter te
 scaffold and mirroring-audit checks pass separately. No existing runtime files were
 changed or retired. Linux/full dependency qualification and independent source review
 remain required before declaring migration parity.
+
+The sidecar is trusted application code, not a hostile-plugin sandbox. Source
+provenance is enforced by the isolated test launcher, not arbitrary direct library
+imports. Git verification has per-command time bounds. Production source loading,
+durable Core RPC and platform interception remain unqualified.
