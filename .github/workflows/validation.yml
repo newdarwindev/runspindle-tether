@@ -1,5 +1,7 @@
 # Mandatory checks are assigned exactly once in validation-partitions.json.
 # Missing, failed, cancelled or mismatched receipts keep the required gate red.
+# Five empty partitions are attested in this aggregate guest; any new work
+# in those partitions fails closed until the workflow is updated.
 name: validation
 on:
   push:
