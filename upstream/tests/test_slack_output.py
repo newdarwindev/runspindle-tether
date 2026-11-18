@@ -182,3 +182,39 @@ class SlackOutputTests(unittest.IsolatedAsyncioTestCase):
         with self.assertRaises(Denied):
             await self.invoke()
         self.assertEqual(self.posts, [])
+
+    async def test_original_start_cannot_replace_guarded_client(self) -> None:
+        with self.assertRaisesRegex(Denied, "startup is not qualified"):
+            await self.bridge.start()
+        self.assertIs(self.bridge._client, self.client)
+        self.assertIsNone(self.bridge._app)
+        self.assertEqual(self.posts, [])
+
+    async def test_future_bridge_and_class_dispatch_cannot_start(self) -> None:
+        future = original.SlackBridge(
+            "synthetic-unused-token", "channel", config=config(data_dir=self.temp.name)
+        )
+        with self.assertRaises(Denied):
+            await future.start()
+        with self.assertRaises(Denied):
+            await original.SlackBridge.start(self.bridge)
+        self.assertIsNone(future._client)
+        self.assertIsNone(future._app)
+        self.assertIs(self.bridge._client, self.client)
+
+    async def test_startup_denial_does_not_chain_private_context(self) -> None:
+        from runspindle_tether.upstream_slack_output import protect_slack_startup
+
+        protect_slack_startup()
+        protect_slack_startup()
+        try:
+            raise ValueError("SECRET_CANARY")
+        except ValueError:
+            try:
+                await self.bridge.start()
+            except Denied as error:
+                self.assertIsNone(error.__context__)
+                self.assertIsNone(error.__cause__)
+                self.assertNotIn("SECRET_CANARY", str(error))
+            else:
+                self.fail("startup must fail closed")
