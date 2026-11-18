@@ -1,8 +1,10 @@
 """Explicit signed Slack feedback creates into the existing retained store.
 
 No task admission, provider calls, collector, training or implicit target selection.
-Edited/deleted provider messages remain unsupported: this records historical facts,
-not current-message freshness. See specs/signed-slack-feedback-v1.md.
+Feedback-message edits/deletes and reaction removals revoke their own identities.
+Target-output edits/deletes do not automatically fence reaction identities: the
+independent target verifier must establish current output validity. Reaction intake
+remains a separate API, not task admission. See specs/signed-slack-feedback-v1.md.
 """
 
 import hashlib
@@ -153,6 +155,95 @@ class SignedSlackFeedback:
         proof = _Proof(self._owner, hashlib.sha256(event).hexdigest())
         return self.store.ingest(
             event, proof, self._target.delivery_raw, self._target.payload
+        )
+
+    def react(self, raw: bytes, headers: tuple[tuple[str, str], ...]) -> str:
+        """Retain an exact-output thumbs-up, or fence its removal permanently.
+
+        No implicit retention/use consent, task authority or deployment approval.
+        Re-add after removal requires a new reviewed lifecycle; it cannot revive
+        this identity because delayed provider events have no total ordering.
+        """
+        value = self._verifier.verify_callback(raw, headers, reaction=True)
+        event = value["event"]
+        route = self._route
+        _routing_fields(event, route.workspace_id)
+        item = event.get("item")
+        if (
+            event.get("user") != route.actor_id
+            or event.get("reaction") not in ("+1", "thumbsup")
+            or type(item) is not dict
+            or set(item) != {"type", "channel", "ts"}
+            or item.get("type") != "message"
+            or item.get("channel") != route.channel_id
+            or item.get("ts") != self._target.message_id
+        ):
+            raise Rejected("Slack reaction actor, kind or exact target")
+        _ts(event.get("event_ts"))
+        if any(k in event for k in ("bot_id", "bot_profile", "app_id", "subtype")):
+            raise Rejected("unsupported Slack reaction identity")
+        target = self.store.journal.retained_target(
+            self._target.delivery_raw, self._target.payload, self._target.message_id
+        )
+        feedback_id = (
+            "reaction:"
+            + hashlib.sha256(
+                canonical(
+                    [
+                        self.namespace,
+                        route.actor_id,
+                        self._target.message_id,
+                        "thumbs_up",
+                    ]
+                )
+            ).hexdigest()
+        )
+        if event["type"] == "reaction_removed":
+            normalized = canonical(
+                dict(
+                    version="runspindle.tether.provider-invalidation.v1",
+                    namespace=self.namespace,
+                    app_id=route.app_id,
+                    workspace_id=route.workspace_id,
+                    channel_id=route.channel_id,
+                    feedback_id=feedback_id,
+                    event_id=value["event_id"],
+                    body_sha256=hashlib.sha256(raw).hexdigest(),
+                    cause="reaction_removed",
+                    author_hint=route.actor_id,
+                    thread_hint=route.thread_ts,
+                    target=target,
+                )
+            )
+            return self.store.invalidate(
+                normalized,
+                _InvalidationProof(self._owner, hashlib.sha256(normalized).hexdigest()),
+                self._target.delivery_raw,
+                self._target.payload,
+            )
+        normalized = canonical(
+            dict(
+                version="runspindle.tether.feedback.v1",
+                namespace=self.namespace,
+                event_id=value["event_id"],
+                feedback_id=feedback_id,
+                revision=1,
+                predecessor=None,
+                actor_id=route.actor_id,
+                workspace_id=route.workspace_id,
+                channel_id=route.channel_id,
+                thread_id=route.thread_ts,
+                kind="create",
+                judgment="thumbs_up",
+                correction=None,
+                target=target,
+            )
+        )
+        return self.store.ingest(
+            normalized,
+            _Proof(self._owner, hashlib.sha256(normalized).hexdigest()),
+            self._target.delivery_raw,
+            self._target.payload,
         )
 
     def _authenticate_invalidation(self, raw: bytes, proof: object) -> bool:

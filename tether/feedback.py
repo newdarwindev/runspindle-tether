@@ -108,7 +108,12 @@ def decode(raw: bytes) -> dict[str, Any]:
         if value["kind"] == "delete":
             if value["judgment"] is not None or value["correction"] is not None:
                 raise Rejected("delete content")
-        elif value["judgment"] not in ("positive", "negative", "correction"):
+        elif value["judgment"] not in (
+            "positive",
+            "negative",
+            "correction",
+            "thumbs_up",
+        ):
             raise Rejected("feedback judgment")
         elif value["judgment"] == "correction":
             if type(value["correction"]) is not str or not value["correction"]:
@@ -167,7 +172,7 @@ def decode_invalidation(raw: bytes) -> dict[str, Any]:
             if v[name] is not None:
                 identifier(v[name])
         if (
-            v["cause"] not in ("message_changed", "message_deleted")
+            v["cause"] not in ("message_changed", "message_deleted", "reaction_removed")
             or type(v["body_sha256"]) is not str
             or re.fullmatch("[0-9a-f]{64}", v["body_sha256"]) is None
         ):

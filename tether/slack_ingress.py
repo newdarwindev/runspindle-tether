@@ -114,7 +114,9 @@ def _routing_fields(value: dict[str, Any], workspace_id: str) -> None:
         raise Rejected("unsupported Slack enterprise routing")
 
 
-def _callback(value: dict[str, Any], route: Route) -> tuple[str, dict[str, Any]]:
+def _callback(
+    value: dict[str, Any], route: Route, kinds: tuple[str, ...] = ("message",)
+) -> tuple[str, dict[str, Any]]:
     if value.get("type") != "event_callback":
         raise Rejected("unsupported Slack callback")
     if (
@@ -140,7 +142,7 @@ def _callback(value: dict[str, Any], route: Route) -> tuple[str, dict[str, Any]]
     if not re.fullmatch(r"Ev[A-Za-z0-9]{1,62}", event_id):
         raise Rejected("Slack event identifier")
     event = value.get("event")
-    if type(event) is not dict or event.get("type") != "message":
+    if type(event) is not dict or event.get("type") not in kinds:
         raise Rejected("unsupported Slack event")
     return event_id, event
 
@@ -223,7 +225,11 @@ class SlackMessageVerifier:
         self._max_skew = max_skew_seconds
 
     def verify_callback(
-        self, raw: bytes, headers: tuple[tuple[str, str], ...]
+        self,
+        raw: bytes,
+        headers: tuple[tuple[str, str], ...],
+        *,
+        reaction: bool = False,
     ) -> dict[str, Any]:
         """Verify raw signature and installation before returning a callback."""
         if type(raw) is not bytes or not 1 <= len(raw) <= MAX_BYTES:
@@ -252,7 +258,11 @@ class SlackMessageVerifier:
         value = None
         try:
             value = _json(raw)
-            _callback(value, self._route)
+            _callback(
+                value,
+                self._route,
+                ("reaction_added", "reaction_removed") if reaction else ("message",),
+            )
         except ValueError:
             value = None
         if value is None:
