@@ -35,7 +35,9 @@ process-local one-shot guards do not claim cross-process replay protection.
 A distinct mandatory `output_execute(VerifiedAction, payload, route)` hook owns
 the durable output reservation, unknown state and independent readback. Missing
 output executor denies before routing, and only output actions may carry a route.
-The gate never invokes that route directly. Its opaque current destination is
+The gate passes only a scoped route wrapper to that executor. The wrapper rechecks
+original invocation lifetime, task identity, exact payload and current authority
+immediately before the real route, denying deferred or child-task dispatch. Its opaque current destination is
 bound in the authenticated workspace/channel/thread and platform proof. The
 registered bridge cannot be swapped during the deferred operation. The test uses
 an actual SQLite reservation fixture retained across fresh adapter instances to
@@ -80,7 +82,7 @@ persistent daemon, hidden history collection or production activation is qualifi
    real-component negative campaigns before removing superseded implementations.
 
 ### Initial local observations
-13 original-upstream adapter tests pass normally and with optimized Python.
+16 original-upstream adapter tests pass normally and with optimized Python.
 Existing compatibility discovery ran 523 tests with seven explicit skips and one
 Mac-specific pre-existing provenance-test error (`platform.architecture` receives a
 mocked string where it expects bytes). The same error reproduces in the unchanged

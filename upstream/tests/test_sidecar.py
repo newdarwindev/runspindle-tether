@@ -336,3 +336,76 @@ class SidecarTests(unittest.IsolatedAsyncioTestCase):
                     db.execute("SELECT state FROM effects").fetchall(), [("unknown",)]
                 )
         self.assertEqual(calls, ["provider"])
+
+    async def test_deferred_output_route_cannot_survive_invocation(self) -> None:
+        saved: list[Callable[[], Awaitable[object]]] = []
+        calls: list[str] = []
+
+        async def route() -> object:
+            calls.append("provider")
+            return None
+
+        async def executor(
+            action: VerifiedAction,
+            payload: object,
+            operation: Callable[[], Awaitable[object]],
+        ) -> object:
+            saved.append(operation)
+            return None
+
+        self.action = dataclasses.replace(
+            self.action, action="output", payload_sha256=digest({})
+        )
+        self.gate.output_execute = executor
+        await self.invoke(lambda: self.gate.effect("output", "session", {}, route))
+        self.allowed = False
+        with self.assertRaises(Denied):
+            await saved[0]()
+        with self.assertRaises(Denied):
+            await asyncio.ensure_future(saved[0]())
+        self.assertEqual(calls, [])
+
+    async def test_output_executor_child_task_cannot_dispatch(self) -> None:
+        calls: list[str] = []
+
+        async def route() -> object:
+            calls.append("provider")
+            return None
+
+        async def executor(
+            action: VerifiedAction,
+            payload: object,
+            operation: Callable[[], Awaitable[object]],
+        ) -> object:
+            return await asyncio.ensure_future(operation())
+
+        self.action = dataclasses.replace(
+            self.action, action="output", payload_sha256=digest({})
+        )
+        self.gate.output_execute = executor
+        with self.assertRaises(Denied):
+            await self.invoke(lambda: self.gate.effect("output", "session", {}, route))
+        self.assertEqual(calls, [])
+
+    async def test_authority_revoked_inside_executor_blocks_actual_route(self) -> None:
+        calls: list[str] = []
+
+        async def route() -> object:
+            calls.append("provider")
+            return None
+
+        async def executor(
+            action: VerifiedAction,
+            payload: object,
+            operation: Callable[[], Awaitable[object]],
+        ) -> object:
+            self.allowed = False
+            return await operation()
+
+        self.action = dataclasses.replace(
+            self.action, action="output", payload_sha256=digest({})
+        )
+        self.gate.output_execute = executor
+        with self.assertRaises(Denied):
+            await self.invoke(lambda: self.gate.effect("output", "session", {}, route))
+        self.assertEqual(calls, [])

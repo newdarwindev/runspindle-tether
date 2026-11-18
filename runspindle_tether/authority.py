@@ -137,7 +137,26 @@ class AuthorityGate:
         if operation is not None:
             if action != "output" or self.output_execute is None:
                 raise Denied("authoritative output executor required")
-            return await self.output_execute(expected, payload, operation)
+            route_used = False
+
+            async def scoped_route() -> object:
+                nonlocal route_used
+                if (
+                    route_used
+                    or self._current.get() is not current
+                    or not current.active
+                    or current.task is not asyncio.current_task()
+                    or digest(payload) != expected.payload_sha256
+                ):
+                    raise Denied("output route escaped its original invocation")
+                route_used = True
+                if self.authorize(expected) is not True:
+                    raise Denied("output authority revoked before actual dispatch")
+                if self._current.get() is not current or not current.active:
+                    raise Denied("output invocation changed during authorization")
+                return await operation()
+
+            return await self.output_execute(expected, payload, scoped_route)
         if action == "output":
             raise Denied(
                 "output requires its authoritative executor and deferred route"
