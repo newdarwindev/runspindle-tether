@@ -23,6 +23,8 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
+      - name: Stage exact Node tools into private job workspace
+        run: python3 tools/stage_node_quality.py
       - id: partition
         name: Run quality partition
         run: python3 tools/partition_validation.py quality --output "$GITHUB_OUTPUT"
