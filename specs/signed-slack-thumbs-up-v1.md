@@ -16,9 +16,15 @@ adjudication, but must still require independent collection/use consent, exact
 output binding, current source authority, and absence of conflicts/revocation.
 It never grants execution, optimization spend, model promotion or deployment.
 The journal proves historical delivery, not that Slack still displays unchanged
-content. Target-output edits/deletes do not currently fan out to reaction identities.
-The independent target verifier/consumer must reject stale or unknown current
-output validity; this adapter alone is not current-message freshness proof.
+content. `invalidate_target(raw, headers)` now records authenticated edits/deletes for the
+exact configured output, including bot output without confusing its author with
+the reacting human. Independent invalidation authorization remains required.
+Thumbs-up intake checks the target fence before and inside its write transaction;
+evidence checks it in the same read snapshot as reaction history. A target mutation
+before first reaction blocks it; existing reactions become invalidated without
+rewriting historical labels. No event subscription or receipt completeness is
+implied: the independent target verifier/consumer must still reject stale or
+unknown current output validity. Absence of a retained event is not freshness proof.
 Custom FeedbackStore authenticators remain trusted adapters: merely submitting
 JSON with this judgment is not authentication.
 

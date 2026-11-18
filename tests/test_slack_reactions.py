@@ -1,6 +1,7 @@
 """Synthetic signed reaction intake; no external provider effects."""
 
 import hashlib
+import json
 import unittest
 from typing import Any
 
@@ -95,6 +96,88 @@ class ReactionTests(unittest.TestCase):
             self.h.app.react(raw + b" ", headers(raw))
         with self.assertRaises(Rejected):
             self.h.app.ingest(raw, headers(raw))
+
+    def target_mutation(self, cause: str) -> None:
+        from tests.test_feedback_invalidation import mutation
+
+        app = self.h.make(authorize_invalidation=lambda _: True)
+        self.addCleanup(app.close)
+        add = self.reaction()
+        app.react(add, headers(add))
+        value = json.loads(mutation(cause, message=self.h.target.message_id))
+        if cause == "message_changed":
+            value["event"]["message"].update(
+                user="UBOT", bot_id="BOUTPUT", subtype="bot_message"
+            )
+        raw = wire(value)
+        self.assertEqual(app.invalidate_target(raw, headers(raw)), "invalidated")
+        with self.assertRaises(Rejected):
+            app.react(add, headers(add))
+        self.assertEqual(
+            app.store.evidence(app.namespace, self.identity())["state"], "invalidated"
+        )
+
+    def test_bot_target_edit_revokes_reaction(self) -> None:
+        self.target_mutation("message_changed")
+
+    def test_target_delete_revokes_reaction(self) -> None:
+        self.target_mutation("message_deleted")
+
+    def test_target_deleted_before_reaction_blocks_first_add(self) -> None:
+        from tests.test_feedback_invalidation import mutation
+
+        app = self.h.make(authorize_invalidation=lambda _: True)
+        self.addCleanup(app.close)
+        raw = mutation("message_deleted", message=self.h.target.message_id)
+        app.invalidate_target(raw, headers(raw))
+        add = self.reaction()
+        with self.assertRaises(Rejected):
+            app.react(add, headers(add))
+        self.assertEqual(
+            app.store.db.execute("SELECT count(*) FROM feedback_revisions").fetchone()[
+                0
+            ],
+            0,
+        )
+
+    def test_target_fence_racing_retention_is_rechecked(self) -> None:
+        from tests.test_feedback_invalidation import mutation
+
+        sibling = self.h.make(authorize_invalidation=lambda _: True)
+        self.addCleanup(sibling.close)
+        raw = mutation("message_deleted", message=self.h.target.message_id)
+        first = True
+        original = self.h.app.store.authorize_retention
+
+        def retain(*args: Any) -> Any:
+            nonlocal first
+            if first:
+                first = False
+                sibling.invalidate_target(raw, headers(raw))
+            return original(*args)
+
+        self.h.app.store.authorize_retention = retain
+        add = self.reaction()
+        with self.assertRaises(Rejected):
+            self.h.app.react(add, headers(add))
+        self.assertEqual(
+            self.h.app.store.db.execute(
+                "SELECT count(*) FROM feedback_revisions"
+            ).fetchone()[0],
+            0,
+        )
+
+    def test_target_mutation_exact_identity_and_authority(self) -> None:
+        from tests.test_feedback_invalidation import mutation
+
+        app = self.h.make(authorize_invalidation=lambda _: True)
+        self.addCleanup(app.close)
+        wrong = mutation("message_deleted", message="1900000000.123456")
+        with self.assertRaises(Rejected):
+            app.invalidate_target(wrong, headers(wrong))
+        raw = mutation("message_changed", message=self.h.target.message_id)
+        with self.assertRaises(Rejected):
+            self.h.app.invalidate_target(raw, headers(raw))
 
     def test_reaction_no_implicit_consent(self) -> None:
         app = self.h.make(authorize_retention=None)

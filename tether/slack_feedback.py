@@ -2,8 +2,8 @@
 
 No task admission, provider calls, collector, training or implicit target selection.
 Feedback-message edits/deletes and reaction removals revoke their own identities.
-Target-output edits/deletes do not automatically fence reaction identities: the
-independent target verifier must establish current output validity. Reaction intake
+Explicit target-output invalidation fences linked reaction eligibility. The
+independent target verifier must still establish current output validity. Reaction intake
 remains a separate API, not task admission. See specs/signed-slack-feedback-v1.md.
 """
 
@@ -251,6 +251,68 @@ class SignedSlackFeedback:
             type(proof) is _InvalidationProof
             and proof.owner is self._owner
             and proof.digest == hashlib.sha256(raw).hexdigest()
+        )
+
+    def invalidate_target(
+        self, raw: bytes, headers: tuple[tuple[str, str], ...]
+    ) -> str:
+        """Fence the exact delivered output, not its reacting human's message.
+
+        Bot/user authorship is not inferred as the reactor. Signature, installation,
+        exact destination and retained target plus independent revocation authority
+        authorize this negative observation only.
+        """
+        value = self._verifier.verify_callback(raw, headers)
+        event = value["event"]
+        route = self._route
+        if event.get("channel") != route.channel_id or event.get("hidden") is not True:
+            raise Rejected("Slack target invalidation route")
+        _routing_fields(event, route.workspace_id)
+        cause = event.get("subtype")
+        if cause == "message_changed":
+            message = event.get("message")
+            if type(message) is not dict or message.get("type") != "message":
+                raise Rejected("Slack target invalidation message")
+            stamp = _ts(message.get("ts"))
+            _routing_fields(message, route.workspace_id)
+        elif cause == "message_deleted":
+            stamp = _ts(event.get("deleted_ts"))
+            message = {}
+        else:
+            raise Rejected("unsupported Slack target invalidation")
+        if stamp != self._target.message_id:
+            raise Rejected("Slack target invalidation exact output")
+        previous = event.get("previous_message", {})
+        if type(previous) is not dict or previous.get("ts", stamp) != stamp:
+            raise Rejected("Slack target previous identity")
+        for item in (event, message, previous):
+            _routing_fields(item, route.workspace_id)
+            if item.get("thread_ts", route.thread_ts) != route.thread_ts:
+                raise Rejected("Slack target thread mismatch")
+        target = self.store.journal.retained_target(
+            self._target.delivery_raw, self._target.payload, self._target.message_id
+        )
+        normalized = canonical(
+            dict(
+                version="runspindle.tether.provider-invalidation.v1",
+                namespace=self.namespace,
+                app_id=route.app_id,
+                workspace_id=route.workspace_id,
+                channel_id=route.channel_id,
+                feedback_id=stamp,
+                event_id=value["event_id"],
+                body_sha256=hashlib.sha256(raw).hexdigest(),
+                cause=cause,
+                author_hint=None,
+                thread_hint=route.thread_ts,
+                target=target,
+            )
+        )
+        return self.store.invalidate(
+            normalized,
+            _InvalidationProof(self._owner, hashlib.sha256(normalized).hexdigest()),
+            self._target.delivery_raw,
+            self._target.payload,
         )
 
     def invalidate(self, raw: bytes, headers: tuple[tuple[str, str], ...]) -> str:

@@ -268,6 +268,10 @@ class FeedbackStore:
         verify_target = self.verify_target
 
         def verify() -> FeedbackGrant:
+            if event["judgment"] == "thumbs_up" and self.invalidated(
+                event["namespace"], event["target"]["message_id"]
+            ):
+                raise Rejected("reaction target permanently invalidated")
             grant = None
             target_ok = False
             unavailable = False
@@ -570,6 +574,15 @@ class FeedbackStore:
                 (key,),
             ).fetchall()
             invalidation = self.invalidation(namespace, feedback_id)
+            # Resolve target fences in the same read snapshot as reaction history.
+            for sha, raw, _, _ in rows:
+                if hashlib.sha256(raw).hexdigest() != sha:
+                    raise Rejected("feedback integrity")
+                retained = decode(raw)
+                if retained["judgment"] == "thumbs_up":
+                    invalidation = invalidation or self.invalidation(
+                        namespace, retained["target"]["message_id"]
+                    )
             self.db.execute("COMMIT")
         except BaseException:
             if self.db.in_transaction:
