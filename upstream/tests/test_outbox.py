@@ -115,7 +115,9 @@ class OutboxTests(unittest.IsolatedAsyncioTestCase):
         for field in ("actor_id", "channel_id", "thread_id", "session_id", "host_id"):
             with self.subTest(field=field), self.assertRaises(Denied):
                 await self.box(
-                    dataclasses.replace(self.action, **{field: "other"}),
+                    dataclasses.replace(
+                        self.action, **dict[str, Any]({field: "other"})
+                    ),
                     self.payload,
                     self.send,
                 )

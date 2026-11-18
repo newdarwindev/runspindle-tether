@@ -8,24 +8,27 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from typing import Any
 from unittest.mock import patch
 
 from tests.test_slack_ingress import (
+    NOW,
     ROUTE,
     SECRET,
-    NOW,
     callback,
     headers,
     normalized,
     wire,
 )
-from tether.admission import Grant, Rejected, canonical
+from tether.admission import Grant, Identity, Rejected, canonical
 from tether.intent import expected_task_id
 from tether.semantic_journal import IntentReferences
 from tether.slack_revisions import SignedRevisionIngress, _order, _version
 
 
-def changed(previous=None, revision=2):
+def changed(
+    previous: dict[str, Any] | None = None, revision: int = 2
+) -> dict[str, Any]:
     previous = copy.deepcopy(previous or callback()["event"])
     previous.pop("channel", None)
     current = copy.deepcopy(previous)
@@ -49,11 +52,11 @@ def changed(previous=None, revision=2):
 
 
 class SignedRevisionTests(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.path = str(Path(self.tmp.name) / "revisions.sqlite")
-        self.allowed = {}
+        self.allowed: dict[str, Grant] = {}
         source = dict(
             app_id=ROUTE.app_id,
             account_id="acct-synthetic",
@@ -70,7 +73,7 @@ class SignedRevisionTests(unittest.TestCase):
         self.network.start()
         self.addCleanup(self.network.stop)
 
-    def open(self):
+    def open(self) -> SignedRevisionIngress:
         return SignedRevisionIngress(
             self.path,
             SECRET,
@@ -84,7 +87,7 @@ class SignedRevisionTests(unittest.TestCase):
             ),
         )
 
-    def approve(self, value, revision):
+    def approve(self, value: dict[str, Any], revision: int) -> None:
         edit = revision > 1
         text = value["event"]["message"]["text"] if edit else value["event"]["text"]
         event = normalized(
@@ -107,21 +110,21 @@ class SignedRevisionTests(unittest.TestCase):
             "slack-install",
         )
 
-    def send(self, value, revision):
+    def send(self, value: dict[str, Any], revision: int) -> str:
         self.approve(value, revision)
         raw = wire(value)
         return self.app.ingest(raw, headers(raw))
 
-    def dump(self):
+    def dump(self) -> str:
         return "\n".join(self.app.admission.db.iterdump())
 
-    def deny(self, value, revision):
+    def deny(self, value: dict[str, Any], revision: int) -> None:
         before = self.dump()
         with self.assertRaises((Rejected, ValueError)):
             self.send(value, revision)
         self.assertEqual(before, self.dump())
 
-    def test_chain_retry_and_reopen(self):
+    def test_chain_retry_and_reopen(self) -> None:
         self.send(callback(), 1)
         second = changed()
         self.send(second, 2)
@@ -137,7 +140,7 @@ class SignedRevisionTests(unittest.TestCase):
         self.assertEqual(len(json.loads(batch)["intents"]), 3)
         self.assertNotIn(b"synthetic edit", batch)
 
-    def test_ambiguous_editor_and_source_denied(self):
+    def test_ambiguous_editor_and_source_denied(self) -> None:
         self.send(callback(), 1)
         paths = [
             ("message", "edited", "user"),
@@ -162,7 +165,7 @@ class SignedRevisionTests(unittest.TestCase):
             value["event"]["message"][field] = []
             self.deny(value, 2)
 
-    def test_predecessor_order_and_retry(self):
+    def test_predecessor_order_and_retry(self) -> None:
         value = changed()
         self.deny(value, 2)
         self.send(callback(), 1)
@@ -176,7 +179,7 @@ class SignedRevisionTests(unittest.TestCase):
         stale = changed(revision=3)
         self.deny(stale, 3)
 
-    def test_callback_conflict_delete_and_signature(self):
+    def test_callback_conflict_delete_and_signature(self) -> None:
         self.send(callback(), 1)
         value = changed()
         self.send(value, 2)
@@ -191,7 +194,7 @@ class SignedRevisionTests(unittest.TestCase):
             self.app.ingest(raw, headers(raw, secret=b"wrong"))
         self.assertEqual(before, self.dump())
 
-    def test_deleted_previous_author_is_not_deleter(self):
+    def test_deleted_previous_author_is_not_deleter(self) -> None:
         self.send(callback(), 1)
         value = callback()
         value["event_id"] = "EvDELETEDORIGINALAUTHOR"
@@ -221,7 +224,7 @@ class SignedRevisionTests(unittest.TestCase):
             authorize.assert_not_called()
         self.assertEqual(before, self.dump())
 
-    def test_revocation_and_atomic_hook_rollback(self):
+    def test_revocation_and_atomic_hook_rollback(self) -> None:
         raw = wire(callback())
         with self.assertRaises(Rejected):
             self.app.ingest(raw, headers(raw))
@@ -229,7 +232,7 @@ class SignedRevisionTests(unittest.TestCase):
         store = self.app.admission
         original = store._retained_extension
 
-        def fail(*args):
+        def fail(*args: Any) -> None:
             original(*args)
             raise RuntimeError("controlled precommit crash")
 
@@ -239,14 +242,14 @@ class SignedRevisionTests(unittest.TestCase):
         self.assertEqual(before, self.dump())
         self.send(callback(), 1)
 
-    def test_provider_head_corruption_fails_closed(self):
+    def test_provider_head_corruption_fails_closed(self) -> None:
         self.send(callback(), 1)
         self.app.admission.db.execute(
             "UPDATE slack_versions SET content_sha256=?", ("0" * 64,)
         )
         self.deny(changed(), 2)
 
-    def test_competing_prepared_edit_rolls_back(self):
+    def test_competing_prepared_edit_rolls_back(self) -> None:
         from tether.slack_revisions import _observe
 
         self.send(callback(), 1)
@@ -270,13 +273,15 @@ class SignedRevisionTests(unittest.TestCase):
         finally:
             other.close()
 
-    def test_reentrant_authorizer_denied(self):
+    def test_reentrant_authorizer_denied(self) -> None:
         self.approve(callback(), 1)
         raw = wire(callback())
         original = self.app.admission.authorize
+        if original is None:
+            self.fail("fixture authority callback is required")
         attempts = []
 
-        def authorize(identity, digest):
+        def authorize(identity: Identity, digest: str) -> Grant | None:
             with self.assertRaises(Rejected):
                 self.app.ingest(raw, headers(raw))
             attempts.append(True)
@@ -288,7 +293,7 @@ class SignedRevisionTests(unittest.TestCase):
         self.app.admission.authorize = original
         self.assertEqual(self.app.ingest(raw, headers(raw)), "duplicate")
 
-    def test_previous_edit_token_and_wrapper_not_interchangeable(self):
+    def test_previous_edit_token_and_wrapper_not_interchangeable(self) -> None:
         self.send(callback(), 1)
         second = changed()
         self.send(second, 2)
@@ -302,7 +307,7 @@ class SignedRevisionTests(unittest.TestCase):
         third["event"]["ts"] = "1800000000.000000"
         self.send(third, 3)
 
-    def test_nested_channel_and_metadata_only_denied(self):
+    def test_nested_channel_and_metadata_only_denied(self) -> None:
         self.send(callback(), 1)
         for field in ("message", "previous_message"):
             value = changed()
@@ -316,7 +321,7 @@ class SignedRevisionTests(unittest.TestCase):
         ]["ts"]
         self.deny(value, 3)
 
-    def test_fresh_process_retains_provider_and_candidate(self):
+    def test_fresh_process_retains_provider_and_candidate(self) -> None:
         self.send(callback(), 1)
         self.send(changed(), 2)
         code = """
@@ -337,7 +342,7 @@ app.close()
         )
         self.assertEqual(result.returncode, 0, result.stderr)
 
-    def test_missing_provider_hook_detected(self):
+    def test_missing_provider_hook_detected(self) -> None:
         from tether.semantic_journal import SemanticAdmission
 
         store = self.app.admission
@@ -355,7 +360,7 @@ app.close()
         )
         self.deny(changed(), 2)
 
-    def test_exact_integer_timestamp(self):
+    def test_exact_integer_timestamp(self) -> None:
         self.assertEqual(
             _order("9007199254740992.000002") - _order("9007199254740992.000001"), 1
         )

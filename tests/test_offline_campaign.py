@@ -370,7 +370,7 @@ c.tick(FakeSlack(binding.destination,lambda:100,lambda:"never"))
     def test_fresh_process_after_send_update_delete_effects_recover_exactly(
         self,
     ) -> None:
-        from offline_destination_peer import StoredFakeSlack
+        from tests.offline_destination_peer import StoredFakeSlack
 
         peer_path = Path(self.temp.name) / "peer.sqlite"
         peer = StoredFakeSlack(peer_path, self.binding.destination, lambda: self.now)
@@ -378,7 +378,7 @@ c.tick(FakeSlack(binding.destination,lambda:100,lambda:"never"))
         code = """import os,socket,sys
 from pathlib import Path
 sys.path.insert(0,str(Path.cwd()/"tests"))
-from offline_destination_peer import StoredFakeSlack
+from tests.offline_destination_peer import StoredFakeSlack
 from tether.campaign_testing import OfflineCampaign
 from tether.native_testing import Binding
 from tether.testing import Destination
@@ -524,8 +524,8 @@ c.tick(p)
     def test_unknown_resend_source_mutation_causes_independent_duplicate_effect(
         self,
     ) -> None:
-        from offline_destination_peer import StoredFakeSlack
         import tether.campaign_testing as original
+        from tests.offline_destination_peer import StoredFakeSlack
 
         peer_path = Path(self.temp.name) / "mutation-peer.sqlite"
         peer = StoredFakeSlack(peer_path, self.binding.destination, lambda: self.now)

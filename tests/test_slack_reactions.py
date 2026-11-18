@@ -5,12 +5,15 @@ import json
 import unittest
 from typing import Any
 
+from tests.test_slack_feedback import Harness
 from tests.test_slack_feedback import SignedFeedbackTests as _Setup
 from tests.test_slack_ingress import ROUTE, callback, headers, wire
 from tether.admission import Rejected, canonical
 
 
 class ReactionTests(unittest.TestCase):
+    h: Harness
+
     setUp = _Setup.setUp
     effects = _Setup.effects
 
@@ -74,7 +77,7 @@ class ReactionTests(unittest.TestCase):
             app.react(add, headers(add))
 
     def test_reaction_wrong_bindings_and_signature(self) -> None:
-        for change in [
+        changes: list[dict[str, Any]] = [
             dict(user="UOTHER"),
             dict(reaction="heart"),
             dict(
@@ -87,7 +90,8 @@ class ReactionTests(unittest.TestCase):
                     type="file", channel=ROUTE.channel_id, ts=self.h.target.message_id
                 )
             ),
-        ]:
+        ]
+        for change in changes:
             raw = self.reaction(**change)
             with self.assertRaises(Rejected):
                 self.h.app.react(raw, headers(raw))
@@ -148,6 +152,8 @@ class ReactionTests(unittest.TestCase):
         raw = mutation("message_deleted", message=self.h.target.message_id)
         first = True
         original = self.h.app.store.authorize_retention
+        if original is None:
+            self.fail("fixture authority callback is required")
 
         def retain(*args: Any) -> Any:
             nonlocal first
