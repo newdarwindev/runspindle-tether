@@ -37,3 +37,17 @@ class DependencyTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     ci.verify_dependencies(path)
             version.assert_not_called()
+
+
+class OutcomeTests(unittest.TestCase):
+    def test_empty_or_skipped_upstream_suite_is_failure(self) -> None:
+        from tools.check_upstream_sidecar import accepted
+
+        result = unittest.TestResult()
+        self.assertFalse(accepted(result))
+        result.testsRun = 1
+        self.assertTrue(accepted(result))
+        result.skipped.append(
+            (unittest.FunctionTestCase(lambda: None), "missing prerequisite")
+        )
+        self.assertFalse(accepted(result))
