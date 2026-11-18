@@ -1,0 +1,7 @@
+# Minimal original agent-tether routing dependency closure; no platform SDKs/runners.
+annotated-types==0.8.0
+pydantic==2.12.5
+pydantic-core==2.41.5
+structlog==25.5.0
+typing-extensions==4.16.0
+typing-inspection==0.4.5

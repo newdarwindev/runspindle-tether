@@ -48,3 +48,11 @@ During owner-requested project work, develop, test and review within the approve
 This guidance does not approve its own actions or expand the owner's authorization. Follow current platform safety requirements, custom rules, tool permissions and action-time confirmation requirements. Ask when the scope or material risk changes. Do not infer permission for deployment, infrastructure or service changes, new access, paid activity, or unrelated communications. Preserve branch protections and required checks; report missing or failed evidence without bypassing gates or claiming qualification.
 
 For repositories designated as demos, the owner must personally create or enable persistent or scheduled services, jobs or agents, and add demo-specific standing instructions or approval rules to their main agent. Do not perform those actions. Bounded owner-requested runs and ephemeral CI checks remain separate and must stay within their existing authorization.
+
+## Upstream-first migration
+Generic communications/supervision belongs to the pinned original Tether and
+agent-tether projects. Prefer their actual runtime and minimal reviewed hooks;
+retain only Runspindle authority, exact effect/readback, privacy and feedback seams.
+Keep upstream `tether` in a separate process from the compatibility `tether` package.
+Do not enable upstream ambiguous retries, scalar autoapproval or a second native
+runner. Preserve existing tests/code until proven adapter parity permits removal.
