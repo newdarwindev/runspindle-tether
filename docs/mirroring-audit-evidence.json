@@ -85,7 +85,7 @@
     "hygiene.json": "20afbbf219ee10b19406b2f46d2ed9af58868c9d5a546aff5259f137e38af8e7",
     "provenance.json": "a2587426537e4102ceb984240fd66c87f2feab4fdaf5b7defac39824a26c243e",
     "requirements-quality.txt": "9cbe1331549216b953f2922f1e8321357ca82bb985e1ea595c87fcee8a8fdc84",
-    "specs/README.md": "5e994c4935d2badf080c12d8de66c09809b82c1df887b2f9cf85295d146ffde8",
+    "specs/README.md": "4932469d43273a5618cae20cea8a747ff6f1387bf21d2fdd21e82776bdb7f80e",
     "specs/slack-wire-v1.md": "cb4a86d5309b8ede8a475f2c53eb505bfcc50ce2fdbc95150d711baf8ae2319f",
     "tests/test_fake_transport.py": "d440c3217dba6072ebca9abb4770ee132f391d8b288b176a4f80e8dfc427d730",
     "tests/test_mirroring_audit.py": "98b17a648b56a082aec2bfcf234b6ac73091d5b42a0472844db9109f4ad33b49",
