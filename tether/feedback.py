@@ -108,7 +108,12 @@ def decode(raw: bytes) -> dict[str, Any]:
         if value["kind"] == "delete":
             if value["judgment"] is not None or value["correction"] is not None:
                 raise Rejected("delete content")
-        elif value["judgment"] not in ("positive", "negative", "correction"):
+        elif value["judgment"] not in (
+            "positive",
+            "negative",
+            "correction",
+            "thumbs_up",
+        ):
             raise Rejected("feedback judgment")
         elif value["judgment"] == "correction":
             if type(value["correction"]) is not str or not value["correction"]:
@@ -167,7 +172,7 @@ def decode_invalidation(raw: bytes) -> dict[str, Any]:
             if v[name] is not None:
                 identifier(v[name])
         if (
-            v["cause"] not in ("message_changed", "message_deleted")
+            v["cause"] not in ("message_changed", "message_deleted", "reaction_removed")
             or type(v["body_sha256"]) is not str
             or re.fullmatch("[0-9a-f]{64}", v["body_sha256"]) is None
         ):
@@ -263,6 +268,10 @@ class FeedbackStore:
         verify_target = self.verify_target
 
         def verify() -> FeedbackGrant:
+            if event["judgment"] == "thumbs_up" and self.invalidated(
+                event["namespace"], event["target"]["message_id"]
+            ):
+                raise Rejected("reaction target permanently invalidated")
             grant = None
             target_ok = False
             unavailable = False
@@ -565,6 +574,15 @@ class FeedbackStore:
                 (key,),
             ).fetchall()
             invalidation = self.invalidation(namespace, feedback_id)
+            # Resolve target fences in the same read snapshot as reaction history.
+            for sha, raw, _, _ in rows:
+                if hashlib.sha256(raw).hexdigest() != sha:
+                    raise Rejected("feedback integrity")
+                retained = decode(raw)
+                if retained["judgment"] == "thumbs_up":
+                    invalidation = invalidation or self.invalidation(
+                        namespace, retained["target"]["message_id"]
+                    )
             self.db.execute("COMMIT")
         except BaseException:
             if self.db.in_transaction:
