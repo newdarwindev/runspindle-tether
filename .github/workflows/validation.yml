@@ -43,6 +43,20 @@ jobs:
           ref: 040b71f2213a34f34e6b6a40124ed1164b93ce30
           path: .feedback-v1
           persist-credentials: false
+      - name: Checkout original Tether source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: larsderidder/tether
+          ref: 0a5e8fc89390d383d4f5b4dfb827c5ea3128ad0a
+          path: .upstream-tether
+          persist-credentials: false
+      - name: Checkout original agent-tether source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: larsderidder/agent-tether
+          ref: 1256d1a260abb10fdf16a9b842b942b2ccac1310
+          path: .upstream-agent-tether
+          persist-credentials: false
       - id: partition
         name: Run component partition
         env:

@@ -16,3 +16,7 @@ dist/
 
 # Exact old-reader source used only by compatibility tests.
 .feedback-v1/
+
+# Exact original upstream source checkouts for mandatory isolated CI tests.
+.upstream-tether
+.upstream-agent-tether
