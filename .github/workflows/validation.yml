@@ -4,16 +4,15 @@ name: validation
 on:
   push:
     branches: [main, 'ci/*']
-  workflow_dispatch:
 permissions:
   contents: read
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: strix-direct-v1-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   quality:
     name: validation / quality
-    runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
+    runs-on: ["${{ format('runspindle-strix-direct-{0}-{1}-quality', github.run_id, github.run_attempt) }}"]
     timeout-minutes: 15
     outputs:
       receipt: ${{ steps.partition.outputs.receipt }}
@@ -26,7 +25,7 @@ jobs:
         run: python3 tools/partition_validation.py quality --output "$GITHUB_OUTPUT"
   component:
     name: validation / component
-    runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
+    runs-on: ["${{ format('runspindle-strix-direct-{0}-{1}-component', github.run_id, github.run_attempt) }}"]
     timeout-minutes: 15
     outputs:
       receipt: ${{ steps.partition.outputs.receipt }}
@@ -48,7 +47,7 @@ jobs:
         run: python3 tools/partition_validation.py component --output "$GITHUB_OUTPUT"
   rust:
     name: validation / rust
-    runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
+    runs-on: ["${{ format('runspindle-strix-direct-{0}-{1}-rust', github.run_id, github.run_attempt) }}"]
     timeout-minutes: 15
     outputs:
       receipt: ${{ steps.partition.outputs.receipt }}
@@ -61,7 +60,7 @@ jobs:
         run: python3 tools/partition_validation.py rust --output "$GITHUB_OUTPUT"
   mutation_1:
     name: validation / mutation_1
-    runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
+    runs-on: ["${{ format('runspindle-strix-direct-{0}-{1}-mutation_1', github.run_id, github.run_attempt) }}"]
     timeout-minutes: 15
     outputs:
       receipt: ${{ steps.partition.outputs.receipt }}
@@ -74,7 +73,7 @@ jobs:
         run: python3 tools/partition_validation.py mutation_1 --output "$GITHUB_OUTPUT"
   mutation_2:
     name: validation / mutation_2
-    runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
+    runs-on: ["${{ format('runspindle-strix-direct-{0}-{1}-mutation_2', github.run_id, github.run_attempt) }}"]
     timeout-minutes: 15
     outputs:
       receipt: ${{ steps.partition.outputs.receipt }}
@@ -87,7 +86,7 @@ jobs:
         run: python3 tools/partition_validation.py mutation_2 --output "$GITHUB_OUTPUT"
   mutation_3:
     name: validation / mutation_3
-    runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
+    runs-on: ["${{ format('runspindle-strix-direct-{0}-{1}-mutation_3', github.run_id, github.run_attempt) }}"]
     timeout-minutes: 15
     outputs:
       receipt: ${{ steps.partition.outputs.receipt }}
@@ -100,7 +99,7 @@ jobs:
         run: python3 tools/partition_validation.py mutation_3 --output "$GITHUB_OUTPUT"
   mutation_4:
     name: validation / mutation_4
-    runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
+    runs-on: ["${{ format('runspindle-strix-direct-{0}-{1}-mutation_4', github.run_id, github.run_attempt) }}"]
     timeout-minutes: 15
     outputs:
       receipt: ${{ steps.partition.outputs.receipt }}
@@ -115,7 +114,7 @@ jobs:
     name: validation / strix-linux-x64
     if: ${{ always() }}
     needs: [quality, component, rust, mutation_1, mutation_2, mutation_3, mutation_4]
-    runs-on: [self-hosted, linux, x64, runspindle-isolated, strix]
+    runs-on: ["${{ format('runspindle-strix-direct-{0}-{1}-strix-linux-x64', github.run_id, github.run_attempt) }}"]
     timeout-minutes: 5
     env:
       RECEIPT_QUALITY: ${{ needs.quality.outputs.receipt }}
