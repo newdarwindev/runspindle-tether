@@ -5,9 +5,9 @@ and request authorization. No credentials, default transport, retries or worker.
 Wire readback is not a Core Delivered receipt or live-provider qualification.
 """
 
+import sqlite3
 from collections.abc import Callable
 from dataclasses import asdict, dataclass, field
-import sqlite3
 from typing import Any, cast
 
 from tether.admission import Admission, Rejected, canonical
