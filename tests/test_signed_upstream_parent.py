@@ -5,10 +5,9 @@ from __future__ import annotations
 import unittest
 from dataclasses import replace
 
-from test_slack_ingress import NOW, ROUTE, SECRET, callback, headers, wire
-
 from runspindle_tether.authority import AuthorityGate, Denied, VerifiedAction, digest
 from runspindle_tether.signed_parent import OwnerBinding, SignedInputAuthenticator
+from tests.test_slack_ingress import NOW, ROUTE, SECRET, callback, headers, wire
 from tether.admission import Rejected
 from tether.slack_ingress import SlackMessageVerifier
 
