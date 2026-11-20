@@ -297,7 +297,9 @@ class UploadJournal:
     def lookup(self, scope: Scope, intent: FileIntent) -> UploadObservation:
         binding = self._context(scope, intent)
         row = self._row(scope, binding)
-        if row is None or row[2] is None or row[4]:
+        # Bytes at the provider cannot establish that this operation reached
+        # completion intent. Earlier phases can retain only an unknown attempt.
+        if row is None or row[1] != "completing" or row[2] is None or row[4]:
             return self._unknown(scope, binding)
         if not self.cooldown.allows(scope.operation_id):
             return self._unknown(scope, binding)

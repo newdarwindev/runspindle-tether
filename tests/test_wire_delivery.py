@@ -20,6 +20,7 @@ from tests.test_provider_journal import envelope as legacy_envelope
 from tests.test_slack_upload import MESSAGE, StoredHTTP
 from tether.admission import Admission, Identity, Rejected, canonical
 from tether.journal import ProviderJournal
+from tether.slack_upload import UploadObservation
 from tether.testing import Attachment, Destination, Payload
 from tether.wire_delivery import WireDeliveryJournal
 
@@ -456,6 +457,71 @@ class WireDeliveryTests(unittest.TestCase):
             (0,),
         )
         self.assertEqual(self.counts(), {})
+
+    def retain_partial_upload_with_external_share(self) -> dict[str, int]:
+        interrupted = self.child("after:upload")
+        self.assertEqual(interrupted.returncode, 32, interrupted.stderr)
+        self.assertEqual(self.counts(), {"allocate": 1, "upload": 1})
+        # The independent peer has the exact bytes and an externally supplied
+        # share despite this operation never reaching its completion intent.
+        self.peer.db.execute(
+            "UPDATE files SET channel=?,thread=?,text=?,message=? WHERE id='F100'",
+            (DEST.channel_id, DEST.thread_id, PAYLOAD.text, MESSAGE),
+        )
+        self.assertEqual(
+            self.peer.db.execute("SELECT content FROM files").fetchall(),
+            [(PAYLOAD.attachments[0].content,)],
+        )
+        with closing(sqlite3.connect(self.base / "journal.db")) as db:
+            self.assertEqual(
+                db.execute("SELECT phase,observed FROM uploads").fetchall(),
+                [("uploading", None)],
+            )
+        return self.counts()
+
+    def test_partial_upload_readback_stays_unknown_even_for_exact_share(self) -> None:
+        before = self.retain_partial_upload_with_external_share()
+        reopened = self.child()
+        self.assertEqual(reopened.returncode, 0, reopened.stderr)
+        self.assertEqual(
+            self.counts(), before, "unfinished upload reached provider readback"
+        )
+        self.assertEqual(
+            json.loads(reopened.stdout),
+            {"state": "unknown", "message": None, "conflict": False},
+        )
+        self.assertEqual(self.journal.lookup(envelope(), PAYLOAD).state, "unknown")
+        self.assertEqual(self.counts(), before)
+        with closing(sqlite3.connect(self.base / "journal.db")) as db:
+            self.assertEqual(
+                db.execute("SELECT phase,observed FROM uploads").fetchall(),
+                [("uploading", None)],
+            )
+        self.assertEqual(
+            self.journal.db.execute("SELECT observed FROM wire_deliveries").fetchall(),
+            [(None,)],
+        )
+
+    def test_partial_upload_readback_mutation_is_detected_by_peer_calls(self) -> None:
+        before = self.retain_partial_upload_with_external_share()
+        source = (ROOT / "tether/slack_upload.py").read_text()
+        anchor = 'row[1] != "completing"'
+        self.assertEqual(source.count(anchor), 1)
+        module = types.ModuleType("tether.slack_upload_phase_mutant")
+        with patch.dict(sys.modules, {module.__name__: module}):
+            exec(
+                compile(source.replace(anchor, "False"), "upload-phase-mutant", "exec"),
+                module.__dict__,
+            )
+        # Keep the public observation type accepted by the real outer journal.
+        module.__dict__["UploadObservation"] = UploadObservation
+        with patch("tether.wire_delivery.UploadJournal", module.UploadJournal):
+            mutated = self.journal.lookup(envelope(), PAYLOAD)
+        self.assertEqual(mutated.state, "content_confirmed")
+        self.assertEqual(mutated.message_id, MESSAGE)
+        self.assertEqual(
+            self.counts(), {**before, "info": 1, "replies": 1, "download": 1}
+        )
 
     def test_deliberate_resend_mutant_is_detected_by_independent_effect_oracle(
         self,
