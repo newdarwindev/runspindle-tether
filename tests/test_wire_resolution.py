@@ -15,8 +15,10 @@ from pathlib import Path
 from typing import Any
 from unittest.mock import patch
 
+from tests.test_slack_upload import READBACK_CANARY
 from tests.test_wire_delivery import PAYLOAD, ROOT, envelope, prepare
 from tether.admission import Rejected, canonical
+from tether.sanitization import Sanitizer
 from tether.wire_resolution import ResolutionDecision, ResolutionJournal
 
 MESSAGE = "1700000002.000003"
@@ -200,6 +202,23 @@ class ResolutionTests(unittest.TestCase):
             self.assertIn("synthetic-mutant-secret", str(caught.exception))
         finally:
             mutant.close()
+
+    def test_readback_routing_rejects_configured_secret_before_resolution(self) -> None:
+        self.bridge.sanitizer = Sanitizer((READBACK_CANARY,))
+        self.peer.fault = "secret:download"
+        offset = len(self.peer.calls)
+        result = self.resolution.resolve(envelope(), PAYLOAD, self.decision)
+        self.assertEqual([call.action for call in self.peer.calls[offset:]], ["info"])
+        self.assertEqual(result.state, "unknown")
+        self.assertEqual(
+            self.resolution.db.execute("SELECT count(*) FROM decisions").fetchone(),
+            (0,),
+        )
+        self.peer.fault = ""
+        self.assertEqual(
+            self.resolution.resolve(envelope(), PAYLOAD, self.decision).state,
+            "independently_reconciled_under_decision",
+        )
 
     def test_exact_resolution_preserves_original_conflict_and_reobserves(self) -> None:
         first = self.resolution.resolve(envelope(), PAYLOAD, self.decision)

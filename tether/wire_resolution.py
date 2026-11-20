@@ -243,7 +243,9 @@ class ResolutionJournal:
         if not self.cooldown.allows(scope.operation_id):
             return ResolutionObservation()
         result = WireClient(self.bridge.transport, allowed).readback(
-            FileBinding(scope, decision.file_id), intent
+            FileBinding(scope, decision.file_id),
+            intent,
+            sanitizer=self.bridge.sanitizer,
         )
         self.cooldown.record(scope.operation_id, "readback", result)
         current()
