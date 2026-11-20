@@ -10,12 +10,31 @@ import asyncio
 import contextvars
 import importlib
 from dataclasses import dataclass
-from typing import Any, Awaitable, Callable
+from typing import Any, Awaitable, Callable, NoReturn
 
 from .authority import Denied, VerifiedAction, digest
 from .upstream_outbox import Outbox
 
 SlackBridge = importlib.import_module("agent_tether.slack.bot").SlackBridge
+
+
+async def _startup_denied(*args: object, **kwargs: object) -> NoReturn:
+    """No SDK construction may replace the scoped client in this process."""
+    try:
+        raise Denied("upstream Slack startup is not qualified")
+    except Denied as error:
+        error.__context__ = error.__cause__ = None
+        raise
+
+
+def protect_slack_startup() -> None:
+    """Irreversibly deny ordinary start on existing/future original bridges.
+
+    Trusted composition must call this before publishing handlers or retaining
+    original bound methods. It does not stop an already started bridge, undo
+    network effects, or defend against arbitrary Python class mutation.
+    """
+    SlackBridge.start = _startup_denied
 
 
 @dataclass
@@ -37,6 +56,8 @@ class SlackOutput:
     ) -> None:
         if type(bridge) is not SlackBridge or bridge._client is not None:
             raise Denied("inactive original SlackBridge required")
+        # Install before exposing the scoped client; repeated installation is safe.
+        protect_slack_startup()
         self.bridge, self.outbox = bridge, outbox
         self.authorize, self.send_once = authorize, send_once
         self._scope: contextvars.ContextVar[_Output | None] = contextvars.ContextVar(
