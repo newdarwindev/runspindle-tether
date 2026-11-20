@@ -100,6 +100,13 @@ checking, not universal secret discovery. The application still owns permissions
 storage security and production sanitization. Public observations omit content,
 URLs and error bodies; exceptions from authorization callbacks are detached.
 
+Ordinary upload readback and explicit conflict resolution reuse the journal's
+configured sanitizer for provider-supplied routing. It checks the raw and
+percent-decoded download path before any follow-up and applies the same check
+to each cursor before building the next replies request. A rejected value leaves
+the readback unknown and reaches neither the request authorizer nor the transport. A later
+authorized readback can settle the operation when it receives clean evidence.
+
 ## Reproducible evidence and remaining gaps
 
 Run `python3 tools/validate.py && python3 -O -m unittest discover -s tests -v`.
