@@ -68,3 +68,24 @@ loss from a genuinely new event, so the trusted owner must deny retired operatio
 The test explicitly demonstrates original clear-all deletion and owner retirement
 denial; it does not claim resilience to arbitrary history erasure. No ordinary
 upstream lifecycle or production startup is enabled by this slice.
+
+
+## Legacy status mutation interception
+
+`protect_session_history()` also installs `protect_delivery_status()` on the
+actual original SessionStore. The original mark-sent, mark-failed and single-row
+cancel methods do not understand the protected statuses: mark-failed can turn an
+unknown outcome into pending and retain raw exception text. All three are now
+denied for **all rows** when this explicit hook is installed in the isolated
+process. There is no query/filter race, duplicate ledger or new retry authority.
+Original claim, claim-extension and bulk-cancel predicates already exclude the
+protected states and are unchanged. The authoritative Outbox still settles its
+original table directly after current authorization and independent readback.
+
+Tests demonstrate the unmodified original APIs overwriting all four protected
+statuses, then verify unchanged complete row evidence for existing/new stores
+and repeated hook installation. Trusted startup must install before caching
+methods or publishing handlers. Cached original methods and arbitrary SQL/Python
+mutation remain outside this boundary. This is not live app activation, an
+operational retirement policy, or evidence that ordinary upstream retry workers
+may safely be started.
