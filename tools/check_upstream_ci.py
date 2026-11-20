@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import importlib.metadata
+import os
 import re
 import subprocess
 import sys
@@ -27,6 +28,11 @@ def verify_dependencies(requirements: Path) -> None:
 
 def main() -> int:
     verify_dependencies(ROOT / "upstream/requirements.txt")
+    runner_temp = os.environ.get("RUNNER_TEMP")
+    dependency_args = []
+    if runner_temp:
+        dependencies = (Path(runner_temp) / "tether-upstream").resolve(strict=True)
+        dependency_args = ["--dependencies", str(dependencies)]
     return subprocess.run(
         [
             sys.executable,
@@ -35,6 +41,7 @@ def main() -> int:
             str(ROOT / "tools/check_upstream_sidecar.py"),
             str(ROOT / ".upstream-tether"),
             str(ROOT / ".upstream-agent-tether"),
+            *dependency_args,
         ],
         timeout=90,
         check=False,
