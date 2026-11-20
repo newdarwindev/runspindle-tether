@@ -81,6 +81,10 @@ human, lasting availability, original provenance or eventual delivery is claimed
   integers. The supported subset needs only bounded integers and timestamp strings.
   Header duplicates, unexpected compression, inconsistent lengths and non-200
   responses cannot become successful observations.
+- Successful JSON responses require `ok: true` and absence of a top-level
+  `error` field. A contradictory response stays unknown. During readback it
+  stops traversal before another request or retained success. The existing
+  upload can still reconcile through an explicit clean readback.
 - Exactly `https://slack.com/api/` method targets and `https://files.slack.com`
   file targets are constructed. Upload paths must be under `/upload/v1/`; downloads
   under `/files-pri/{workspace}-{file}/`. Userinfo, ports, query/fragment, control
@@ -101,6 +105,9 @@ human, lasting availability, original provenance or eventual delivery is claimed
 Checked 2026-11-14 UTC. These exact URLs are documentation observations, not immutable
 upstream source commits or copied SDK implementation. No SDK dependency was added.
 Base code pin: Tether `22546d6b414cb298a6ec60433505ef6cf7ca9883`.
+
+- [Web API response status](https://docs.slack.dev/apis/web-api/#evaluating-responses)
+  defines the success flag and reserves `error` for failure results.
 
 - [Upload allocation](https://docs.slack.dev/reference/methods/files.getUploadURLExternal/):
   obtain file ID/upload URL, POST bytes, then finalize; asynchronous processing is

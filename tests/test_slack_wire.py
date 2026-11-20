@@ -576,6 +576,25 @@ class WireTests(unittest.TestCase):
         self.assertEqual(self.actions(), ["complete", "complete", "complete"])
         self.assertEqual(self.http.effects, [])
 
+    def test_provider_error_cannot_be_a_parsed_upload_step(self) -> None:
+        ticket = Ticket(SCOPE, "F100", "https://files.slack.com/upload/v1/a")
+        for error in ("synthetic_error", None, ""):
+            with self.subTest(error=error):
+                self.http.response_override["allocate"] = json_response(
+                    {
+                        "ok": True,
+                        "error": error,
+                        "file_id": ticket.file_id,
+                        "upload_url": ticket.upload_url,
+                    }
+                )
+                self.http.response_override["complete"] = json_response(
+                    {"ok": True, "error": error, "files": [{"id": ticket.file_id}]}
+                )
+                self.assertEqual(self.client.allocate(SCOPE, INTENT).state, "unknown")
+                self.assertEqual(self.client.complete(ticket, INTENT).state, "unknown")
+        self.assertEqual(self.actions(), ["allocate", "complete"] * 3)
+
     def test_exact_request_authorization_and_cancellation(self) -> None:
         expected = allocate_request(SCOPE, INTENT)
         scoped = WireClient(self.http, lambda request: request == expected)
