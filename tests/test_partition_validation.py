@@ -10,6 +10,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from typing import Any
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tools import hygiene  # noqa: E402
@@ -80,6 +81,85 @@ class AggregateTests(unittest.TestCase):
                 "status": "passed",
             }
         self.results = {x: "success" for x in gate.PARTITIONS}
+
+    def test_colocated_empty_preserves_exact_coverage(self) -> None:
+        receipts = {
+            k: v for k, v in self.receipts.items() if k not in gate.COLOCATED_EMPTY
+        }
+        results = {
+            k: v for k, v in self.results.items() if k not in gate.COLOCATED_EMPTY
+        }
+        instance = {
+            "image_sha256": self.image_sha,
+            **self.receipts["quality"]["binding"],
+        }
+        fingerprint = self.receipts["quality"]["source_fingerprint"]
+        with (
+            patch.object(hygiene, "source_fingerprint", return_value=fingerprint),
+            patch.object(hygiene, "run_entry") as run,
+        ):
+            gate.complete_empty_receipts(
+                receipts,
+                results,
+                self.manifest,
+                self.inventory,
+                self.manifest_sha,
+                self.hygiene_sha,
+                instance,
+                self.head,
+                self.run_id,
+            )
+        run.assert_not_called()
+        observed = gate.aggregate(
+            receipts,
+            results,
+            self.manifest,
+            self.inventory,
+            self.manifest_sha,
+            self.hygiene_sha,
+            self.image_sha,
+            self.head,
+            self.run_id,
+        )
+        self.assertEqual(observed["status"], "passed")
+
+    def test_colocated_new_work_rejects_before_receipts(self) -> None:
+        manifest = copy.deepcopy(self.manifest)
+        manifest["partitions"]["rust"] = ["python-tests"]
+        receipts = {
+            k: v for k, v in self.receipts.items() if k not in gate.COLOCATED_EMPTY
+        }
+        results = {
+            k: v for k, v in self.results.items() if k not in gate.COLOCATED_EMPTY
+        }
+        with patch.object(gate, "receipt") as receipt:
+            with self.assertRaisesRegex(ValueError, "mandatory work"):
+                gate.complete_empty_receipts(
+                    receipts,
+                    results,
+                    manifest,
+                    self.inventory,
+                    self.manifest_sha,
+                    self.hygiene_sha,
+                    {},
+                    self.head,
+                    self.run_id,
+                )
+        receipt.assert_not_called()
+
+    def test_colocated_missing_real_job_is_not_success(self) -> None:
+        with self.assertRaisesRegex(ValueError, "remote partition"):
+            gate.complete_empty_receipts(
+                {},
+                {},
+                self.manifest,
+                self.inventory,
+                self.manifest_sha,
+                self.hygiene_sha,
+                {},
+                self.head,
+                self.run_id,
+            )
 
     def check(
         self,

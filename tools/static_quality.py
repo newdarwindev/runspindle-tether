@@ -221,7 +221,9 @@ def collect(files: list[str]) -> tuple[list[str], dict[str, Any]]:
             raise RuntimeError(f"invalid JSON: {path}") from None
     if javascript:
         summary["node_runtime"] = command(["node", "--version"], (0,)).strip()
-        modules = ROOT / "tools/quality-node/node_modules"
+        modules = Path("/opt/runspindle-quality-node/node_modules")
+        if not modules.is_dir():
+            modules = ROOT / "tools/quality-node/node_modules"
         for name, expected in NODE_PINS.items():
             if (
                 json.loads((modules / name / "package.json").read_text())["version"]

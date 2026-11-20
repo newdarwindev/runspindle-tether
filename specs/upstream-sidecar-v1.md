@@ -95,3 +95,22 @@ The sidecar is trusted application code, not a hostile-plugin sandbox. Source
 provenance is enforced by the isolated test launcher, not arbitrary direct library
 imports. Git verification has per-command time bounds. Production source loading,
 durable Core RPC and platform interception remain unqualified.
+
+## Actual signed parent input seam
+
+`runspindle_tether.signed_parent.SignedInputAuthenticator` now uses the original
+Runspindle `SlackMessageVerifier`, not a copied authentication algorithm or a
+caller-supplied actor JSON field. It verifies the original bytes/headers and current
+signature window, rejects mismatched installation/actor/channel/thread and mutation
+or bot events, then binds the trusted selected Host/session/lease to the exact input
+payload. Whitespace trimming matches the pinned upstream Slack handler. Commands
+and empty input remain denied until their separate action hooks are qualified.
+
+This module runs in the existing parent namespace. It does not import upstream
+Tether or initialize a Slack SDK. Four actual-HMAC tests exercise actor preservation,
+forgery/wrong-scope/mutation rejection, changed content and stale lease denial with
+the existing gate. They are distinct from the original-upstream subprocess tests.
+The production pipe/endpoint connecting this parent to the upstream sidecar and
+Core's authenticated authority remains unimplemented. A verified actor record is
+not a bearer credential or permission for a future effect; use the gate's fresh
+Core authority check. No claim of authenticated cross-process transport is made.

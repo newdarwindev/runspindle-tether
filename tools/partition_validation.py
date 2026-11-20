@@ -34,6 +34,11 @@ SHA = re.compile(r"^[0-9a-f]{64}$")
 SOURCE_SHA = re.compile(r"^[0-9a-f]{40}$")
 
 
+COLOCATED_EMPTY = frozenset(
+    {"rust", "mutation_1", "mutation_2", "mutation_3", "mutation_4"}
+)
+
+
 class Stage(str, Enum):
     MANIFEST = "manifest"
     INSTANCE_METADATA = "instance_metadata"
@@ -334,9 +339,48 @@ def aggregate(
     }
 
 
+def complete_empty_receipts(
+    receipts: dict[str, dict[str, Any]],
+    results: dict[str, str],
+    manifest: dict[str, Any],
+    inventory: dict[str, Any],
+    manifest_sha: str,
+    hygiene_sha: str,
+    instance: dict[str, Any],
+    head_sha: str,
+    run_id: str,
+) -> None:
+    """Attest empty partitions here, never skip a partition containing work.
+
+    Quality and component remain separate jobs. The aggregate guest supplies
+    its own current verified instance/source binding for genuinely empty work.
+    Adding work to these partitions requires a corresponding workflow update.
+    """
+    expected = set(PARTITIONS) - COLOCATED_EMPTY
+    if set(receipts) != expected or set(results) != expected:
+        raise ValueError("unexpected remote partition set")
+    if any(manifest["partitions"][name] != [] for name in COLOCATED_EMPTY):
+        raise ValueError("colocated partition contains mandatory work")
+    for name in PARTITIONS:
+        if name not in COLOCATED_EMPTY:
+            continue
+        value = receipt(
+            name,
+            manifest,
+            inventory,
+            manifest_sha,
+            hygiene_sha,
+            instance,
+            head_sha,
+            run_id,
+        )
+        receipts[name] = value
+        results[name] = "success" if value["status"] == "passed" else "failure"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("action", choices=(*PARTITIONS, "aggregate"))
+    parser.add_argument("action", choices=(*PARTITIONS, "aggregate", "aggregate-empty"))
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     with diagnostic_stage(Stage.MANIFEST):
@@ -349,17 +393,31 @@ def main() -> int:
         run_id = os.environ.get("GITHUB_RUN_ID", "")
         if os.environ.get("GITHUB_SHA") != head_sha or not run_id.isdecimal():
             raise ValueError("missing or mismatched GitHub run source identity")
-    if args.action == "aggregate":
+    if args.action in ("aggregate", "aggregate-empty"):
         with diagnostic_stage(Stage.AGGREGATE_INPUT):
             receipts = {}
             results = {}
             for name in PARTITIONS:
+                if args.action == "aggregate-empty" and name in COLOCATED_EMPTY:
+                    continue
                 encoded = os.environ.get("RECEIPT_" + name.upper(), "")
                 results[name] = os.environ.get("RESULT_" + name.upper(), "")
                 if not encoded or len(encoded) > 100000:
                     raise ValueError("missing or oversized partition receipt")
                 receipts[name] = json.loads(base64.b64decode(encoded, validate=True))
         with diagnostic_stage(Stage.AGGREGATE_VALIDATION):
+            if args.action == "aggregate-empty":
+                complete_empty_receipts(
+                    receipts,
+                    results,
+                    manifest,
+                    inventory,
+                    manifest_sha,
+                    hygiene_sha,
+                    instance,
+                    head_sha,
+                    run_id,
+                )
             print(
                 json.dumps(
                     aggregate(
