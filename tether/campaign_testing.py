@@ -17,7 +17,6 @@ from tether.sanitization import Sanitizer
 from tether.schema import open_store
 from tether.testing import Attachment, FakeSlack, Payload, Reply, confirm_readback
 
-
 COUNTERS = (
     "origin_observation",
     "origin_event",

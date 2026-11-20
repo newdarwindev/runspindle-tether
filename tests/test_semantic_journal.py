@@ -118,15 +118,24 @@ class JournalTests(unittest.TestCase):
                 self.app.db.commit()
                 config = dict(app_id="Atest", account_id="acct-test")
                 config[field] = changed
-                with closing(SemanticAdmission(self.path, **config)) as other:
+                with closing(
+                    SemanticAdmission(
+                        self.path,
+                        app_id=config["app_id"],
+                        account_id=config["account_id"],
+                    )
+                ) as other:
                     before = self.snapshot()
                     calls: list[bytes] = []
+
+                    def observe(wire: bytes) -> dict[str, Any]:
+                        calls.append(wire)
+                        return receipt(wire)
+
                     for operation in (
                         lambda: other.snapshot_batch(TASK),
                         lambda: other.pending_batch(TASK),
-                        lambda: other.reconcile_retention(
-                            batch, lambda wire: calls.append(wire) or receipt(wire)
-                        ),
+                        lambda: other.reconcile_retention(batch, observe),
                     ):
                         with self.assertRaisesRegex(
                             Rejected, "semantic source installation"
