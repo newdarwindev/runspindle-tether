@@ -118,15 +118,12 @@ class Sanitizer:
             # spelling as well as its normalized projection representation.
             for value in {secret, unicodedata.normalize("NFC", secret)}:
                 quoted.update({quote(value, safe=""), quote_plus(value)})
-                variants.update(
-                    {
-                        value,
-                        quote(value, safe=""),
-                        quote_plus(value),
-                        base64.b64encode(value.encode()).decode(),
-                        base64.urlsafe_b64encode(value.encode()).decode(),
-                    }
-                )
+                variants.add(value)
+                value_bytes = value.encode()
+                for encode in (base64.b64encode, base64.urlsafe_b64encode):
+                    padded = encode(value_bytes).decode("ascii")
+                    variants.update((padded, padded.rstrip("=")))
+        variants.update(quoted)
         self._secrets = tuple(sorted(variants, key=len, reverse=True))
         self._pattern = (
             re.compile(
