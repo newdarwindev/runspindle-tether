@@ -218,6 +218,8 @@ class StoredHTTP:
             os._exit(32)
         if self.fault == "lost:" + str(action):
             raise TimeoutError("synthetic private error canary")
+        if self.fault == "error:" + str(action):
+            return response({**json.loads(result.body), "error": "synthetic_error"})
         return result
 
 
@@ -487,6 +489,55 @@ class UploadTests(unittest.TestCase):
             text=True,
             timeout=15,
         )
+
+    def test_contradictory_readback_stays_unknown_until_clean_fresh_process(
+        self,
+    ) -> None:
+        for action, replies in (("info", 0), ("replies", 1)):
+            with self.subTest(action=action):
+                directory = self.root / action
+                directory.mkdir()
+                first = self.child(directory, "error:" + action)
+                self.assertEqual(first.returncode, 0, first.stderr)
+                self.assertEqual(json.loads(first.stdout)["state"], "unknown")
+                with closing(sqlite3.connect(directory / "journal.db")) as journal:
+                    self.assertEqual(
+                        journal.execute(
+                            "SELECT phase,file_id,observed,conflict FROM uploads"
+                        ).fetchone(),
+                        ("completing", "F100", None, 0),
+                    )
+                with closing(sqlite3.connect(directory / "service.db")) as service:
+                    mutations = {"allocate": 1, "upload": 1, "complete": 1}
+                    calls = "SELECT action,count(*) FROM calls GROUP BY action"
+                    expected = {**mutations, "info": 1}
+                    if replies:
+                        expected["replies"] = replies
+                    self.assertEqual(dict(service.execute(calls)), expected)
+                    again = self.child(directory)
+                    self.assertEqual(again.returncode, 0, again.stderr)
+                    observed = json.loads(again.stdout)
+                    self.assertEqual(
+                        (observed["state"], observed["message_ts"]),
+                        ("content_match", MESSAGE),
+                    )
+                    self.assertEqual(
+                        dict(service.execute(calls)),
+                        {**mutations, "info": 2, "replies": replies + 1, "download": 1},
+                    )
+                    self.assertEqual(
+                        service.execute(
+                            "SELECT content,channel,thread,message FROM files"
+                        ).fetchall(),
+                        [(INTENT.content, SCOPE.channel_id, SCOPE.thread_ts, MESSAGE)],
+                    )
+                with closing(sqlite3.connect(directory / "journal.db")) as journal:
+                    self.assertEqual(
+                        journal.execute(
+                            "SELECT observed,conflict FROM uploads"
+                        ).fetchone(),
+                        (MESSAGE, 0),
+                    )
 
     def test_fresh_process_crash_boundaries_never_repeat_mutations(self) -> None:
         for action in ("allocate", "upload", "complete"):
