@@ -207,7 +207,9 @@ class UploadJournal:
         binding = self._context(scope, intent)
         client, allowed = self._bound_client(scope, intent, binding)
         row = self._row(scope, binding)
-        if row is None or row[2] is None or row[4]:
+        # Bytes at the provider cannot establish that this operation reached
+        # completion intent. Earlier phases can retain only an unknown attempt.
+        if row is None or row[1] != "completing" or row[2] is None or row[4]:
             return self._unknown(scope, binding)
         file = FileBinding(scope, row[2])
         self.sanitizer.require_clean(file.file_id)
