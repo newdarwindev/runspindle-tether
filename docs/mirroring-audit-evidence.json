@@ -96,7 +96,7 @@
     "tether/journal.py": "22635c839ce33aee380868b97fbfc70a28950d574a01f499cc2cd07983ebd621",
     "tether/native_testing.py": "d92efe289d54fe66c5157ccb2d2ea2fd3bf15a2470e8ff35ffe154a1f07ca755",
     "tether/sanitization.py": "01f9ee686a0a3d2dd4cca9af19805792661a140d6e7c1aabf40ac0b6626e7351",
-    "tether/slack_wire.py": "0de192e858962cce3110d28682fe03329649d5341fcad06e6d75cac0797515b8",
+    "tether/slack_wire.py": "dba713ca4391e3abc91a235fa428d4b302803f9f3e0bee8bb9a8a061f4d97290",
     "tether/testing.py": "2b84de229c6aff62ec48b52c6decb8dd369e20bade2b0b3d16003ed14ff046c9",
     "tools/check_mirroring_audit.py": "f1cefe07f3374185f9e9b393294daa99f599ce1c18832693d8de019b13062fff",
     "tools/quality-baseline.json": "786840907d57036341f82d37d7d625b0872aaa5b4972ce8dad0b04578049958d",
