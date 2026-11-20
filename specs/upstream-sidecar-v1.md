@@ -111,6 +111,51 @@ Tether or initialize a Slack SDK. Four actual-HMAC tests exercise actor preserva
 forgery/wrong-scope/mutation rejection, changed content and stale lease denial with
 the existing gate. They are distinct from the original-upstream subprocess tests.
 The production pipe/endpoint connecting this parent to the upstream sidecar and
-Core's authenticated authority remains unimplemented. A verified actor record is
-not a bearer credential or permission for a future effect; use the gate's fresh
-Core authority check. No claim of authenticated cross-process transport is made.
+Core's authenticated authority remains unimplemented. A verified actor record
+requires the gate's fresh Core authority check for every effect. Authenticated
+cross-process transport remains unqualified.
+
+## Durable admission before the signed parent callback
+
+For Tether #8 and #3, configure the callable parent with
+`SignedInputAuthenticator.open` and the existing local admission store. The
+parent checks the original signed body and its input policy, then admits the
+original normalized event through `SignedSlackIngress`. The selected host and
+lease must match the grant both before and after the SQLite write lock.
+Verified session, host, lease, actor and content remain bound to the callback.
+Read-only `verify` stays available without a store.
+
+Only a newly retained create reaches the callback. A duplicate, conflicting
+event, recorded outbound mirror, wrong owner or denied grant cannot reach it.
+The application uses the same existing mirror ledger and schema. A fresh
+Core authorization remains mandatory immediately before an effect. If the
+callback fails, or its response is lost after admission, the caller must
+reconcile the outcome through its authoritative effect boundary. The parent
+never turns a replay into a new attempt, and a retained admission alone gives
+no execution receipt.
+
+Run `python3 -B -m unittest tests.test_signed_upstream_parent -v`. Tests use
+synthetic signatures, real SQLite admission and a separate effect ledger.
+Three fresh processes cover an effect with a lost response followed by two
+replays. The independent ledger observes one recorded input. A deliberate
+mutation allowing the retained duplicate to reach the callback fails the
+fresh-process test. Recorded mirrors and a grant that changes host during
+admission are denied before the callback. This covers signed ordinary creates.
+Provider edit/delete ordering and the authenticated production effect
+transport remain separate work. No live Slack or native runtime was used.
+
+Local verification used base `bb1aa8695896f54057d1b64aab5eac6288cc2e73`,
+Python 3.13.18 on macOS arm64, and the upstream revisions specified above.
+The compatibility suite passed 528 tests with seven skips in each of normal
+and optimized Python, with the exact legacy fixture at
+`040b71f2213a34f34e6b6a40124ed1164b93ce30`. The pinned upstream adapter suite
+passed 16 tests in each mode. Scaffold, Ruff and the mirroring audit passed.
+Repo-wide static quality reported the same eight diagnostics for unavailable
+visual dependencies and Linux process APIs on base and candidate.
+
+```text
+1c12ebe6f719e6e79bf1ecc9fa0fba9a8a0b1193b7a5ae259aaf48fcd6124bbe  runspindle_tether/signed_parent.py
+a7c69f2e653eeb85089b999f64829a3d4e75df763dc43d077362a65b03b322e6  tests/test_signed_upstream_parent.py
+c00a02eeb8405751a2b32da2b79bafa582a55c70f1a4b591e036e34f09b997a8  upstream/requirements.txt
+96737a88d40a6157cb4487f67a160b7261edc639450b69695885b7aaa0bdec68  upstream/pins.json
+```
