@@ -23,7 +23,7 @@ def _retirement_required(*args: object, **kwargs: object) -> NoReturn:
 
 
 def protect_session_history() -> None:
-    """Disable both original deletion entrypoints for existing/future instances.
+    """Disable destructive lifecycle and legacy status writers on original stores.
 
     Original app initialization/source verification belongs to the composition
     root. Importing its store constructs the original singleton; this function
@@ -33,3 +33,19 @@ def protect_session_history() -> None:
     store = importlib.import_module("tether.store").SessionStore
     store.delete_session = _retirement_required
     store.clear_all_data = _retirement_required
+
+    protect_delivery_status()
+
+
+def protect_delivery_status() -> None:
+    """Deny legacy status writes; only the protected outbox may settle its rows.
+
+    This deliberately disables these methods for ALL rows in the isolated process,
+    not a query-then-write filter vulnerable to a status race. Original claim and
+    bulk-cancel APIs already exclude protected states and are unchanged. Install
+    before caching methods; no uninstall, second store or recovery authority.
+    """
+    store = importlib.import_module("tether.store").SessionStore
+    store.mark_bridge_delivery_sent = _retirement_required
+    store.mark_bridge_delivery_failed = _retirement_required
+    store.cancel_bridge_delivery = _retirement_required
