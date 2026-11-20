@@ -48,10 +48,14 @@ class UploadAuthorityBindingTests(unittest.TestCase):
                     self.journal.send(scope, intent)
                 self.assertEqual(self.counts(), {})
                 self.assertEqual(
-                    self.journal.db.execute("SELECT count(*) FROM uploads").fetchone()[0], 0
+                    self.journal.db.execute("SELECT count(*) FROM uploads").fetchone()[
+                        0
+                    ],
+                    0,
                 )
                 self.assertEqual(
-                    self.service.db.execute("SELECT count(*) FROM files").fetchone()[0], 0
+                    self.service.db.execute("SELECT count(*) FROM files").fetchone()[0],
+                    0,
                 )
 
     def test_mutate_then_deny_raise_or_cancel_never_dispatches(self) -> None:
@@ -92,7 +96,8 @@ class UploadAuthorityBindingTests(unittest.TestCase):
         self.assertEqual(result.state, "unknown")
         self.assertEqual(self.counts(), {})
         self.assertEqual(
-            self.journal.db.execute("SELECT phase FROM uploads").fetchone(), ("allocating",)
+            self.journal.db.execute("SELECT phase FROM uploads").fetchone(),
+            ("allocating",),
         )
 
     def test_late_scope_mutation_preserves_unknown_fence_after_restart(self) -> None:

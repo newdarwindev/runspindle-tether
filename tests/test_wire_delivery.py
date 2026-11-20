@@ -1,23 +1,23 @@
 """Real journals and wire parser against an independent SQLite HTTP peer."""
 
 import json
-import types
 import os
-from pathlib import Path
 import socket
 import sqlite3
 import subprocess
 import sys
 import tempfile
+import types
 import unittest
-from dataclasses import replace
 from contextlib import closing
-from unittest.mock import patch
+from dataclasses import replace
+from pathlib import Path
 from typing import Any
+from unittest.mock import patch
 
 from tests.test_admission import event, grant, proof
 from tests.test_provider_journal import envelope as legacy_envelope
-from tests.test_slack_upload import StoredHTTP, MESSAGE
+from tests.test_slack_upload import MESSAGE, StoredHTTP
 from tether.admission import Admission, Identity, Rejected, canonical
 from tether.journal import ProviderJournal
 from tether.testing import Attachment, Destination, Payload

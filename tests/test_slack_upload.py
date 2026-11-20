@@ -1,7 +1,6 @@
 """Real SQLite fences and independently stored synthetic HTTP effects; no Slack."""
 
 import json
-from contextlib import closing
 import os
 import socket
 import sqlite3
@@ -10,6 +9,7 @@ import sys
 import tempfile
 import unittest
 from collections.abc import Callable
+from contextlib import closing
 from dataclasses import replace
 from pathlib import Path
 from typing import cast
