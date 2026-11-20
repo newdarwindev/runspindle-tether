@@ -14,6 +14,7 @@ from typing import Any, Protocol, cast
 from urllib.parse import unquote, urlencode, urlsplit
 
 from tether.admission import canonical, identifier
+from tether.sanitization import Sanitizer
 
 MAX_BYTES = 1048576
 MAX_TEXT = 4000
@@ -685,7 +686,12 @@ class WireClient:
             return Result()
 
     def readback(
-        self, binding: FileBinding, intent: FileIntent, max_pages: int = 4
+        self,
+        binding: FileBinding,
+        intent: FileIntent,
+        max_pages: int = 4,
+        *,
+        sanitizer: Sanitizer | None = None,
     ) -> Result:
         binding.scope.bind(intent)
         _integer(max_pages, MAX_PAGES)
@@ -699,6 +705,11 @@ class WireClient:
             facts = _file(_api_object(response, headers), binding)
             if facts.filename != intent.filename or facts.size != len(intent.content):
                 return Result()
+            if sanitizer is not None:
+                # The URL parser has already bound the host and prefix. Scan
+                # the exact path and decoded form before any follow-up request.
+                path = urlsplit(facts.download_url).path
+                sanitizer.require_clean([path, unquote(path, errors="strict")])
             cursor = ""
             seen_cursors = set()
             seen_messages = set()
@@ -723,6 +734,8 @@ class WireClient:
                 cursor = page.next_cursor
                 if not cursor:
                     break
+                if sanitizer is not None:
+                    sanitizer.require_clean([cursor, unquote(cursor, errors="strict")])
                 if cursor in seen_cursors:
                     return Result()
                 seen_cursors.add(cursor)

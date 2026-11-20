@@ -256,7 +256,9 @@ class ResolutionJournal:
 
         current()
         result = WireClient(self.bridge.transport, allowed).readback(
-            FileBinding(scope, decision.file_id), intent
+            FileBinding(scope, decision.file_id),
+            intent,
+            sanitizer=self.bridge.sanitizer,
         )
         current()
         if result.state != "content_match" or type(result.facts) is not ContentFacts:
