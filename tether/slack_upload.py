@@ -7,6 +7,7 @@ An injected transport and exact-request authorizer remain unqualified trust seam
 import sqlite3
 from collections.abc import Callable
 from dataclasses import asdict, dataclass, field
+from time import time_ns
 from typing import Any, cast
 
 from tether.admission import canonical
@@ -56,6 +57,90 @@ CREATE TRIGGER upload_conflict_retained BEFORE UPDATE OF conflict ON uploads
 CREATE TRIGGER upload_retained BEFORE DELETE ON uploads
     BEGIN SELECT RAISE(ABORT,'retain upload attempt'); END;
 """
+_COOLDOWN_COLUMN = "ALTER TABLE uploads ADD COLUMN retry_until_ns INTEGER"
+_NS = 1_000_000_000
+_MAX_DELAY = 86_400
+
+
+def open_upload_store(
+    path: str, *, require_initialized: bool = False
+) -> sqlite3.Connection:
+    return open_store(
+        path,
+        SCHEMA,
+        1414135811,
+        upgrade=_COOLDOWN_COLUMN,
+        require_initialized=require_initialized,
+    )
+
+
+class ReadbackCooldown:
+    """The exact operation's read admission fence, shared by both readback paths."""
+
+    def __init__(self, db: sqlite3.Connection, clock_ns: Callable[[], int]) -> None:
+        self.db, self.clock_ns = db, clock_ns
+
+    def _now(self) -> int | None:
+        try:
+            now = self.clock_ns()
+        except Exception:
+            return None
+        return (
+            now
+            if type(now) is int and 0 <= now <= 2**63 - 1 - _MAX_DELAY * _NS
+            else None
+        )
+
+    def record(self, operation: str, action: str, result: Result) -> None:
+        delay = result.retry_after
+        if delay is None:
+            return
+        now = self._now()
+        if now is None:
+            # Retain an unresolved hint even when the clock cannot stamp it.
+            self.db.execute(
+                "UPDATE uploads SET retry_action=?, retry_after=max(?,coalesce(retry_after,0)), "
+                "retry_until_ns=NULL WHERE operation=?",
+                (action, delay, operation),
+            )
+            return
+        self.db.execute(
+            """UPDATE uploads SET retry_action=?,
+                retry_after=max(?,CASE WHEN retry_until_ns IS NULL THEN coalesce(retry_after,0) ELSE 0 END),
+                retry_until_ns=? + ? * max(?,CASE WHEN retry_until_ns IS NULL THEN coalesce(retry_after,0) ELSE 0 END)
+                WHERE operation=? AND (retry_until_ns IS NULL OR retry_until_ns<=?)""",
+            (action, delay, now, _NS, delay, operation, now + delay * _NS),
+        )
+
+    def allows(self, operation: str) -> bool:
+        row = self.db.execute(
+            "SELECT retry_action,retry_after,retry_until_ns FROM uploads WHERE operation=?",
+            (operation,),
+        ).fetchone()
+        if row is None:
+            return False
+        action, delay, deadline = row
+        if delay is None:
+            return action is None and deadline is None
+        if (
+            action not in ("allocate", "upload", "complete", "readback")
+            or type(delay) is not int
+            or not 0 <= delay <= _MAX_DELAY
+        ):
+            return False
+        now = self._now()
+        if now is None:
+            return False
+        if deadline is not None:
+            return type(deadline) is int and 0 <= deadline <= now
+        # The legacy journal retained a duration, without evidence of its start.
+        # Start one full interval before admitting a later explicit call.
+        armed = self.db.execute(
+            "UPDATE uploads SET retry_until_ns=? WHERE operation=? "
+            "AND retry_until_ns IS NULL AND retry_action=? AND retry_after=?",
+            (now + delay * _NS, operation, action, delay),
+        )
+        return armed.rowcount == 1 and delay == 0
 
 
 @dataclass(frozen=True)
@@ -82,11 +167,14 @@ class UploadJournal:
         transport: Transport,
         authorize: Callable[[Request], bool] | None = None,
         sanitizer: Sanitizer | None = None,
+        *,
+        clock_ns: Callable[[], int] = time_ns,
     ) -> None:
         self.sanitizer = sanitizer if sanitizer is not None else Sanitizer()
         self.authorize = authorize
         self.client = WireClient(transport, self._allowed)
-        self.db: sqlite3.Connection = open_store(path, SCHEMA, 1414135811)
+        self.db = open_upload_store(path)
+        self.cooldown = ReadbackCooldown(self.db, clock_ns)
 
     def close(self) -> None:
         self.db.close()
@@ -95,7 +183,12 @@ class UploadJournal:
         return authorize_request(request, self.authorize)
 
     def _bound_client(
-        self, scope: Scope, intent: FileIntent, binding: bytes
+        self,
+        scope: Scope,
+        intent: FileIntent,
+        binding: bytes,
+        *,
+        readback: bool = False,
     ) -> tuple[WireClient, Callable[[Request], bool]]:
         def allowed(request: Request) -> bool:
             if self._context(scope, intent) != binding:
@@ -103,7 +196,7 @@ class UploadJournal:
             result = self._allowed(request)
             if self._context(scope, intent) != binding:
                 raise WireRejected("upload context changed")
-            return result
+            return result and (not readback or self.cooldown.allows(scope.operation_id))
 
         return WireClient(self.client.transport, allowed), allowed
 
@@ -132,11 +225,7 @@ class UploadJournal:
         return cast(tuple[Any, ...] | None, row)
 
     def _record_delay(self, scope: Scope, action: str, result: Result) -> None:
-        if result.retry_after is not None:
-            self.db.execute(
-                "UPDATE uploads SET retry_action=?,retry_after=? WHERE operation=?",
-                (action, result.retry_after, scope.operation_id),
-            )
+        self.cooldown.record(scope.operation_id, action, result)
 
     def send(self, scope: Scope, intent: FileIntent) -> UploadObservation:
         binding = self._context(scope, intent)
@@ -191,6 +280,8 @@ class UploadJournal:
         )
         completed = client.complete(ticket, intent)
         self._record_delay(scope, "complete", completed)
+        if completed.retry_after is not None:
+            return self._unknown(scope, binding)
         # Completion acknowledgement is not delivery, including a parsed success.
         # An uncertain completion is reconciled, never completed a second time.
         return self.lookup(scope, intent)
@@ -205,10 +296,12 @@ class UploadJournal:
 
     def lookup(self, scope: Scope, intent: FileIntent) -> UploadObservation:
         binding = self._context(scope, intent)
-        client, allowed = self._bound_client(scope, intent, binding)
         row = self._row(scope, binding)
         if row is None or row[2] is None or row[4]:
             return self._unknown(scope, binding)
+        if not self.cooldown.allows(scope.operation_id):
+            return self._unknown(scope, binding)
+        client, allowed = self._bound_client(scope, intent, binding, readback=True)
         file = FileBinding(scope, row[2])
         self.sanitizer.require_clean(file.file_id)
         result = client.readback(file, intent)

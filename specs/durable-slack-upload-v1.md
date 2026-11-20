@@ -75,10 +75,17 @@ Authorization is checked before each request, including every readback request,
 and after readback both before and after acquiring the observation write lock.
 There are no network calls under SQLite locks. These checks are synchronous
 observations, not distributed atomicity with remote revocation or provider changes.
-Cancellation propagates; normal transport failures remain unknown. Valid 429 delay
-and stage metadata are retained only for observation, never interpreted as retry
-authority or a scheduled time. Readback delay metadata identifies the readback
-stage, not a qualified Slack method-specific retry instruction.
+Cancellation propagates and normal transport failures remain unknown. A valid 429
+delay and stage now set a durable, operation-local deadline. While the deadline
+is active, explicit upload lookup and conflict resolution return unknown with
+zero provider calls. The check also runs after request authorization and before
+retaining a confirmation. Concurrent 429 observations keep the later known
+deadline. Requests already in flight can finish.
+
+A later explicit readback may proceed at the deadline if its exact authorization
+still holds. The cooldown supplies no write permission, timer, automatic retry,
+or workspace-wide rate limiting. It uses trusted UTC wall time. Completion with
+a valid rate-limit hint returns immediately without automatic readback.
 
 ## Stored and omitted data
 
@@ -87,6 +94,12 @@ message timestamp/conflict and optional rate-limit metadata. SQL triggers retain
 bindings, file identity and conflict fences and reject backward phase changes.
 Unknown schemas are rejected using the existing read-only preflight. This is not
 protection against privileged store/schema manipulation or filesystem replacement.
+The upload store upgrades exact schema v1 to v2 inside its existing schema
+transaction. A legacy hint has no retained start time. The first explicit
+readback with a usable clock starts one full interval and later opens reuse
+that deadline. When a valid hint arrives without a usable clock, it stays
+unresolved until a caller can establish that conservative interval.
+Earlier readers reject the v2 upload schema.
 
 Text, filename, file bytes, upload capability URLs, download URLs and provider
 errors are never stored. Configured-secret and immutable-payload checks reject
