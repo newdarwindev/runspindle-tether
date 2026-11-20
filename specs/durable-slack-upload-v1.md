@@ -38,13 +38,18 @@ The sole invocation which inserts the operation with `BEGIN IMMEDIATE` may advan
 3. Observe a supported upload response, then commit `completing` before finalizing.
 4. Independently read file info, exact destination thread and downloaded bytes.
 
-Every later `send`, including a competing process or reentrant call, only attempts
-readback. It never repeats allocation, upload or completion, even after an explicit
+Every later `send`, including a competing process or reentrant call, can only
+read back after the `completing` intent commits. It never repeats allocation,
+upload or completion, even after an explicit
 429, cancellation, missing file or an interrupted-before-effect reservation. This
 is conservative at-most-once attempts, not exactly-once delivery or a liveness
 guarantee. Stopped partial uploads cannot be resumed by this API. No automatic
 cleanup/deletion, timer, lease expiry, retry or replacement operation is created.
 Core and an authorized provider recovery protocol must resolve those later.
+An attempt still in `allocating` or `uploading` returns unknown with zero provider
+readback calls, even if the allocated file already contains the expected bytes
+and has an exact share in the provider store. Its existing file ID and rate-limit
+metadata remain available for diagnosis.
 
 Slack documents allocation, byte upload, then completion, and completion as a
 one-time call. No provider idempotency guarantee is assumed. Primary references
@@ -120,3 +125,18 @@ ProviderJournal, admission and feedback code remains unchanged.
 The [conflict-retention follow-up](../docs/upload-conflict-evidence.json) extends
 the existing wire readback and upload observer only; the other integration gaps
 above remain unchanged. Earlier evidence and test counts remain historical.
+
+The completion-intent regression starts with the pinned base
+`bb1aa8695896f54057d1b64aab5eac6288cc2e73`. It exits a fresh process after the
+synthetic provider stores the upload bytes and supplies an exact share in that
+separate store. Reopened `WireDeliveryJournal` calls must return unknown, send no
+provider requests, and leave observations unset in both journals. The regression
+fails against the earlier implementation. A deliberate removal of the phase
+check produces three independently recorded readback calls and a confirmation.
+
+Run the focused suites with:
+
+```sh
+python3 -B -m unittest tests.test_slack_upload tests.test_wire_delivery
+python3 -OB -m unittest tests.test_slack_upload tests.test_wire_delivery
+```
