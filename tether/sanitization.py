@@ -44,9 +44,22 @@ SENSITIVE_KEYS = frozenset(
         "secret_key",
         "session_token",
         "set_cookie",
+        "proxy_authorization",
+        "x_api_key",
+        "x_auth_token",
+        "x_access_token",
     }
 )
-SENSITIVE_NAMES = frozenset(re.sub(r"[^a-z0-9]", "", key) for key in SENSITIVE_KEYS)
+
+
+def _field_name(key: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", key.lower())
+
+
+SENSITIVE_NAMES = frozenset(_field_name(key) for key in SENSITIVE_KEYS)
+HEADER_FIELDS = frozenset(
+    {"headers", "httpheaders", "requestheaders", "responseheaders", "trailers"}
+)
 URL_KEYS = frozenset({"url", "uri", "href"})
 FIELDS = frozenset(
     {
@@ -248,9 +261,54 @@ class Sanitizer:
             return cleaned[: self.limits.string_chars] + "[truncated]"
         return cleaned
 
+    def _header_entry(self, entry: Any) -> Any:
+        """Sanitize conventional header pairs and named header records."""
+        if type(entry) is list and len(entry) == 2 and type(entry[0]) is str:
+            name, value = entry
+            return [
+                self._string(name),
+                "[redacted]"
+                if _field_name(name) in SENSITIVE_NAMES
+                else self._walk(value),
+            ]
+        if type(entry) is dict:
+            fields = {_field_name(key): key for key in entry}
+            name_key = fields.get("name", "")
+            name = entry.get(name_key)
+            value_key = fields.get("value") or fields.get("values")
+            if (
+                len(entry) == len(fields) == 2
+                and type(name) is str
+                and value_key is not None
+                and value_key != name_key
+            ):
+                value = entry[value_key]
+                return self._walk(
+                    {
+                        name_key: name,
+                        value_key: "[redacted]"
+                        if _field_name(name) in SENSITIVE_NAMES
+                        else value,
+                    }
+                )
+        raise UnsafeProjection("invalid header entry")
+
     def _walk(self, value: Any, key: str = "") -> Any:
-        if re.sub(r"[^a-z0-9]", "", key.lower()) in SENSITIVE_NAMES:
+        field = _field_name(key)
+        if field in SENSITIVE_NAMES:
             return "[redacted]"
+        if field in HEADER_FIELDS:
+            if type(value) is list:
+                return [self._header_entry(item) for item in value]
+            if type(value) is dict and any(
+                _field_name(key) == "name"
+                and type(name) is str
+                and _field_name(name) in SENSITIVE_NAMES
+                for key, name in value.items()
+            ):
+                return self._header_entry(value)
+            if value is not None and type(value) is not dict:
+                raise UnsafeProjection("invalid header container")
         if type(value) is str:
             return self._string(value, key.lower() in URL_KEYS)
         if type(value) is list:
