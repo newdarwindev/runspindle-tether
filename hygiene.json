@@ -124,6 +124,7 @@
   ],
   "lockfiles": [
     "requirements-quality.txt",
+    "requirements-visual-linux-x64.lock",
     "tools/quality-baseline.json",
     "tools/quality-node/package-lock.json",
     "upstream/pins.json",

@@ -79,6 +79,10 @@ class ProvenanceTests(unittest.TestCase):
                 patch("importlib.metadata.version", side_effect=versions.__getitem__),
                 patch("importlib.metadata.distribution", return_value=dist),
                 patch("subprocess.check_output", return_value="Synthetic browser 1"),
+                patch(
+                    "tools.progress_visual_provenance.platform.platform",
+                    return_value="synthetic",
+                ),
             ):
                 before = audit.provenance(binary)
                 package.write_text("synthetic = 2\n")

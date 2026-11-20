@@ -34,7 +34,9 @@ SHA = re.compile(r"^[0-9a-f]{64}$")
 SOURCE_SHA = re.compile(r"^[0-9a-f]{40}$")
 
 
-COLOCATED_EMPTY = frozenset(PARTITIONS[2:])
+COLOCATED_EMPTY = frozenset(
+    {"rust", "mutation_1", "mutation_2", "mutation_3", "mutation_4"}
+)
 
 
 class Stage(str, Enum):
