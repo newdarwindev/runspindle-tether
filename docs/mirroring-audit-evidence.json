@@ -82,7 +82,7 @@
     "docs/mirroring-audit-original-evidence.json": "04e7580b6a685a77d1f92736e9fe847b12605f93c1905a1dead2cf8a1487315f",
     "docs/mirroring-coverage.json": "605f5aad22b51a76442e6e8c2866aa67eae00d83ce349578a83fa59781f09876",
     "docs/slack-wire-evidence.json": "78f896ab7ff4596b916204a7b8337a24a7f42b39106a188b7e8bbd8836c1cff6",
-    "hygiene.json": "e63977edfd9c88899969e74232dc4d3b5cffd452c82273f8d0addde851b5a0fb",
+    "hygiene.json": "b4caa689d55141b6675c78a362af6b3da9e52fbae4ad828c969b652f35e96109",
     "provenance.json": "a2587426537e4102ceb984240fd66c87f2feab4fdaf5b7defac39824a26c243e",
     "requirements-quality.txt": "9cbe1331549216b953f2922f1e8321357ca82bb985e1ea595c87fcee8a8fdc84",
     "specs/README.md": "4932469d43273a5618cae20cea8a747ff6f1387bf21d2fdd21e82776bdb7f80e",
@@ -101,7 +101,7 @@
     "tools/check_mirroring_audit.py": "f1cefe07f3374185f9e9b393294daa99f599ce1c18832693d8de019b13062fff",
     "tools/quality-baseline.json": "786840907d57036341f82d37d7d625b0872aaa5b4972ce8dad0b04578049958d",
     "tools/validate.py": "b29f49b6ae71b4427328df21ee855f9ac809ea452af9729a3d1f5ada5695118a",
-    "validation-partitions.json": "6d62dd877337dd4f11912dc5dd5b6f77282101903060f39a2e78ca53ae3c7a73"
+    "validation-partitions.json": "c2a95934a3a3e2f8193ed8e056b184b632e90e3224e68c5a7014095839f69197"
   },
   "optional_static_checks": {
     "commands": [

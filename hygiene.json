@@ -89,12 +89,46 @@
     {
       "id": "distributable-build",
       "not_applicable": "No distributable build command exists in this repository validation contract; this does not claim release acceptance."
+    },
+    {
+      "id": "actual-upstream",
+      "command": [
+        "python3",
+        "-B",
+        "tools/check_upstream_ci.py"
+      ],
+      "required_files": [
+        "tools/check_upstream_ci.py",
+        "tools/check_upstream_sidecar.py",
+        "upstream/pins.json",
+        "upstream/requirements.txt"
+      ],
+      "timeout_seconds": 120
+    },
+    {
+      "id": "actual-upstream-optimized",
+      "command": [
+        "python3",
+        "-B",
+        "-O",
+        "tools/check_upstream_ci.py"
+      ],
+      "required_files": [
+        "tools/check_upstream_ci.py",
+        "tools/check_upstream_sidecar.py",
+        "upstream/pins.json",
+        "upstream/requirements.txt"
+      ],
+      "timeout_seconds": 120
     }
   ],
   "lockfiles": [
     "requirements-quality.txt",
+    "requirements-visual-linux-x64.lock",
     "tools/quality-baseline.json",
-    "tools/quality-node/package-lock.json"
+    "tools/quality-node/package-lock.json",
+    "upstream/pins.json",
+    "upstream/requirements.txt"
   ],
   "artifact_paths": [],
   "profiling": {
