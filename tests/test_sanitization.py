@@ -10,6 +10,7 @@ import sqlite3
 import subprocess
 import sys
 import tempfile
+import traceback
 import unittest
 from contextlib import closing
 from dataclasses import replace
@@ -113,6 +114,128 @@ class SanitizationTests(unittest.TestCase):
         self.assertNotIn("<script>", output)
         self.assertIn("&lt;script&gt;", output)
         self.scan_files()
+
+    def test_structured_headers_redact_unknown_credentials_at_persistence_and_render(
+        self,
+    ) -> None:
+        canaries = (
+            "fixture-array-auth",
+            "fixture-object-cookie",
+            "fixture-header-map",
+            "fixture-proxy-auth",
+            "fixture-single-header",
+        )
+        value = {
+            "version": "runspindle.projection.v1",
+            "kind": "error",
+            "arguments": {
+                "http": {
+                    "request_headers": [
+                        ["Authorization", canaries[0]],
+                        {"Name": "Set-Cookie", "Values": [canaries[1]]},
+                        ["Content-Type", "application/json"],
+                    ]
+                },
+                "headers": {"X-Api-Key": canaries[2], "Accept": "application/json"},
+            },
+            "error": {
+                "nested": [
+                    {
+                        "responseHeaders": [
+                            {"name": "Proxy-Authorization", "value": canaries[3]}
+                        ],
+                        "trailers": {"name": "X-Auth-Token", "value": canaries[4]},
+                    }
+                ]
+            },
+        }
+        self.app.persist_projection("task-1", 1, value)
+        path = self.base / "admission.db"
+        with closing(sqlite3.connect(path.as_uri() + "?mode=ro", uri=True)) as observer:
+            (raw,) = observer.execute(
+                "SELECT body FROM sanitized_projections"
+            ).fetchone()
+        retained = json.loads(raw)
+        request = retained["arguments"]["http"]["request_headers"]
+        self.assertEqual(request[0], ["Authorization", "[redacted]"])
+        self.assertEqual(request[1], {"Name": "Set-Cookie", "Values": "[redacted]"})
+        self.assertEqual(request[2], ["Content-Type", "application/json"])
+        self.assertEqual(retained["arguments"]["headers"]["Accept"], "application/json")
+        rendered = self.app.render_projection("task-1", 1)
+        for canary in canaries:
+            self.assertNotIn(canary, raw)
+            self.assertNotIn(canary, rendered)
+            for store_file in self.base.glob("admission.db*"):
+                self.assertNotIn(canary.encode(), store_file.read_bytes())
+
+    def test_malformed_header_entries_fail_before_writing_projection(self) -> None:
+        for headers in (
+            "Authorization: fixture-raw-header",
+            [["Authorization", "fixture-extra-value", "unexpected"]],
+            [{"name": "Set-Cookie", "value": "fixture-duplicate-value", "values": []}],
+            [{"name": "Set-Cookie", "unexpected": "fixture-alias-value"}],
+        ):
+            value = {
+                "version": "runspindle.projection.v1",
+                "kind": "error",
+                "error": {"requestHeaders": headers},
+            }
+            with self.subTest(shape=type(headers).__name__):
+                with self.assertRaises(UnsafeProjection):
+                    self.app.persist_projection("task-1", 1, value)
+        self.assertEqual(
+            self.app.db.execute(
+                "SELECT count(*) FROM sanitized_projections"
+            ).fetchone(),
+            (0,),
+        )
+
+    def test_reopen_redacts_legacy_header_row_and_discards_bad_json_diagnostics(
+        self,
+    ) -> None:
+        # Synthetic historical shape reproduces a row written before header support.
+        legacy = canonical(
+            {
+                "version": "runspindle.projection.v1",
+                "kind": "error",
+                "error": {
+                    "headers": [
+                        {"name": "Authorization", "value": "fixture-legacy-secret"}
+                    ]
+                },
+            }
+        ).decode()
+        self.app.db.execute(
+            "INSERT INTO sanitized_projections VALUES (?,?,?)", ("task-1", "1", legacy)
+        )
+        reopened = Admission(
+            str(self.base / "admission.db"), authenticate, lambda *_: grant(event())
+        )
+        self.addCleanup(reopened.close)
+        self.assertNotIn(
+            "fixture-legacy-secret", reopened.render_projection("task-1", 1)
+        )
+        self.assertEqual(
+            reopened.db.execute("SELECT body FROM sanitized_projections").fetchone(),
+            (legacy,),
+        )
+
+        for damaged in (
+            '{"invalid":"fixture-corrupt-secret"',
+            b"fixture-corrupt-secret\xff",
+        ):
+            self.app.db.execute(
+                "UPDATE sanitized_projections SET body=CAST(? AS TEXT)", (damaged,)
+            )
+            with self.assertRaises(Rejected) as failure:
+                reopened.render_projection("task-1", 1)
+            error = failure.exception
+            self.assertEqual(str(error), "invalid retained projection")
+            self.assertIsNone(error.__context__)
+            self.assertIsNone(error.__cause__)
+            self.assertNotIn(
+                "fixture-corrupt-secret", "".join(traceback.format_exception(error))
+            )
 
     def test_pretruncate_redaction_handles_canary_crossing_boundary(self) -> None:
         sanitizer = Sanitizer((CANARY,), Limits(string_chars=32))

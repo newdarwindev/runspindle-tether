@@ -391,9 +391,24 @@ class Admission:
         identifier(task_id)
         counter(revision)
         row = self.db.execute(
-            "SELECT body FROM sanitized_projections WHERE task=? AND revision=?",
-            (task_id, str(revision)),
+            """
+            SELECT CASE WHEN typeof(body) = 'text'
+                AND length(CAST(body AS BLOB)) <= ? THEN CAST(body AS BLOB)
+            END
+            FROM sanitized_projections WHERE task=? AND revision=?
+            """,
+            (6 * self.sanitizer.limits.input_bytes, task_id, str(revision)),
         ).fetchone()
         if row is None:
             raise Rejected("missing projection")
-        return self.sanitizer.render(json.loads(row[0]))
+        raw = row[0]
+        if type(raw) is bytes:
+            retained = None
+            try:
+                retained = json.loads(raw.decode("utf-8"), object_pairs_hook=pairs)
+                canonical_row = canonical(retained) == raw
+            except (UnicodeError, ValueError, TypeError, RecursionError):
+                canonical_row = False
+            if canonical_row:
+                return self.sanitizer.render(retained)
+        raise Rejected("invalid retained projection")
