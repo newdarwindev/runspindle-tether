@@ -34,3 +34,21 @@ methods (commands, approval shortcuts, history, attachments, progress and autoap
 notifications) are **not** enabled or qualified by this final-output adapter.
 Do not install a real token, start the bridge, activate the old retry worker, remove
 compatibility code, or label this live Slack parity based on these tests.
+
+
+## Original startup interception
+
+Constructing `SlackOutput` now installs `protect_slack_startup()` on the actual
+original `SlackBridge` class before exposing its scoped client. Ordinary `start`
+on existing or future instances, including class-method dispatch, raises a fixed
+sanitized denial before SDK construction or socket-mode setup can replace the
+client. Installation is idempotent and deliberately has no uninstall operation.
+This also denies unrelated original Slack bridge startup in the same isolated
+process. It is a fail-closed migration restriction, not a supported launcher.
+
+Trusted startup must install the hook before retaining bound original methods or
+publishing handlers. Cached pre-hook functions, arbitrary class replacement and
+an already started bridge are not contained by this Python hook. The constructor
+still rejects an active bridge; it does not stop existing networking or recover
+an unsafe process. Other application, native-runner and provider startup paths
+remain unqualified. No real SDK/client is initialized by the hook tests.
