@@ -22,8 +22,14 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("tether", type=Path)
     parser.add_argument("agent_tether", type=Path)
+    parser.add_argument("--dependencies", type=Path)
     args = parser.parse_args()
     roots = [args.agent_tether.resolve() / "src", args.tether.resolve() / "agent", ROOT]
+    if args.dependencies is not None:
+        dependencies = args.dependencies.resolve(strict=True)
+        if not dependencies.is_dir():
+            raise ValueError("Upstream dependency path must be a directory")
+        roots.append(dependencies)
     for name, path in [("tether", args.tether), ("agent-tether", args.agent_tether)]:
         verify(path.resolve(), name, ROOT / "upstream/pins.json")
     code = (
