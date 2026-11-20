@@ -225,6 +225,42 @@ class ResolutionTests(unittest.TestCase):
             (1,),
         )
 
+    def test_conflict_resolution_honors_retained_readback_cooldown(self) -> None:
+        now = 50_000_000_000
+        self.bridge.clock_ns = lambda: now
+        self.resolution.cooldown.clock_ns = self.bridge.clock_ns
+        self.peer.fault = "rate:info"
+        self.assertEqual(
+            self.resolution.resolve(envelope(), PAYLOAD, self.decision).state, "unknown"
+        )
+        observed = self.peer.db.execute("SELECT count(*) FROM calls").fetchone()[0]
+        self.peer.fault = ""
+        reopened = ResolutionJournal(
+            str(self.base / "resolution.db"),
+            self.bridge,
+            self.resolution.authorize_resolution,
+        )
+        self.addCleanup(reopened.close)
+        now += 6_999_999_999
+        self.assertEqual(
+            reopened.resolve(envelope(), PAYLOAD, self.decision).state, "unknown"
+        )
+        self.assertEqual(
+            self.peer.db.execute("SELECT count(*) FROM calls").fetchone(), (observed,)
+        )
+        self.assertEqual(
+            reopened.db.execute("SELECT count(*) FROM decisions").fetchone(), (0,)
+        )
+        now += 1
+        self.assertEqual(
+            reopened.resolve(envelope(), PAYLOAD, self.decision).state,
+            "independently_reconciled_under_decision",
+        )
+        self.assertEqual(
+            self.peer.db.execute("SELECT count(*) FROM calls").fetchone(),
+            (observed + 3,),
+        )
+
     def test_missing_dedicated_authority_never_reads(self) -> None:
         before = self.peer.db.execute("SELECT count(*) FROM calls").fetchone()
         self.resolution.authorize_resolution = None
