@@ -53,7 +53,9 @@ They execute in the parent outside enforceable callback deadlines. The network
 budget is checked again after callbacks before allowing a send.
 
 A 0 < timeout <= 30 second absolute budget includes child startup, DNS, TLS, writes,
-response reads and IPC. The child also uses socket timeout. On timeout, cancellation,
+response reads and IPC, including decoding the response in the parent. The parent
+checks the budget again before returning the decoded response. The child also uses
+socket timeout. On timeout, cancellation,
 malformed response or lost acknowledgment the outcome remains unknown; effects may
 already have happened. There is no automatic repeat or next upload stage. Existing
 WireClient returns unknown for ordinary errors; cancellation propagates. The child
