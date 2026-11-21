@@ -5,7 +5,9 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from contextlib import closing
 from pathlib import Path
+from typing import Any, Literal
 from unittest.mock import patch
 
 from tether.admission import SCHEMA as ADMISSION
@@ -151,12 +153,53 @@ class SchemaTests(unittest.TestCase):
         a = Admission(str(self.path))
         a.close()
 
+    def test_read_only_preflight_uses_one_snapshot_during_adoption(self) -> None:
+        connect = sqlite3.connect
+        family = FAMILIES[0][1]
+        adopted = False
+
+        with closing(connect(self.path, isolation_level=None)) as writer:
+            self.assertEqual(
+                writer.execute("PRAGMA journal_mode=WAL").fetchone(), ("wal",)
+            )
+            writer.executescript(ADMISSION)
+
+            class AdoptingProbe(sqlite3.Connection):
+                def execute(self, sql: str, parameters: Any = (), /) -> sqlite3.Cursor:
+                    nonlocal adopted
+                    if sql == "PRAGMA application_id" and not adopted:
+                        writer.executescript(
+                            f"BEGIN IMMEDIATE; PRAGMA application_id={family}; "
+                            "PRAGMA user_version=1; COMMIT;"
+                        )
+                        adopted = True
+                    return super().execute(sql, parameters)
+
+            def open_connection(
+                path: str,
+                *,
+                uri: bool = False,
+                isolation_level: Literal["DEFERRED"] | None = "DEFERRED",
+            ) -> sqlite3.Connection:
+                if uri:
+                    return connect(path, uri=True, factory=AdoptingProbe)
+                return connect(path, isolation_level=isolation_level)
+
+            with patch("tether.schema.sqlite3.connect", side_effect=open_connection):
+                with closing(open_store(str(self.path), ADMISSION, family)) as db:
+                    self.assertEqual(
+                        db.execute("PRAGMA application_id").fetchone(), (family,)
+                    )
+                    self.assertEqual(db.execute("PRAGMA user_version").fetchone(), (1,))
+        self.assertTrue(adopted)
+
     def test_lock_time_recheck_rejects_changed_version(self) -> None:
         import tether.schema as schema
 
         real = schema.inspect
         count = 0
         with sqlite3.connect(self.path) as db:
+            db.execute("PRAGMA journal_mode=WAL")
             db.executescript(ADMISSION)
 
         def raced(

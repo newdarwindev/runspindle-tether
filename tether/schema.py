@@ -56,6 +56,9 @@ def open_store(path: str, script: str, family: int) -> sqlite3.Connection:
     if path and path != ":memory:" and file.exists():
         probe = sqlite3.connect(file.absolute().as_uri() + "?mode=ro", uri=True)
         try:
+            # Read version, family and objects from one snapshot. Another
+            # opener may commit adoption between individual metadata queries.
+            probe.execute("BEGIN")
             inspect(probe, expected, family)
         finally:
             probe.close()
