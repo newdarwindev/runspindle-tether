@@ -15,7 +15,15 @@ from tether.journal import delivery, validate_context
 from tether.sanitization import Sanitizer
 from tether.schema import open_store
 from tether.slack_upload import UploadJournal, UploadObservation
-from tether.slack_wire import FileIntent, Request, Scope, Transport, authorize_request
+from tether.slack_wire import (
+    FileBinding,
+    FileIntent,
+    Request,
+    Scope,
+    Transport,
+    authorize_request,
+    info_request,
+)
 from tether.testing import Destination, Payload
 
 SCHEMA = """
@@ -259,7 +267,11 @@ class WireDeliveryJournal:
                 )
             )
             if confirmed and not conflict:
-                observed = observation.message_ts
+                # The inner read grant can change while waiting for the outer locks.
+                confirmed = allowed(info_request(FileBinding(scope, file_id)))
+                conflict = conflict_retained()
+                if confirmed and not conflict:
+                    observed = observation.message_ts
             retry_action, retry_after = (
                 (inner[4], inner[5]) if inner is not None else (old[6], old[7])
             )
