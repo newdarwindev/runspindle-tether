@@ -1,0 +1,35 @@
+{
+  "base_revision": "c6f416ac7f50965d78d20328e52476d9cca6c3dd",
+  "evidence_class": "synthetic_component_persistence_and_render",
+  "feedback_migration_pin": "040b71f2213a34f34e6b6a40124ed1164b93ce30",
+  "limitations": [
+    "Historical SQLite bytes are retained",
+    "No remote transport or live qualification",
+    "No arbitrary header wire formats or unknown credential discovery"
+  ],
+  "results": {
+    "changed_path_static": "passed",
+    "focused_per_mode": 35,
+    "mirroring_audit": "passed",
+    "normal_passed": 522,
+    "optimized_passed": 522,
+    "prior_implementation_regressions": "2_failed_as_expected",
+    "scaffold": "passed",
+    "skips_per_mode": 7
+  },
+  "schema_version": 1,
+  "source_sha256": {
+    "docs/evidence-artifacts.json": "ce334e788a18e8ea49666f4c277c121d9c1909bff29a0a4c40509fec92167e74",
+    "docs/mirroring-audit-evidence.json": "017c4c7d234eba9d1d2ed43486e174da725e1a21d3bb91920bdda26709c16fc9",
+    "specs/sanitization-v1.md": "58beee90acdf2bca8a982dddc63ee0320df982bf65fc49e6b01ee98e387a3581",
+    "tests/test_sanitization.py": "73d65c67415a464b837a35ee49d0fd8aff2a66571a5fd21c0d80aa54755e977f",
+    "tether/admission.py": "8b5ed3750d450cad9a924766b1478278abe4c2cafae469487a13b91218b2accc",
+    "tether/sanitization.py": "15b11217fb4eb27d35b4b883dc84a1a7433e7542447219abd4540794f1484d9f"
+  },
+  "tools": {
+    "mypy": "1.18.2",
+    "python": "3.13.18",
+    "ruff": "0.14.5",
+    "sqlite": "3.54.1"
+  }
+}
