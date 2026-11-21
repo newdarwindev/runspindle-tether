@@ -6,10 +6,12 @@ import importlib.util
 import json
 import os
 import socket
+import sqlite3
 import subprocess
 import sys
 import tempfile
 import unittest
+from contextlib import closing
 from dataclasses import replace
 from pathlib import Path
 from typing import Any
@@ -367,6 +369,73 @@ class SanitizationTests(unittest.TestCase):
                 with self.assertRaises(UnsafeProjection):
                     sanitizer.require_payload(payload)
                 self.assertEqual(sanitizer.normalize(value), "[redacted]")
+
+    def test_unpadded_base64_secrets_are_redacted_before_retention_and_render(
+        self,
+    ) -> None:
+        secret = "synthetic-ÿÿÿ"
+        app = Admission(str(self.base / "admission.db"), sanitizer=Sanitizer((secret,)))
+        self.addCleanup(app.close)
+        standard = base64.b64encode(secret.encode()).decode().rstrip("=")
+        urlsafe = base64.urlsafe_b64encode(secret.encode()).decode().rstrip("=")
+        self.assertNotEqual(standard, urlsafe)
+        self.assertEqual(
+            app.persist_projection(
+                "task-1",
+                1,
+                {
+                    "version": "runspindle.projection.v1",
+                    "kind": "error",
+                    "error": {"details": [standard]},
+                    "attachments": [{"url": "https://example.test/" + urlsafe}],
+                },
+            ),
+            "persisted",
+        )
+        with closing(sqlite3.connect(self.base / "admission.db")) as audit:
+            (raw,) = audit.execute("SELECT body FROM sanitized_projections").fetchone()
+        output = app.render_projection("task-1", 1)
+        for spelling in (standard, urlsafe):
+            self.assertNotIn(spelling, raw)
+            self.assertNotIn(spelling, output)
+            self.assertNotIn(
+                spelling.encode(), (self.base / "admission.db").read_bytes()
+            )
+        clean = json.loads(raw)
+        self.assertEqual(clean["error"]["details"], ["[redacted]"])
+        self.assertEqual(
+            clean["attachments"], [{"url": "https://example.test/[redacted]"}]
+        )
+
+    def test_unpadded_base64_in_accepted_artifact_blocks_dispatch(self) -> None:
+        secret = "synthetic-ÿÿÿ"
+        journal = ProviderJournal(
+            str(self.base / "journal.db"),
+            self.app,
+            lambda *_: True,
+            route,
+            Sanitizer((secret,)),
+        )
+        self.addCleanup(journal.close)
+        fake = FakeSlack(DEST, lambda: 100, lambda: "message-1")
+        for encode in (base64.b64encode, base64.urlsafe_b64encode):
+            encoded = encode(secret.encode())
+            self.assertTrue(encoded.endswith(b"="))
+            content = b"artifact prefix\x00" + encoded.rstrip(b"=")
+            payload = replace(
+                PAYLOAD,
+                attachments=(replace(PAYLOAD.attachments[0], content=content),),
+            )
+            value = json.loads(envelope())
+            value["payload"]["sha256"] = hashlib.sha256(content).hexdigest()
+            with self.assertRaises(UnsafeProjection):
+                journal.send(canonical(value), payload, fake)
+        self.assertEqual(fake.requests, [])
+        self.assertEqual(fake.records, {})
+        with closing(sqlite3.connect(self.base / "journal.db")) as audit:
+            self.assertEqual(
+                audit.execute("SELECT COUNT(*) FROM provider_attempts").fetchone(), (0,)
+            )
 
     def test_journal_rejects_dirty_bound_content_without_changing_accepted_bytes(
         self,

@@ -9,7 +9,8 @@ component, not a new relay, authentication scheme or universal secret detector.
 `Sanitizer(secrets, limits)` accepts an explicitly supplied tuple of known secret
 strings. Empty configuration cannot discover unknown secrets. It normalizes NFC
 and redacts both exact original and NFC supplied values plus their URL-quoted
-and standard/URL-safe base64 representations. URL authorities retain their
+and padded or unpadded standard and URL-safe base64 representations. URL
+authorities retain their
 original spelling until redaction, so hostname case conversion cannot hide a
 configured value. Resolved workspace/channel/thread identities must already be
 clean before reservation or provider effects; they are rejected, never rewritten. It does not decode arbitrary encodings, infer sensitive
@@ -131,3 +132,19 @@ without duplicate sends, malformed/oversized nesting and Unicode, successful
 paths and cancellation. Disposable mutations restore both explicit chaining and
 `from None` inside an authentication handler; the same canary guard must fail.
 Issue #10 stays open for broader real-adapter and production qualification.
+
+## Unpadded base64 of configured secrets
+
+The same bounded matcher handles both base64 alphabets with or without trailing
+padding in projections and immutable artifact bytes. This includes base64url
+text carried in an attachment URL path. Configured secret variants are redacted
+before inserting a projection. An accepted artifact with a matching byte sequence
+is denied before reservation and provider dispatch. This does not migrate any
+previously retained bytes.
+
+The two `test_unpadded_base64_*` tests in `tests/test_sanitization.py` exercise
+SQLite persistence, escaped rendering, and `ProviderJournal.send` with a fake
+provider and a network guard. They independently read the database and inspect
+provider calls. Both failed on base `bb1aa8695896f54057d1b64aab5eac6288cc2e73`
+with the new tests applied. Run the containing suite with
+`python3 -B -m unittest tests.test_sanitization`.
