@@ -14,7 +14,7 @@ from dataclasses import replace
 from pathlib import Path
 from typing import cast
 from unittest.mock import patch
-from urllib.parse import parse_qs, urlsplit
+from urllib.parse import parse_qs, quote, urlsplit
 
 from tether.sanitization import Sanitizer
 from tether.schema import SchemaRejected
@@ -28,6 +28,7 @@ SCOPE = Scope(
     "account-1", "T100", "C100", "1700000000.000001", "delivery-1", INTENT.digest()
 )
 MESSAGE = "1700000001.000002"
+READBACK_CANARY = "synthetic-readback-secret+octet"
 
 
 def response(value: object) -> Response:
@@ -168,6 +169,11 @@ class StoredHTTP:
                     }
                 }
             )
+            download_name = (
+                quote(READBACK_CANARY, safe="")
+                if self.fault == "secret:download"
+                else "result.txt"
+            )
             result = response(
                 {
                     "ok": True,
@@ -177,13 +183,22 @@ class StoredHTTP:
                         "size": size,
                         "is_external": False,
                         "mode": "hosted",
-                        "url_private": f"https://files.slack.com/files-pri/T100-{file_id}/result.txt",
+                        "url_private": f"https://files.slack.com/files-pri/T100-{file_id}/{download_name}",
                         "shares": shares,
                     },
                 }
             )
         elif action == "replies":
             query = parse_qs(url.query)
+            has_more = (
+                self.fault in ("secret:cursor", "secret:encoded-cursor")
+                and "cursor" not in query
+            )
+            cursor = (
+                "%73" + READBACK_CANARY[1:]
+                if self.fault == "secret:encoded-cursor"
+                else READBACK_CANARY
+            )
             rows = self.db.execute(
                 "SELECT id,text,message FROM files WHERE channel=? AND thread=? AND message IS NOT NULL",
                 (query["channel"][0], query["ts"][0]),
@@ -191,8 +206,8 @@ class StoredHTTP:
             result = response(
                 {
                     "ok": True,
-                    "has_more": False,
-                    "response_metadata": {"next_cursor": ""},
+                    "has_more": has_more,
+                    "response_metadata": {"next_cursor": cursor if has_more else ""},
                     "messages": [
                         {
                             "type": "message",
@@ -407,6 +422,47 @@ class UploadTests(unittest.TestCase):
         self.assertEqual(
             self.journal.db.execute("SELECT observed FROM uploads").fetchone(), (None,)
         )
+
+    def test_configured_secret_never_reaches_readback_routing(self) -> None:
+        self.journal.authorize = lambda request: request.method == "POST"
+        self.assertEqual(self.journal.send(SCOPE, INTENT).state, "unknown")
+        for fault, actions in (
+            ("secret:download", ["info"]),
+            ("secret:cursor", ["info", "replies"]),
+            ("secret:encoded-cursor", ["info", "replies"]),
+        ):
+            with self.subTest(fault=fault):
+                self.service.fault = fault
+                offset = len(self.service.calls)
+                checked: list[str] = []
+
+                def authorize(request: Request) -> bool:
+                    checked.append(request.url)
+                    return True
+
+                reopened = UploadJournal(
+                    self.path, self.service, authorize, Sanitizer((READBACK_CANARY,))
+                )
+                self.addCleanup(reopened.close)
+                outcome = reopened.lookup(SCOPE, INTENT)
+                self.assertEqual(
+                    [request.action for request in self.service.calls[offset:]], actions
+                )
+                for url in checked:
+                    self.assertNotIn(quote(READBACK_CANARY, safe=""), url)
+                self.assertEqual(outcome.state, "unknown")
+                with closing(sqlite3.connect(self.path)) as audit:
+                    self.assertEqual(
+                        audit.execute(
+                            "SELECT observed,conflict FROM uploads"
+                        ).fetchone(),
+                        (None, 0),
+                    )
+        self.service.fault = ""
+        self.journal.authorize = lambda request: request.method == "GET"
+        self.assertEqual(self.journal.lookup(SCOPE, INTENT).message_ts, MESSAGE)
+        for effect in ("allocate", "upload", "complete"):
+            self.assertEqual(self.counts()[effect], 1)
 
     def test_cancelled_mutating_step_is_not_retried(self) -> None:
         for index, action in enumerate(("allocate", "upload", "complete")):
