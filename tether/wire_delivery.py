@@ -51,6 +51,24 @@ class WireDeliveryObservation:
     evidence_class: str = field(default="slack_wire_content_observation", init=False)
 
 
+def _journal_conflict(outer: tuple[Any, ...], inner: tuple[Any, ...] | None) -> bool:
+    file_id, observed, conflict, retry_action, retry_after = outer[3:]
+    if conflict:
+        return True
+    if inner is None:
+        # An unobserved reservation can precede the first inner write. Any
+        # retained inner evidence proves that this is no longer that crash gap.
+        return any(
+            value is not None
+            for value in (file_id, observed, retry_action, retry_after)
+        )
+    return (
+        bool(inner[3])
+        or (file_id is not None and file_id != inner[1])
+        or (observed is not None and observed != inner[2])
+    )
+
+
 class WireDeliveryJournal:
     """An outer reservation permits one invocation of UploadJournal.send only.
 
@@ -175,17 +193,20 @@ class WireDeliveryJournal:
         if row is not None and row[5]:
             return WireDeliveryObservation(conflict=True)
 
-        def conflict_retained() -> bool:
+        def retained_pair() -> tuple[tuple[Any, ...], tuple[Any, ...] | None]:
             outer = self._row(raw, scope)
+            if outer is None:
+                raise Rejected("wire reservation missing")
             inner = upload.db.execute(
-                "SELECT scope,conflict FROM uploads WHERE operation=?",
+                "SELECT scope,file_id,observed,conflict,retry_action,retry_after FROM uploads WHERE operation=?",
                 (scope.operation_id,),
             ).fetchone()
             if inner is not None and inner[0] != canonical(asdict(scope)):
                 raise Rejected("upload store binding conflict")
-            return bool(outer is not None and outer[5]) or bool(
-                inner is not None and inner[1]
-            )
+            return outer, inner
+
+        def conflict_retained() -> bool:
+            return _journal_conflict(*retained_pair())
 
         def allowed(request: Request) -> bool:
             self._current(raw, payload, scope, intent)
@@ -205,9 +226,14 @@ class WireDeliveryJournal:
             self.upload_path, self.transport, allowed, self.sanitizer
         )
         try:
-            observation = (
-                upload.send(scope, intent) if begin else upload.lookup(scope, intent)
-            )
+            if conflict_retained():
+                observation = UploadObservation()
+            else:
+                observation = (
+                    upload.send(scope, intent)
+                    if begin
+                    else upload.lookup(scope, intent)
+                )
             if type(observation) is not UploadObservation:
                 raise Rejected("invalid upload observation")
             self._current(raw, payload, scope, intent)
@@ -216,22 +242,12 @@ class WireDeliveryJournal:
             # it until the outer observation commits. No network under locks.
             self.db.execute("BEGIN IMMEDIATE")
             upload.db.execute("BEGIN IMMEDIATE")
-            inner = upload.db.execute(
-                "SELECT scope,file_id,observed,conflict,retry_action,retry_after FROM uploads WHERE operation=?",
-                (scope.operation_id,),
-            ).fetchone()
-            if inner is not None and inner[0] != canonical(asdict(scope)):
-                raise Rejected("upload store binding conflict")
             self._current(raw, payload, scope, intent)
-            old = self._row(raw, scope)
-            if old is None:
-                raise Rejected("wire reservation missing")
+            old, inner = retained_pair()
             file_id, observed = old[3], old[4]
-            conflict = bool(old[5]) or bool(inner is not None and inner[3])
-            if inner is not None:
-                conflict |= file_id is not None and inner[1] not in (None, file_id)
-                conflict |= observed is not None and inner[2] not in (None, observed)
-                file_id = file_id if file_id is not None else inner[1]
+            conflict = _journal_conflict(old, inner)
+            if file_id is None and inner is not None:
+                file_id = inner[1]
             confirmed = (
                 observation.state == "content_match"
                 and inner is not None
@@ -245,7 +261,7 @@ class WireDeliveryJournal:
             if confirmed and not conflict:
                 observed = observation.message_ts
             retry_action, retry_after = (
-                (inner[4], inner[5]) if inner is not None else (None, None)
+                (inner[4], inner[5]) if inner is not None else (old[6], old[7])
             )
             self.db.execute(
                 "UPDATE wire_deliveries SET file_id=?,observed=?,conflict=?,retry_action=?,retry_after=? WHERE operation=?",
