@@ -26,9 +26,12 @@ hash. Edit-before-create is rejected without writing a tombstone; a valid create
 can subsequently establish history. Every accepted event persists provider token,
 callback-byte hash, normalized hash, and semantic candidate in one SQLite admission
 transaction. Concurrent stale preparations are rejected under the existing lock.
-Exact event retries retain their original logical revision even after newer heads;
-changed callback bytes under the same event ID are conflicts, including whitespace
-changes. Raw text, signatures, and secrets are not stored in the provider journal.
+Exact event retries retain their original logical revision even after newer heads.
+Under the admission lock, a retry must verify that the Slack provider head matches
+the newest semantic candidate for the task. A missing, damaged, or rolled-back
+provider head rejects the retry without modifying history. Changed callback bytes
+under the same event ID are conflicts, including whitespace changes. Raw text,
+signatures, and secrets are not stored in the provider journal.
 
 Existing semantic batch snapshots/readback remain metadata-only. Local acceptance
 is not remote execution, cancellation, or delivery. Fresh trusted authority and
