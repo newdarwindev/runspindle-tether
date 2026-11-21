@@ -527,6 +527,7 @@ def _api_object(response: Response, headers: dict[str, str]) -> dict[str, Any]:
     metadata = body.get("response_metadata", {})
     if (
         body.get("ok") is not True
+        or "error" in body
         or type(metadata) is not dict
         or body.get("warning")
         or body.get("warnings")
