@@ -32,6 +32,20 @@ Each wire request rechecks current admission, exact bytes, account/destination,
 Core authorization and both journals' retained conflict, including after the
 request authorizer returns. Missing or changed authority fails closed.
 
+The outer journal also checks its retained file and message identities against
+the inner upload row before providers are called, after request authorization,
+and again under both retention locks. A changed or cleared identity quarantines
+the operation. An inner row that disappears after the outer journal retained
+identity or rate-limit evidence also quarantines the operation and preserves
+the outer evidence. An outer reservation with no inner evidence can still
+represent the pre-upload crash gap and stays unknown. Quarantine is sticky even
+if the two stores later agree.
+
+The shared SQLite opener reads version, family and schema inventory from one
+read-only snapshot. A second check under the writer lock catches changes since
+preflight while allowing another process to finish adopting an exact legacy
+layout.
+
 After provider observation, retention acquires the outer write lock followed by
 the inner write lock, refreshes the exact inner record, and holds it until the
 outer record commits. No network is performed under either lock. This prevents
@@ -49,5 +63,14 @@ recovery, competing callers, before/after interruption, cancellation, 429, wrong
 thread, partial content, binding changes, revocation, sticky conflict, and an
 unsafe retry mutation. These are controlled offline tests, not a Slack workspace,
 credential, permission, TLS/network deployment or filesystem power-loss proof.
+Fresh-process tests inject row loss and identity changes behind the unchanged
+schema and require zero provider calls after divergence. A separate callback
+test clears an inner observation during authorization and verifies that the
+outer quarantine survives restoration of the old record.
+
+Run the bounded wire regressions with
+`python3.13 -B -m unittest discover -s tests -p test_wire_delivery.py`.
+Repeat with `-O` to exercise the same checks with Python assertions disabled.
+
 Core adapter composition and independent review are required separately; this
 component test suite alone does not close Tether #9 or its parent requirements.
