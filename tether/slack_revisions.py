@@ -346,6 +346,14 @@ class _RevisionStore(SemanticAdmission):
             if known != [row]:
                 raise Rejected("Slack replay proof mismatch")
             super()._retained_extension(raw, envelope, True)
+            latest = self.db.execute(
+                "SELECT task,revision FROM intent_candidates WHERE task=? "
+                "ORDER BY length(revision) DESC,revision DESC LIMIT 1",
+                (proof.task,),
+            ).fetchone()
+            head = self._provider_head(proof.scope)
+            if not head or head[0][:2] != latest:
+                raise Rejected("Slack provider head is not current")
             return
         if known:
             raise Rejected("Slack event already retained")
