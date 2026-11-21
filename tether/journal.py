@@ -288,6 +288,12 @@ class ProviderJournal:
         # admission/core authority immediately before the only provider-send path.
         if self._context(raw, payload) != (operation, destination, digest):
             raise Rejected("trusted context changed")
+        current = self._row(operation, raw, digest, route)
+        if current is None:
+            raise Rejected("missing durable attempt")
+        if current[7] or current[5] is not None:
+            # A competing reader may have confirmed the effect or found a conflict.
+            return self.lookup(raw, payload, provider)
         try:
             reply = provider.send(destination, operation, payload)
         except Exception:
@@ -323,14 +329,18 @@ class ProviderJournal:
                 (state, ack, retry_at, conflict, operation),
             )
             self.db.execute("COMMIT")
-            return Observation(
-                "unknown" if conflict else state,
-                ack if not conflict else None,
-                retry_at,
-            )
         except BaseException:
             self.db.execute("ROLLBACK")
             raise
+        # Preserve provider evidence even when a subsequent authority check
+        # prevents the caller from receiving the acknowledgement.
+        if self._context(raw, payload) != (operation, destination, digest):
+            raise Rejected("trusted context changed during send")
+        return Observation(
+            "unknown" if conflict else state,
+            ack if not conflict else None,
+            retry_at,
+        )
 
     def lookup(self, raw: bytes, payload: Payload, provider: Provider) -> Observation:
         operation, destination, digest = self._context(raw, payload)

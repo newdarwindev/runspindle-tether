@@ -269,6 +269,53 @@ class JournalTests(unittest.TestCase):
         self.fresh_process("send", "unknown")
         self.assertEqual(self.observed(), (0, 0))
 
+    def test_competing_readback_before_first_send_prevents_duplicate_effect(
+        self,
+    ) -> None:
+        # The independent destination already has the exact effect. A separate
+        # process sees it after the local reservation but before dispatch.
+        self.provider.send(DEST, "delivery-1", PAYLOAD)
+        checks = 0
+
+        def reconcile_during_authorization(raw: bytes, digest: str) -> bool:
+            nonlocal checks
+            checks += 1
+            if checks == 2:
+                self.fresh_process("lookup", "destination_confirmed")
+            return authorize(raw, digest)
+
+        with patch.object(self.journal, "authorize", reconcile_during_authorization):
+            result = self.journal.send(envelope(), PAYLOAD, self.provider)
+        self.assertEqual(self.observed(), (1, 1))
+        self.assertEqual(
+            (result.state, result.message_id), ("destination_confirmed", "message-1")
+        )
+
+    def test_revocation_during_send_withholds_receipt_but_preserves_attempt(
+        self,
+    ) -> None:
+        original = self.provider.send
+
+        def send_then_revoke(
+            destination: Destination, operation: str, payload: Payload
+        ) -> Reply:
+            reply = original(destination, operation, payload)
+            self.journal.authorize = lambda *_: False
+            return reply
+
+        with patch.object(self.provider, "send", side_effect=send_then_revoke):
+            with self.assertRaises(Rejected):
+                self.journal.send(envelope(), PAYLOAD, self.provider)
+        self.assertEqual(self.observed(), (1, 1))
+        self.assertEqual(
+            self.journal.db.execute(
+                "SELECT state,acknowledgement,observed FROM provider_attempts"
+            ).fetchall(),
+            [("accepted", "message-1", None)],
+        )
+        self.fresh_process("send", "destination_confirmed")
+        self.assertEqual(self.observed(), (1, 1))
+
     def test_superseded_deleted_admission_denies(self) -> None:
         revised = event(2, kind="delete", text="")
         self.admission.authorize = lambda *_: grant(revised)
@@ -486,13 +533,13 @@ finally:
 
     def test_deliberate_resend_mutation_is_observed_in_provider_store(self) -> None:
         source = (ROOT / "tether/journal.py").read_text()
-        needle = "return self.lookup(raw, payload, provider)"
+        needle = "                return self.lookup(raw, payload, provider)"
         self.assertEqual(source.count(needle), 1)
         path = self.base / "mutant.py"
         path.write_text(
             source.replace(
                 needle,
-                "return provider.send(destination, operation, payload)  # deliberate mutation",
+                "                return provider.send(destination, operation, payload)  # deliberate mutation",
             )
         )
         spec = importlib.util.spec_from_file_location("journal_mutant", path)

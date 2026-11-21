@@ -31,8 +31,14 @@ hash additionally binds text, filename and all bytes. It does not generalize cor
 artifact acceptance into arbitrary multi-attachment authority.
 
 Authority/route/admission are checked before reservation and immediately before
-send; lookup checks before and after provider readback and again after acquiring
-the potentially blocking SQLite write lock. These are synchronous
+send. The sender rereads the durable attempt after the final authorization
+check. A competing exact observation sends that path to fresh readback. A
+retained conflict stops it. After a send, the journal retains the provider
+result and rechecks authority before returning it to the caller. If authority
+has been withdrawn, a newly authorized caller can recover from the same
+attempt through readback. Lookup checks authority before and after provider
+readback and again after acquiring the potentially blocking SQLite write lock.
+These are synchronous
 observations, not a distributed atomic transaction with core revocation. No
 production freshness/dispatch guarantee is claimed from injected callbacks.
 The provider protocol currently accepts only synthetic classified replies; it is
