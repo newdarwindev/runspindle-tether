@@ -249,6 +249,33 @@ class SignedRevisionTests(unittest.TestCase):
         )
         self.deny(changed(), 2)
 
+    def test_replay_requires_current_provider_head(self) -> None:
+        self.assertEqual(self.send(callback(), 1), "admitted")
+        db = self.app.admission.db
+        initial = db.execute("SELECT * FROM slack_versions").fetchone()
+        self.assertEqual(self.send(changed(), 2), "admitted")
+        current = db.execute("SELECT * FROM slack_versions").fetchone()
+        corrupt = (*current[:-1], "0" * 64)
+
+        for name, head in [
+            ("missing", None),
+            ("corrupt", corrupt),
+            ("rewound", initial),
+        ]:
+            with self.subTest(head=name):
+                db.execute("DELETE FROM slack_versions")
+                if head is not None:
+                    db.execute("INSERT INTO slack_versions VALUES (?,?,?,?,?)", head)
+                self.deny(callback(), 1)
+                self.deny(changed(), 2)
+
+        db.execute("DELETE FROM slack_versions")
+        db.execute("INSERT INTO slack_versions VALUES (?,?,?,?,?)", current)
+        before = self.dump()
+        self.assertEqual(self.send(callback(), 1), "duplicate")
+        self.assertEqual(self.send(changed(), 2), "duplicate")
+        self.assertEqual(before, self.dump())
+
     def test_competing_prepared_edit_rolls_back(self) -> None:
         from tether.slack_revisions import _observe
 
