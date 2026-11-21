@@ -25,10 +25,15 @@ jobs:
           python3 -m pip --isolated install --no-index --no-deps --require-hashes
           --find-links=/home/runner/preparation/tether-visual/wheels
           --target="$RUNNER_TEMP/tether-visual" -r requirements-visual-linux-x64.lock
+      - name: Install the locked upstream typing dependencies offline
+        run: >-
+          python3 -m pip --isolated install --no-index --no-deps --only-binary=:all:
+          --find-links=/home/runner/preparation/tether-upstream/wheels
+          --target="$RUNNER_TEMP/tether-upstream" -r upstream/requirements.txt
       - id: partition
         name: Run quality partition
         env:
-          PYTHONPATH: ${{ runner.temp }}/tether-visual
+          PYTHONPATH: ${{ runner.temp }}/tether-visual:${{ runner.temp }}/tether-upstream
         run: python3 tools/partition_validation.py quality --output "$GITHUB_OUTPUT"
   component:
     name: validation / component

@@ -5,3 +5,11 @@ pydantic-core==2.41.5
 structlog==25.5.0
 typing-extensions==4.16.0
 typing-inspection==0.4.5
+# Original upstream store/model/migration dependency closure for isolated tests.
+agent-sessions==0.2.0
+alembic==1.17.2
+greenlet==3.5.6
+Mako==1.4.3
+MarkupSafe==3.0.4
+SQLAlchemy==2.0.58
+sqlmodel==0.0.27
