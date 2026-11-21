@@ -18,7 +18,7 @@ from urllib.parse import parse_qs, urlsplit
 
 from tether.sanitization import Sanitizer
 from tether.schema import SchemaRejected
-from tether.slack_upload import UploadJournal
+from tether.slack_upload import SCHEMA, UploadJournal
 from tether.slack_wire import FileIntent, Request, Response, Scope, WireRejected
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -364,6 +364,68 @@ class UploadTests(unittest.TestCase):
                     {k: v for k, v in self.counts().items() if k in before}, before
                 )
 
+    def test_readback_rate_limit_survives_reopen_until_exact_deadline(self) -> None:
+        directory = self.root / "cooldown"
+        directory.mkdir()
+        now = 1_000_000_000_000
+        first = self.child(directory, "rate:info", clock_ns=now)
+        self.assertEqual(first.returncode, 0, first.stderr)
+        self.assertEqual(json.loads(first.stdout)["retry_after"], 7)
+        expected = {"allocate": 1, "upload": 1, "complete": 1, "info": 1}
+
+        def counts() -> dict[str, int]:
+            with closing(sqlite3.connect(directory / "service.db")) as db:
+                return dict(
+                    db.execute("SELECT action,count(*) FROM calls GROUP BY action")
+                )
+
+        self.assertEqual(counts(), expected)
+        during = self.child(directory, clock_ns=now + 7_000_000_000 - 1)
+        self.assertEqual(during.returncode, 0, during.stderr)
+        self.assertEqual(json.loads(during.stdout)["state"], "unknown")
+        self.assertEqual(counts(), expected)
+        after = self.child(directory, clock_ns=now + 7_000_000_000)
+        self.assertEqual(after.returncode, 0, after.stderr)
+        self.assertEqual(json.loads(after.stdout)["state"], "content_match")
+        self.assertEqual(counts(), dict(expected, info=2, replies=1, download=1))
+
+    def test_v1_hint_starts_one_conservative_interval_after_migration(self) -> None:
+        directory = self.root / "legacy"
+        directory.mkdir()
+        first = self.child(directory, "rate:info", clock_ns=1_000_000_000)
+        self.assertEqual(first.returncode, 0, first.stderr)
+        database = directory / "journal.db"
+        columns = "operation,scope,workspace,phase,file_id,observed,conflict,retry_action,retry_after"
+        with closing(sqlite3.connect(database)) as db:
+            row = db.execute(f"SELECT {columns} FROM uploads").fetchone()
+        legacy = directory / "old.db"
+        with closing(sqlite3.connect(legacy)) as db, db:
+            db.executescript(SCHEMA)
+            db.execute("PRAGMA user_version=1")
+            db.execute("PRAGMA application_id=1414135811")
+            db.execute("INSERT INTO uploads VALUES(?,?,?,?,?,?,?,?,?)", row)
+        os.replace(legacy, database)
+        for now in (20_000_000_000, 26_999_999_999):
+            result = self.child(directory, clock_ns=now)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(json.loads(result.stdout)["state"], "unknown")
+        with closing(sqlite3.connect(database)) as db:
+            self.assertEqual(db.execute("PRAGMA user_version").fetchone(), (2,))
+            self.assertEqual(
+                db.execute(f"SELECT {columns},retry_until_ns FROM uploads").fetchone(),
+                (*row, 27_000_000_000),
+            )
+        with closing(sqlite3.connect(directory / "service.db")) as db:
+            self.assertEqual(db.execute("SELECT count(*) FROM calls").fetchone(), (4,))
+        result = self.child(directory, clock_ns=27_000_000_000)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(result.stdout)["state"], "content_match")
+
+    def test_completion_rate_limit_fences_same_call_readback(self) -> None:
+        self.service.fault = "rate:complete"
+        self.assertEqual(self.journal.send(SCOPE, INTENT).retry_after, 7)
+        self.assertEqual(self.counts(), {"allocate": 1, "upload": 1, "complete": 1})
+
     def test_lost_completion_ack_reconciles_exact_bytes(self) -> None:
         self.service.fault = "lost:complete"
         self.assertEqual(self.journal.send(SCOPE, INTENT).state, "content_match")
@@ -473,7 +535,12 @@ class UploadTests(unittest.TestCase):
         self.assertEqual(Path(alien).read_bytes(), before)
 
     def child(
-        self, directory: Path, fault: str = "", code: str | None = None
+        self,
+        directory: Path,
+        fault: str = "",
+        code: str | None = None,
+        *,
+        clock_ns: int | None = None,
     ) -> subprocess.CompletedProcess[str]:
         program = code or CHILD
         return subprocess.run(
@@ -482,6 +549,9 @@ class UploadTests(unittest.TestCase):
             env={
                 **os.environ,
                 "PYTHONPATH": str(ROOT) + os.pathsep + str(ROOT / "tests"),
+                "RUNSPINDLE_UPLOAD_FIXTURE_NS": ""
+                if clock_ns is None
+                else str(clock_ns),
             },
             capture_output=True,
             text=True,
@@ -615,10 +685,11 @@ class UploadTests(unittest.TestCase):
 
 
 CHILD = """
-import json, socket, sys
+import json, os, socket, sys
 from contextlib import closing
 from dataclasses import asdict
 from pathlib import Path
+from time import time_ns
 from test_slack_upload import StoredHTTP, INTENT, SCOPE
 from tether.slack_upload import UploadJournal
 def forbidden(*args, **kwargs):
@@ -627,7 +698,9 @@ def forbidden(*args, **kwargs):
 socket.socket.connect = forbidden
 directory = Path(sys.argv[1])
 http = StoredHTTP(str(directory / 'service.db'), sys.argv[2])
-journal = UploadJournal(str(directory / 'journal.db'), http, lambda request: True)
+test_clock = os.environ.get("RUNSPINDLE_UPLOAD_FIXTURE_NS")
+clock_ns = time_ns if not test_clock else lambda: int(test_clock)
+journal = UploadJournal(str(directory / 'journal.db'), http, lambda request: True, clock_ns=clock_ns)
 try:
     print(json.dumps(asdict(journal.send(SCOPE, INTENT))))
 finally:

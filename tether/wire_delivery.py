@@ -8,6 +8,7 @@ Wire readback is not a Core Delivered receipt or live-provider qualification.
 import sqlite3
 from collections.abc import Callable
 from dataclasses import asdict, dataclass, field
+from time import time_ns
 from typing import Any, cast
 
 from tether.admission import Admission, Rejected, canonical
@@ -88,11 +89,14 @@ class WireDeliveryJournal:
         authorize_wire: Callable[[Request], bool] | None = None,
         sanitizer: Sanitizer | None = None,
         history_scope: str = "channels:history",
+        *,
+        clock_ns: Callable[[], int] = time_ns,
     ) -> None:
         self.sanitizer = sanitizer if sanitizer is not None else Sanitizer()
         self.admission, self.authorize, self.resolve = admission, authorize, resolve
         self.authorize_wire, self.transport = authorize_wire, transport
         self.upload_path, self.history_scope = upload_path, history_scope
+        self.clock_ns = clock_ns
         self.db: sqlite3.Connection = open_store(path, SCHEMA, 1414135815)
 
     def close(self) -> None:
@@ -223,7 +227,11 @@ class WireDeliveryJournal:
         # Never accept an externally preauthorized journal or mutate a shared
         # authorizer. This closure belongs only to this exact call/binding.
         upload = UploadJournal(
-            self.upload_path, self.transport, allowed, self.sanitizer
+            self.upload_path,
+            self.transport,
+            allowed,
+            self.sanitizer,
+            clock_ns=self.clock_ns,
         )
         try:
             if conflict_retained():
@@ -250,6 +258,7 @@ class WireDeliveryJournal:
                 file_id = inner[1]
             confirmed = (
                 observation.state == "content_match"
+                and upload.cooldown.allows(scope.operation_id)
                 and inner is not None
                 and (
                     observation.file_id == inner[1]
