@@ -95,6 +95,21 @@ def worker(base: str, fault: str) -> None:
             a.close()
 
 
+def change_upload_row(base: Path, statement: str, trigger: str | None = None) -> None:
+    """Inject logical row damage and restore the exact verified schema."""
+    with closing(sqlite3.connect(base / "journal.db")) as db, db:
+        db.execute("BEGIN IMMEDIATE")
+        if trigger is not None:
+            (definition,) = db.execute(
+                "SELECT sql FROM sqlite_schema WHERE type='trigger' AND name=?",
+                (trigger,),
+            ).fetchone()
+            db.execute(f"DROP TRIGGER {trigger}")
+        db.execute(statement)
+        if trigger is not None:
+            db.execute(definition)
+
+
 class WireDeliveryTests(unittest.TestCase):
     def setUp(self) -> None:
         self.tmp = tempfile.TemporaryDirectory()
@@ -548,6 +563,79 @@ class WireDeliveryTests(unittest.TestCase):
             self.journal.db.execute("DELETE FROM wire_deliveries")
         with self.assertRaises(sqlite3.IntegrityError):
             self.journal.db.execute("UPDATE wire_deliveries SET payload_digest='other'")
+
+    def test_reopened_divergent_upload_is_quarantined_before_provider(self) -> None:
+        for statement, trigger in (
+            ("DELETE FROM uploads", "upload_retained"),
+            ("UPDATE uploads SET file_id='F999'", "upload_file_immutable"),
+            ("UPDATE uploads SET observed=NULL", None),
+        ):
+            with (
+                self.subTest(statement=statement),
+                tempfile.TemporaryDirectory() as folder,
+            ):
+                base = Path(folder)
+                admission, peer, journal = prepare(base)
+                try:
+                    self.assertEqual(
+                        journal.send(envelope(), PAYLOAD).state, "content_confirmed"
+                    )
+                    before = peer.db.execute("SELECT count(*) FROM calls").fetchone()
+                    change_upload_row(base, statement, trigger)
+                    child = self.child(base=base)
+                    self.assertEqual(child.returncode, 0, child.stderr)
+                    self.assertEqual(
+                        peer.db.execute("SELECT count(*) FROM calls").fetchone(), before
+                    )
+                    self.assertEqual(
+                        json.loads(child.stdout),
+                        {"state": "unknown", "message": None, "conflict": True},
+                    )
+                    self.assertEqual(
+                        journal.db.execute(
+                            "SELECT file_id,observed,conflict FROM wire_deliveries"
+                        ).fetchone(),
+                        ("F100", MESSAGE, 1),
+                    )
+                finally:
+                    journal.close()
+                    peer.close()
+                    admission.close()
+
+    def test_missing_upload_preserves_retained_rate_limit_diagnostics(self) -> None:
+        self.peer.fault = "rate:allocate"
+        first = self.journal.send(envelope(), PAYLOAD)
+        self.assertEqual((first.retry_action, first.retry_after), ("allocate", 7))
+        change_upload_row(self.base, "DELETE FROM uploads", "upload_retained")
+        child = self.child()
+        self.assertEqual(child.returncode, 0, child.stderr)
+        self.assertTrue(json.loads(child.stdout)["conflict"])
+        self.assertEqual(self.counts(), {"allocate": 1})
+        self.assertEqual(
+            self.journal.db.execute(
+                "SELECT retry_action,retry_after,conflict FROM wire_deliveries"
+            ).fetchone(),
+            ("allocate", 7, 1),
+        )
+
+    def test_authorization_callback_cannot_erase_inner_readback(self) -> None:
+        self.journal.send(envelope(), PAYLOAD)
+        before = self.counts()
+
+        def authorize(_: object) -> bool:
+            change_upload_row(self.base, "UPDATE uploads SET observed=NULL")
+            return True
+
+        self.journal.authorize_wire = authorize
+        result = self.journal.lookup(envelope(), PAYLOAD)
+        self.assertEqual(self.counts(), before)
+        self.assertTrue(result.conflict)
+        self.assertIsNone(result.message_id)
+        with closing(sqlite3.connect(self.base / "journal.db")) as db, db:
+            db.execute("UPDATE uploads SET observed=?", (MESSAGE,))
+        self.journal.authorize_wire = lambda _: True
+        self.assertTrue(self.journal.lookup(envelope(), PAYLOAD).conflict)
+        self.assertEqual(self.counts(), before)
 
     def test_inner_conflict_committed_before_outer_lock_is_not_stale_success(
         self,
