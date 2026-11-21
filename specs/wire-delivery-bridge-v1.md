@@ -48,10 +48,13 @@ layout.
 
 After provider observation, retention acquires the outer write lock followed by
 the inner write lock, refreshes the exact inner record, and holds it until the
-outer record commits. No network is performed under either lock. This prevents
-publishing a stale successful observation after a concurrent inner conflict has
-already committed. It does not make external provider state or authority changes
-atomic with future effects. A later independent observation can still reveal a
+outer record commits. Before retaining or returning a content confirmation it
+rechecks the scoped file-info grant for that exact file. If the grant changed
+after inner readback, the outer result remains unknown. A later authorized
+lookup can read back the same attempt. No network is performed under either
+lock. This prevents publishing a stale successful observation after a
+concurrent inner conflict has already committed. External provider state and
+authority can still change before future effects. A later observation can reveal a
 conflict; Core must retain/quarantine that conflict rather than erase it.
 
 ## Verification and limits
