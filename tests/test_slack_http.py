@@ -1,5 +1,6 @@
 """Synthetic loopback bytes and isolated subprocesses, never Slack/TLS acceptance."""
 
+import base64
 import functools
 import io
 import multiprocessing
@@ -339,6 +340,35 @@ class HTTPTests(unittest.TestCase):
         self.assertEqual(server.requests, [])
         self.assertEqual({p.pid for p in multiprocessing.active_children()}, before)
 
+    def test_deadline_during_response_decode_withholds_observation(self) -> None:
+        before = {p.pid for p in multiprocessing.active_children()}
+        server = self.server()
+        timeout = 3
+        clock = Mock(monotonic=Mock(wraps=time.monotonic))
+        decode = base64.b64decode
+
+        def decode_at_deadline(encoded: str, *, validate: bool) -> bytes:
+            body = decode(encoded, validate=validate)
+            clock.monotonic.return_value = clock.monotonic() + timeout
+            return body
+
+        with (
+            patch("tether.slack_http.time", clock),
+            patch(
+                "tether.slack_http.base64.b64decode", side_effect=decode_at_deadline
+            ) as decoder,
+        ):
+            with self.assertRaisesRegex(HTTPRejected, "^HTTP outcome unknown$"):
+                _bounded(
+                    self.request(),
+                    lambda: CANARY,
+                    timeout,
+                    functools.partial(loopback, server.port),
+                )
+        decoder.assert_called_once()
+        self.assertEqual(len(server.requests), 1)
+        self.assertEqual({p.pid for p in multiprocessing.active_children()}, before)
+
     def test_private_dns_rejected_before_socket(self) -> None:
         with (
             patch(
@@ -530,6 +560,13 @@ class HTTPTests(unittest.TestCase):
                 'headers.append("Authorization: Bearer " + token)',
                 'headers.append("X-Synthetic-Mutation: omitted-bearer")',
                 "test_six_actions_and_exact_headers",
+            ),
+            (
+                "        if time.monotonic() >= deadline:\n"
+                '            raise HTTPRejected("HTTP outcome unknown")\n'
+                "        return response",
+                "        return response",
+                "test_deadline_during_response_decode_withholds_observation",
             ),
         )
         for old, new, test in mutations:
