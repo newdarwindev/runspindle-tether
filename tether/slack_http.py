@@ -340,11 +340,14 @@ def _bounded(
             if len(data) > 2 * MAX_BYTES:
                 raise HTTPRejected("HTTP outcome unknown")
         status, headers, encoded = json.loads(data)
-        return Response(
+        response = Response(
             status,
             tuple(tuple(pair) for pair in headers),
             base64.b64decode(encoded, validate=True),
         )
+        if time.monotonic() >= deadline:
+            raise HTTPRejected("HTTP outcome unknown")
+        return response
     finally:
         receive.close()
         send.close()
