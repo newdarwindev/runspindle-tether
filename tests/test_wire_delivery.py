@@ -421,6 +421,39 @@ class WireDeliveryTests(unittest.TestCase):
                 self.journal.lookup(envelope(), PAYLOAD)
         self.assertEqual(self.counts()["complete"], 1)
 
+    def test_wire_read_authority_is_rechecked_at_outer_retention(self) -> None:
+        self.peer.fault = "lost:download"
+        self.assertEqual(self.journal.send(envelope(), PAYLOAD).state, "unknown")
+        self.peer.fault = ""
+
+        fences = []
+
+        def revoke_on_retention(sql: str) -> None:
+            if sql == "BEGIN IMMEDIATE":
+                fences.append(sql)
+                self.journal.authorize_wire = lambda _: False
+
+        self.journal.db.set_trace_callback(revoke_on_retention)
+        try:
+            result = self.journal.lookup(envelope(), PAYLOAD)
+        finally:
+            self.journal.db.set_trace_callback(None)
+
+        self.assertEqual(len(fences), 1)
+        self.assertEqual((result.state, result.message_id), ("unknown", None))
+        with closing(sqlite3.connect(self.base / "wire.db")) as db:
+            self.assertEqual(
+                db.execute("SELECT observed FROM wire_deliveries").fetchone(), (None,)
+            )
+        with closing(sqlite3.connect(self.base / "journal.db")) as db:
+            self.assertEqual(
+                db.execute("SELECT observed FROM uploads").fetchone(), (MESSAGE,)
+            )
+        reopened = self.child()
+        self.assertEqual(reopened.returncode, 0, reopened.stderr)
+        self.assertEqual(json.loads(reopened.stdout)["state"], "content_confirmed")
+        self.assertEqual(self.counts()["complete"], 1)
+
     def test_each_wire_action_revalidates_core_before_exchange(self) -> None:
         for action in ("allocate", "upload", "complete", "info", "replies", "download"):
             with self.subTest(action=action), tempfile.TemporaryDirectory() as d:
