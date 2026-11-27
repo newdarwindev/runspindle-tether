@@ -4,15 +4,12 @@ import asyncio
 import hashlib
 import json
 import re
-import sqlite3
 from collections.abc import Callable
-from contextlib import closing
 from dataclasses import asdict, dataclass
-from urllib.parse import quote
 
 from tether.admission import Rejected, canonical
-from tether.schema import SchemaRejected, inspect, inventory, open_store
-from tether.slack_upload import SCHEMA as UPLOAD_SCHEMA
+from tether.schema import open_store
+from tether.slack_upload import ReadbackCooldown, open_upload_store
 from tether.slack_wire import (
     ContentFacts,
     FileBinding,
@@ -97,23 +94,11 @@ class ResolutionJournal:
         self.authorize_resolution = authorize_resolution
         self.db = open_store(path, SCHEMA, 1414135816)
         try:
-            self.inner = sqlite3.connect(
-                "file:" + quote(bridge.upload_path, safe="/") + "?mode=rw",
-                uri=True,
-                isolation_level=None,
-            )
+            self.inner = open_upload_store(bridge.upload_path, require_initialized=True)
         except BaseException:
             self.db.close()
             raise
-        try:
-            with closing(sqlite3.connect(":memory:")) as model:
-                model.executescript(UPLOAD_SCHEMA)
-                expected = inventory(model)
-            if inspect(self.inner, expected, 1414135811):
-                raise SchemaRejected("resolution cannot adopt an upload store")
-        except BaseException:
-            self.close()
-            raise
+        self.cooldown = ReadbackCooldown(self.inner, bridge.clock_ns)
 
     def close(self) -> None:
         self.inner.close()
@@ -252,12 +237,15 @@ class ResolutionJournal:
                 raise Rejected("resolution is readback only")
             result = authorize_request(request, self.bridge.authorize_wire)
             current()
-            return result
+            return result and self.cooldown.allows(scope.operation_id)
 
         current()
+        if not self.cooldown.allows(scope.operation_id):
+            return ResolutionObservation()
         result = WireClient(self.bridge.transport, allowed).readback(
             FileBinding(scope, decision.file_id), intent
         )
+        self.cooldown.record(scope.operation_id, "readback", result)
         current()
         if result.state != "content_match" or type(result.facts) is not ContentFacts:
             return ResolutionObservation()
@@ -271,6 +259,9 @@ class ResolutionJournal:
             self.inner.execute("BEGIN IMMEDIATE")
             self.db.execute("BEGIN IMMEDIATE")
             current()
+            if not self.cooldown.allows(scope.operation_id):
+                self.db.rollback()
+                return ResolutionObservation()
             self.db.execute(
                 "INSERT OR IGNORE INTO decisions VALUES (?,?,?,?,?)",
                 (
