@@ -101,3 +101,7 @@ transport/native-event/sanitization contracts with actual disposable SQLite
 scheduling, progress-operation recovery and independently observed effects.
 [Acceptance audit](../docs/OFFLINE_MIRRORING_ACCEPTANCE.md) separates this offline
 qualification from live Slack, production retries and Core outbox integration.
+
+- [Original upstream output ledger](upstream-outbox.md): bounded exact-output
+  reservation/readback policy over the original BridgeDelivery table, with
+  synthetic original-runtime tests and explicit migration/activation gaps.
