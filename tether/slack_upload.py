@@ -306,7 +306,7 @@ class UploadJournal:
         client, allowed = self._bound_client(scope, intent, binding, readback=True)
         file = FileBinding(scope, row[2])
         self.sanitizer.require_clean(file.file_id)
-        result = client.readback(file, intent)
+        result = client.readback(file, intent, sanitizer=self.sanitizer)
         self._record_delay(scope, "readback", result)
         if not (
             (result.state == "content_match" and type(result.facts) is ContentFacts)
