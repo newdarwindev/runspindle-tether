@@ -148,3 +148,28 @@ provider and a network guard. They independently read the database and inspect
 provider calls. Both failed on base `bb1aa8695896f54057d1b64aab5eac6288cc2e73`
 with the new tests applied. Run the containing suite with
 `python3 -B -m unittest tests.test_sanitization`.
+
+## Structured HTTP headers and retained projection reads
+
+Nested `headers`, `httpHeaders`, `requestHeaders`, `responseHeaders` and
+`trailers` can be header maps or lists of two-element pairs or name/value
+records. Case and separators are normalized when identifying a header field
+or known sensitive name. Authorization, proxy authorization, cookie,
+set-cookie and the configured conventional API or access-token header names
+are redacted even when their values are carried in a separate field. Ordinary
+entries keep their shape and go through the usual recursive sanitization.
+Ambiguous entry shapes and raw header blocks reject before any projection
+write. The initial structural bounds apply even to values that will be
+discarded.
+
+Rendering checks retained SQLite text as bounded UTF-8 canonical JSON before
+the current sanitizer runs. A damaged row produces a fixed rejection category
+with no parser cause or context. Current header handling applies to previously
+stored supported shapes at render time. Historical rows retain their original
+bytes, so this check does not erase already stored content. Remote transport,
+live sanitization and arbitrary wire encodings remain outside this receipt.
+
+Independent SQLite and file reads verify that new header values are absent
+before rendering. The regression suite also checks historic readback after
+reopen, malformed UTF-8 and JSON, and retained-byte preservation. See the
+[local evidence record](../docs/structured-header-privacy-evidence.json).
